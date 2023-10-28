@@ -1,0 +1,18 @@
+# Required base libraries
+anyserver>=0.3.1
+python-multipart==0.0.6
+Jinja2==3.1.2
+
+# Internally used dependencies
+yq==3.2.3
+pydantic==1.10.7
+pytest==7.4.2
+pytest-cov==4.0.0
+pytest-factoryboy==2.5.1
+
+# Optional Dependencies
+fastapi==0.103.2
+uvicorn==0.22.0
+
+# Converting terminal output into HTML color coded
+ansi2html==1.8.0
