@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>Conways Game of Life</title>
+    <!-- Load HTMX, Alpine and Tailwind from a CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.4/htmx.min.js"
+      integrity="sha512-ZM2vxgVBxhBI5Etj/c/qcJV+upate3VzbVQOQRCx1YGuyEX9dYdMh8pRUot4xIwtAay6QwRQC/FdXRjSWIEHrg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"
+      integrity="sha512-nIwdJlD5/vHj23CbO2iHCXtsqzdTTx3e3uAmpTm4x2Y8xCIFyWu4cSIV8GaGe2UNVq86/1h9EgUZy7tn243qdA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+      htmx.config.useTemplateFragments = true;
+    </script>
+  </head>
+  <body
+    x-init="engine.load(preset, '.game-board');"
+    x-data="{ preset: 'simple', width: 8, height: 8, started: false }"
+  >
+    <!-- Main template -->
+    <div
+      class="flex flex-col min-h-screen w-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
+    >
+      <!-- App Toolbar -->
+      <header
+        class="flex w-full p-2 items-center justify-between border-b-2 bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+      >
+        {% include 'toolbar.html' %}
+      </header>
+
+      <div class="flex flex-grow flex-row">
+        <!-- Side Navigation -->
+        <sidenav
+          class="w-80 flex flex-col flex-0 overflow-y-auto border-gray-200 bg-white dark:bg-gray-600"
+        >
+          {% block sidenav %}{% endblock sidenav %}
+        </sidenav>
+
+        <!-- Main content page -->
+        <main class="flex flex-col flex-1 overflow-y-auto">
+          {% block content %}
+          <div class="flex flex-col min-h-full justify-center">
+            {% include 'board.html' %}
+          </div>
+          {% endblock content %}
+        </main>
+
+        <!-- Side panel (right) -->
+        <aside
+          id="aside"
+          class="flex flex-col space-y-2 min-w-0 border-gray-200 bg-white dark:bg-gray-600"
+        >
+          {% block aside %}{% endblock aside %}
+        </aside>
+      </div>
+    </div>
+
+    <!-- Script block for initialisation hooks -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+
+      var get = (id) => document.getElementById(id);
+      var stored = (k) => localStorage.getItem(k);
+      var stores = (k, v) => localStorage.setItem(k, v);
+      var target = document.body;
+      var themeToggleDarkIcon = get("theme-toggle-dark-icon");
+      var themeToggleLightIcon = get("theme-toggle-light-icon");
+
+      // Change the icons inside the button based on previous settings
+      var hasLocal = "color-theme" in localStorage;
+      var localValue = hasLocal && stored("color-theme");
+      var mediaDark = "(prefers-color-scheme: dark)";
+      var isDark =
+        (hasLocal && localValue === "dark") ||
+        (!hasLocal && window.matchMedia(mediaDark).matches);
+      if (isDark) {
+        themeToggleLightIcon.classList.remove("hidden");
+        target.classList.add("dark");
+      } else {
+        themeToggleDarkIcon.classList.remove("hidden");
+        target.classList.remove("dark");
+      }
+
+      var themeToggleBtn = get("theme-toggle");
+      themeToggleBtn.addEventListener("click", function () {
+        // toggle icons inside button
+        themeToggleDarkIcon.classList.toggle("hidden");
+        themeToggleLightIcon.classList.toggle("hidden");
+
+        // if set via local storage previously
+        var value = stored("color-theme");
+        if (value == "light" || !target.classList.contains("dark")) {
+          target.classList.add("dark");
+          stores("color-theme", "dark");
+        } else {
+          target.classList.remove("dark");
+          stores("color-theme", "light");
+        }
+      });
+    </script>
+    <script>
+      let engine = {
+        preset: "",
+        target: ".game-board",
+        width: 8,
+        height: 8,
+        data: [],
+        intv: null,
+        load: function (preset, target) {
+          // Find the target element to use as the board canvas
+          engine.target = target || engine.target;
+          board = document.querySelector(engine.target);
+
+          // Load the preset
+          if (presets[preset] && presets[preset].data) {
+            console.log("Loading preset:", preset);
+            engine.preset = preset;
+            engine.data = JSON.parse(JSON.stringify(presets[preset].data));
+            console.log(engine.data.join('\n'));
+          }
+
+          // Calculate the new dimentions
+          data = engine.data;
+          w = data.length;
+          h = w > 0 ? data[0].length : 0;
+          engine.width = w;
+          engine.height = h;
+
+          // Create the canvas to visualise the data
+          console.log("Creating game board...", [w, h]);
+          canvas = Array(w);
+          self.canvas = canvas;
+          for (x = 0; x < w; x++) {
+            // Create a new data colum
+            canvas[x] = Array(h);
+
+            // Create each row and populate each row
+            for (y = 0; y < h; y++) {
+              // Compute the target cell's value
+              col = data && data.length >= x ? data[x] : [];
+              cell = col && col.length >= y ? col[y] : null;
+              val = cell ? 1 : 0;
+              canvas[x][y] = val;
+
+              // Create the element to put on the board
+              //elem = document.createElement
+            }
+          }          
+        },
+        start: function (preset, width, height) {
+          console.log("Starting the game", [preset, width, height]);
+          engine.intv = setInterval(engine.tick);
+        },
+        stop: function () {
+          console.log("Stopping the game");
+          clearInterval(engine.intv);
+        },
+        tick: function () {
+          console.log("Tick");
+        },
+      };
+    </script>
+    <script>
+      let presets = {
+        simple: {
+          title: "Simple examples",
+          data: [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 1, 0, 0, 0],
+            [0, 1, 0, 1, 1, 1, 0, 0],
+            [0, 1, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0],
+          ],
+        },
+      };
+    </script>
+  </body>
+</html>
