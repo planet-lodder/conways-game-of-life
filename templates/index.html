@@ -26,7 +26,7 @@
   </head>
   <body
     x-init="engine.load(preset, '.game-board');"
-    x-data="{ preset: 'simple', width: 8, height: 8, delay: 100, started: false }"
+    x-data="{ preset: 'advanced', width: 8, height: 8, delay: 100, scale: 10, started: false }"
   >
     <!-- Main template -->
     <div
@@ -116,35 +116,116 @@
         preset: "",
         target: ".game-board",
         fpsSelector: "#fps-counter",
+        scale: 5,
         width: 8,
         height: 8,
         data: [],
         delay: 0,
         generation: 0,
         intv: null,
-        load: function (preset, target) {
+        load: function (preset_name, target) {
           // Find the target element to use as the board canvas
+          engine.preset = preset_name;
           engine.target = target || engine.target;
           board = document.querySelector(engine.target);
+          data = [];
 
-          // Load the preset
-          if (presets[preset] && presets[preset].data) {
-            console.log("Loading preset:", preset);
-            engine.preset = preset;
-            engine.data = JSON.parse(JSON.stringify(presets[preset].data));
-            console.log(engine.data.join("\n"));
+          // Load the preset (if exists)
+          console.log("Loading preset:", preset_name);
+          let preset = presets[preset_name];
+          if (!preset) throw new Error("Preset not found!");
+          if (preset.data) {
+            // Raw data
+            data = engine.loadRaw(preset);
+          } else if (preset.text) {
+            // Textual representation
+            data = engine.loadText(preset.text);
+          } else if (preset.image) {
+            // Image supplied
+            data = engine.loadImage(preset.image, (data) => engine.init(data));
+            return; // Wait for image to load...
           }
 
-          // Calculate the new dimentions
-          data = engine.data;
-          w = data.length;
-          h = w > 0 ? data[0].length : 0;
-          engine.width = w;
-          engine.height = h;
+          console.log(
+            `Preset '${preset_name}' loaded: ${engine.width} x ${engine.height}`
+          );
+          engine.init(data);
+        },
+        loadRaw: function (data) {
+          // Load the raw data and make a deep copy
+          engine.width = data.length;
+          engine.height = data[0].length;
+          engine.data = JSON.parse(JSON.stringify(data));
+        },
+        loadText: function (input) {
+          // Load the data from textual representation
+          lines = input.split("\n");
+          height = lines.length;
+          width = 0;
+          data = [];
+          for (let y = 0; y < lines.length; y++) {
+            let line = lines[y];
+            for (let x = 0; x < line.length; x++) {
+              val = [" ", ".", "0"].indexOf(line[x]) >= 0 ? 0 : 1;
+              data[x] = data[x] || Array(lines.length);
+              data[x][y] = val;
+            }
+            width = Math.max(width, line.length);
+          }
+          engine.width = width;
+          engine.height = height;
+          engine.data = data;
+        },
+        loadImage: function (src, callback) {
+          let onLoad = (evt, target) => {
+            const img = target;
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
 
-          // Clear prev content
-          scale = 16;
-          board.innerHTML = "";
+            let data = Array(canvas.width);
+            let buffer = ctx.getImageData(
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            ).data;
+            console.log([canvas.width, canvas.height]);
+            for (let x = 0; x < canvas.width; x++) {
+              for (let y = 0; y < canvas.height; y++) {
+                let i = (x + y * canvas.width) * 4;
+                let r = buffer[i];
+                let g = buffer[i + 1];
+                let b = buffer[i + 2];
+                let a = buffer[i + 3];
+                let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
+                data[x] = data[x] || Array(canvas.height);
+                data[x][y] = val;
+              }
+            }
+            if (callback) callback(data);
+          };
+          img = document.createElement("IMG");
+          img.src = src;
+          img.style.position = "static";
+          img.style.bottom = "0";
+          img.style.right = "0";
+          img.addEventListener("load", (e) => onLoad(e, img));
+          document.body.appendChild(img);
+        },
+        init: function (data) {
+          engine.data = data;
+          engine.width = data.length;
+          engine.height = data[0].length;
+
+          // Calculate the new dimentions
+          w = engine.width;
+          h = engine.height;
+          ratio = Math.min(w / screen.width, h / screen.height);
+          scale = engine.scale;
+          board.innerHTML = ""; // Crear prev.
           board.style["min-width"] = `${w * scale}px`;
           board.style["min-height"] = `${h * scale}px`;
 
@@ -271,6 +352,7 @@
     </script>
     <script>
       let presets = {
+        // This sample gives raw data[x][y]
         simple: {
           title: "Simple examples",
           data: [
@@ -284,7 +366,8 @@
             [0, 0, 0, 0, 0, 0, 0, 0],
           ],
         },
-        text: {
+        // Stable shapes in textual representation
+        stable: {
           title: "Text example",
           text: [
             "        ",
@@ -293,9 +376,19 @@
             "  11    ",
             "        ",
             "        ",
-            "  111   ",
-            "        ",
+            "   11   ",
+            "   11   ",
           ].join("\n"),
+        },
+        advanced: {
+          title: "Advanced example",
+          image:
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAmCAYAAACGeMg8AAAAAXNSR0IArs4c6QAAARBJREFUWEftmG0PwyAIhOv//9EubWJC3Coc5awu9KsM74HzbaXWWo8/+MoskFLKwawZFeQUL78eJBLODaKJ0CBOQC0H4ngXSBMwEiLHrIIbvMeCMEgv6m5yS0f6ij8GQRJYQZp1RmsEsY4We3WEBSInt9pLE3w3DltLLlK2OATKBRK94yCCQztindiyu1lzaXHujmiJ2ziy/qw5f8VNAfGcCygUHQQV5I1PEG/lWL/LjkRUNvJAfb0jUdvzqyBRENdNY9ZTN8KKoxwJwq4wmj87glaMHb9sR9AnwLIg8s1vuT0vD2KByHOEvXA9+Ze2FgKUIEi1GLFf/3jufGmUt+dtrdU/AbYF6e2aIIwF/CTnB95iD57N0V/WAAAAAElFTkSuQmCC",
+        },
+        complex: {
+          title: "A Complex example",
+          image:
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAADABAMAAAAXat46AAAAD1BMVEX///8CAs/PAgICzwLmfhfNmKloAAADj0lEQVR4Ae3cQW7rOgyF4d/HWYCzgwOuIEA3kMHd/5oe4EFrlLkv7Y1ghQC/GduJYUgURcmhtdZaawUsV0pbKG2jmNbalcqWpXN+a6393HVLYSlbCitZqi0BrbVlS2El25bCzvmttfbDlnIO39xSu/Lcqi0BrbXr87BOSzmHnfNbe5FMZRFUFvKpLeUcviaGj6JtQuUpx4ycvzCGwlQWVCNRWlCa2dlEnNBSzuEIRlge31J+Ho5gjIhiOd9mJwTCVYu1KDaLwwAqmn8UQWEKmSOLUgKJI4N8Zks5hS8suMYjKs7lxMrTh+2WwiMqzu3cJUAAQuXyj3x4YtVsLyhAFq5ZiIZBkTddFTZe6e2/mISu48JfJk/x+hKwLMPC32eeA2tCzq/XZuvNb86ZxUp/pbjQxktowLb3XDafIoY0Ha7b+PDZDtcm+8eWzzY+fDbcbUZZzl8CXPqQSPkPdbK/bZz+VqbVb+fRo+MxURQaOvmlyz+uhpZtfPicIk9iOR6vataolvL4hrNy8sn/87ycnylS8L8VnTFvRaUPHUMO16304zAdxS5kqpBRHB8/12lmF2Sst/PDywUud/JkRJaQ8+zQk8dfrueEuz+HxxeADAFYxt9mtAIIswvz2HJWCNxTh83f3r7Q4/RkHtvmLgF57DudIcnYvB05ZR6RBhEGosAdtgAizM5UFYBLP77iq1KQc8X5cQOuJ4W/J38tDRFpMK2ssCznhL8WDn9NgJAxnpvzM/0tFAoILHaRKs4b3GaE/OGTDfEoNDaE+asP1tuM8HLhk430KLQAAos3c7nzSSA/Co1w6eQfqSidWTGPv5a6rnPCUdZJ4SAfk8J+97BymxCOmbsF3n6M7631ujWqavhY19uEcEDNNkH9innAfqWM57vF28eEcMBevUDiH98p6T5V/S7h5V66R3u/j+qQz9ks3gecT0x8/GGnQ2XP5vpktM+la98KqHsnY/yNmPHG30eqfxus7+L1Tcjy91Cj9C1giZ1NSRp5A36CAd8fFP/6o7+96S+fcsoMyomgJud9okUVIYQhOHKRFTjCCMGA740nsMDI9b72lvPbL9R1kNPYr0QgHzNPgDB1+PvPfIAoxMeOpwOhsh+ly4VWX4VMXYoACIoKAxIHUXXXi0wYUZIMioCgpDCS6/7OEMQeUI3NrlzNkA8QTZtHmNJEYUIUpHDlfo8xpZnCLN5Ma6211v4DPI1wVwR7xR8AAAAASUVORK5CYII=",
         },
       };
     </script>
