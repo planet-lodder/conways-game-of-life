@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Access-Control-Allow-Origin" content="*" />
-    <title>Conways Game of Life</title>
+    <title>Conway's Game of Life</title>
     <!-- Load HTMX, Alpine and Tailwind from a CDN -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.4/htmx.min.js"
@@ -26,7 +26,7 @@
   </head>
   <body
     x-init="engine.load(preset, '.game-board');"
-    x-data="{ preset: 'simple', width: 8, height: 8, started: false }"
+    x-data="{ preset: 'simple', width: 8, height: 8, delay: 100, started: false }"
   >
     <!-- Main template -->
     <div
@@ -44,7 +44,7 @@
         <sidenav
           class="w-80 flex flex-col flex-0 overflow-y-auto border-gray-200 bg-white dark:bg-gray-600"
         >
-          {% block sidenav %}{% endblock sidenav %}
+          {% block sidenav %}{% include 'sidenav.html' %}{% endblock sidenav %}
         </sidenav>
 
         <!-- Main content page -->
@@ -115,9 +115,12 @@
       let engine = {
         preset: "",
         target: ".game-board",
+        fpsSelector: "#fps-counter",
         width: 8,
         height: 8,
         data: [],
+        delay: 0,
+        generation: 0,
         intv: null,
         load: function (preset, target) {
           // Find the target element to use as the board canvas
@@ -129,7 +132,7 @@
             console.log("Loading preset:", preset);
             engine.preset = preset;
             engine.data = JSON.parse(JSON.stringify(presets[preset].data));
-            console.log(engine.data.join('\n'));
+            console.log(engine.data.join("\n"));
           }
 
           // Calculate the new dimentions
@@ -139,37 +142,130 @@
           engine.width = w;
           engine.height = h;
 
+          // Clear prev content
+          scale = 16;
+          board.innerHTML = "";
+          board.style["min-width"] = `${w * scale}px`;
+          board.style["min-height"] = `${h * scale}px`;
+
           // Create the canvas to visualise the data
           console.log("Creating game board...", [w, h]);
-          canvas = Array(w);
+          canvas = Array(h);
           self.canvas = canvas;
-          for (x = 0; x < w; x++) {
+          for (y = 0; y < h; y++) {
             // Create a new data colum
-            canvas[x] = Array(h);
+            canvas[y] = Array(w);
+
+            // Create the element to put on the board
+            rowElem = document.createElement("DIV");
+            rowElem.className = "row";
+            board.appendChild(rowElem);
 
             // Create each row and populate each row
-            for (y = 0; y < h; y++) {
+            for (x = 0; x < w; x++) {
               // Compute the target cell's value
               col = data && data.length >= x ? data[x] : [];
               cell = col && col.length >= y ? col[y] : null;
               val = cell ? 1 : 0;
-              canvas[x][y] = val;
 
-              // Create the element to put on the board
-              //elem = document.createElement
+              // Create the cell at this x/y position on the board
+              cellElem = document.createElement("DIV");
+              cellElem.id = `${x}x${y}`;
+              cellElem.setAttribute("value", val);
+              cellElem.onclick = engine.handleClick(x, y, cellElem);
+              cellElem.onmouseenter = engine.handleOnEnter(x, y, cellElem);
+              rowElem.appendChild(cellElem);
+
+              canvas[y][x] = cellElem;
             }
-          }          
+          }
         },
-        start: function (preset, width, height) {
-          console.log("Starting the game", [preset, width, height]);
-          engine.intv = setInterval(engine.tick);
+        start: function (delay) {
+          console.log("Starting the game", delay);
+          // Set the game defaults when starting
+          engine.generation = 0;
+          engine.delay = delay || engine.delay;
+
+          // Start running game ticks
+          engine.intv = setInterval(engine.tick, engine.delay);
+
+          // Compute the fps each second
+          oldCount = engine.generation;
+          fpsElem = document.querySelector(engine.fpsSelector);
+          fps_intv = setInterval(() => {
+            if (!engine.intv) {
+              clearInterval(fps_intv); // Simulation stopped
+              return;
+            }
+            if (fpsElem) {
+              // Update DOM element
+              fpsElem.setAttribute("value", engine.generation - oldCount);
+            }
+            oldCount = engine.generation;
+          }, 1000);
         },
         stop: function () {
           console.log("Stopping the game");
           clearInterval(engine.intv);
+          engine.intv = null;
         },
         tick: function () {
-          console.log("Tick");
+          // Start new generation
+          engine.generation++;
+
+          const getValue = (x, y) => {
+            if (x < 0 || x >= engine.width) return 0;
+            if (y < 0 || y >= engine.height) return 0;
+            return engine.data[x][y];
+          };
+          const newValue = (x, y) => {
+            // Check each neighbor cell and count them
+            count = 0; // Keep track of the count
+            for (var dx = -1; dx <= 1; dx++) {
+              for (var dy = -1; dy <= 1; dy++) {
+                count += dx == 0 && dy == 0 ? 0 : getValue(x + dx, y + dy);
+                if (count > 3) return 0; // Over-populated, cell dies, no need to continue
+              }
+            }
+            val = getValue(x, y); // Get current value
+            if (count == 3) return 1; // Cell is alive if count exactly 3
+            if (count == 2 && val) return 1; // Cell stays alive if 2 neighbors
+            return 0; // Cell is dead or not enough siblings
+          };
+
+          // Calculate for each cell its new value
+          data = []; // New data frame
+          for (x = 0; x < w; x++) {
+            data[x] = Array(engine.width);
+            for (y = 0; y < h; y++) {
+              // Set new value for the cell
+              val = newValue(x, y);
+              data[x][y] = val;
+
+              // Update DOM element
+              canvas[y][x].setAttribute("value", val);
+            }
+          }
+          engine.data = data;
+        },
+        paint: function (x, y, elem, val) {
+          engine.data[x][y] = val;
+          if (elem) {
+            elem.setAttribute("value", val || 0);
+          }
+        },
+        handleClick: function (x, y, elem, val) {
+          return () => {
+            val = elem.getAttribute("value") == "1" ? 0 : 1;
+            engine.paint(x, y, elem, val);
+          };
+        },
+        handleOnEnter: function (x, y, elem, val) {
+          return (evt) => {
+            if (evt.buttons === 1) {
+              engine.paint(x, y, elem, 1);
+            }
+          };
         },
       };
     </script>
@@ -178,15 +274,28 @@
         simple: {
           title: "Simple examples",
           data: [
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 1, 1, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 1, 0, 0, 1, 0, 0, 0],
-            [0, 1, 0, 1, 1, 1, 0, 0],
-            [0, 1, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 1, 1, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
           ],
+        },
+        text: {
+          title: "Text example",
+          text: [
+            "        ",
+            "  11    ",
+            " 1  1   ",
+            "  11    ",
+            "        ",
+            "        ",
+            "  111   ",
+            "        ",
+          ].join("\n"),
         },
       };
     </script>
