@@ -1,0 +1,28 @@
+<div
+  class="px-3 py-4 overflow-y-auto rounded"
+  x-data="{ items: Object.keys(presets) }"
+>
+  <h1 class="py-2 font-bold text-2xl">Game Presets</h1>
+  <ul class="space-y-2">
+    <li>
+      <a
+        href="/"
+        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        {% include 'icons/document.svg' %}
+        <span class="ml-3">Blank Canvas</span>
+      </a>
+    </li>
+    <template x-for="name in items">
+      <li>
+        <a
+          :href="'?preset=' + name"
+          class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          {% include 'icons/arrow-circle-right.svg' %}
+          <span class="ml-3" x-text="presets[name].title"></span>
+        </a>
+      </li>
+    </template>
+  </ul>
+</div>

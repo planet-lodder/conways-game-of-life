@@ -25,8 +25,11 @@
     </script>
   </head>
   <body
-    x-init="engine.load(preset, '.game-board');"
-    x-data="{ preset: 'advanced', width: 8, height: 8, delay: 100, scale: 10, started: false }"
+    x-data="{ 
+      preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
+      started: false 
+    }"
+    x-init="engine.load(preset, '.game-board')"
   >
     <!-- Main template -->
     <div
@@ -133,29 +136,45 @@
           // Load the preset (if exists)
           console.log("Loading preset:", preset_name);
           let preset = presets[preset_name];
-          if (!preset) throw new Error("Preset not found!");
-          if (preset.data) {
+          if (preset_name == "blank") {
+            // Load a blank canvas
+            data = Array(engine.width);
+            for (x = 0; x < engine.width; x++) {
+              data[x] = Array(engine.height);
+              for (y = 0; y < engine.height; y++) {
+                data[x][y] = 0;
+              }
+            }
+            preset = {
+              title: "Blank Canvas",
+              data: data,
+            };
+          } else if (!preset) {
+            throw new Error("Preset not found!");
+          } else if (preset.data) {
             // Raw data
-            data = engine.loadRaw(preset);
+            data = engine.loadRaw(preset.data);
           } else if (preset.text) {
             // Textual representation
             data = engine.loadText(preset.text);
           } else if (preset.image) {
             // Image supplied
-            data = engine.loadImage(preset.image, (data) => engine.init(data));
+            engine.scale = preset.scale || engine.scale;
+            engine.delay = !isNaN(preset.delay) ? preset.delay : engine.delay;
+            data = engine.loadImage(preset.image, (data) =>
+              engine.init(preset, data)
+            );
             return; // Wait for image to load...
           }
 
           console.log(
             `Preset '${preset_name}' loaded: ${engine.width} x ${engine.height}`
           );
-          engine.init(data);
+          engine.init(preset, data);
         },
         loadRaw: function (data) {
           // Load the raw data and make a deep copy
-          engine.width = data.length;
-          engine.height = data[0].length;
-          engine.data = JSON.parse(JSON.stringify(data));
+          return JSON.parse(JSON.stringify(data));
         },
         loadText: function (input) {
           // Load the data from textual representation
@@ -172,9 +191,7 @@
             }
             width = Math.max(width, line.length);
           }
-          engine.width = width;
-          engine.height = height;
-          engine.data = data;
+          return data;
         },
         loadImage: function (src, callback) {
           let onLoad = (evt, target) => {
@@ -192,7 +209,6 @@
               canvas.width,
               canvas.height
             ).data;
-            console.log([canvas.width, canvas.height]);
             for (let x = 0; x < canvas.width; x++) {
               for (let y = 0; y < canvas.height; y++) {
                 let i = (x + y * canvas.width) * 4;
@@ -215,10 +231,12 @@
           img.addEventListener("load", (e) => onLoad(e, img));
           document.body.appendChild(img);
         },
-        init: function (data) {
+        init: function (preset, data) {
           engine.data = data;
-          engine.width = data.length;
-          engine.height = data[0].length;
+          engine.width = preset.width || data.length;
+          engine.height = preset.height || data[0].length;
+          engine.scale = preset.scale || engine.scale;
+          engine.delay = !isNaN(preset.delay) ? preset.delay : engine.delay;
 
           // Calculate the new dimentions
           w = engine.width;
@@ -265,7 +283,6 @@
           console.log("Starting the game", delay);
           // Set the game defaults when starting
           engine.generation = 0;
-          engine.delay = delay || engine.delay;
 
           // Start running game ticks
           engine.intv = setInterval(engine.tick, engine.delay);
@@ -352,23 +369,11 @@
     </script>
     <script>
       let presets = {
-        // This sample gives raw data[x][y]
-        simple: {
-          title: "Simple examples",
-          data: [
-            [0, 0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 1, 1, 1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-          ],
-        },
         // Stable shapes in textual representation
         stable: {
-          title: "Text example",
+          title: "Simple and stable",
+          scale: 32,
+          delay: 100,
           text: [
             "        ",
             "  11    ",
@@ -380,13 +385,34 @@
             "   11   ",
           ].join("\n"),
         },
+        // This sample gives raw data[x][y]
+        repeater: {
+          title: "Repeating Patterns",
+          scale: 32,
+          delay: 100,
+          data: [
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+          ],
+        },
+        // Advanced use case loaded from a PNG
         advanced: {
           title: "Advanced example",
+          scale: 16,
+          delay: 50,
           image:
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAmCAYAAACGeMg8AAAAAXNSR0IArs4c6QAAARBJREFUWEftmG0PwyAIhOv//9EubWJC3Coc5awu9KsM74HzbaXWWo8/+MoskFLKwawZFeQUL78eJBLODaKJ0CBOQC0H4ngXSBMwEiLHrIIbvMeCMEgv6m5yS0f6ij8GQRJYQZp1RmsEsY4We3WEBSInt9pLE3w3DltLLlK2OATKBRK94yCCQztindiyu1lzaXHujmiJ2ziy/qw5f8VNAfGcCygUHQQV5I1PEG/lWL/LjkRUNvJAfb0jUdvzqyBRENdNY9ZTN8KKoxwJwq4wmj87glaMHb9sR9AnwLIg8s1vuT0vD2KByHOEvXA9+Ze2FgKUIEi1GLFf/3jufGmUt+dtrdU/AbYF6e2aIIwF/CTnB95iD57N0V/WAAAAAElFTkSuQmCC",
         },
         complex: {
           title: "A Complex example",
+          scale: 4,
+          delay: 0,
           image:
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAADABAMAAAAXat46AAAAD1BMVEX///8CAs/PAgICzwLmfhfNmKloAAADj0lEQVR4Ae3cQW7rOgyF4d/HWYCzgwOuIEA3kMHd/5oe4EFrlLkv7Y1ghQC/GduJYUgURcmhtdZaawUsV0pbKG2jmNbalcqWpXN+a6393HVLYSlbCitZqi0BrbVlS2El25bCzvmttfbDlnIO39xSu/Lcqi0BrbXr87BOSzmHnfNbe5FMZRFUFvKpLeUcviaGj6JtQuUpx4ycvzCGwlQWVCNRWlCa2dlEnNBSzuEIRlge31J+Ho5gjIhiOd9mJwTCVYu1KDaLwwAqmn8UQWEKmSOLUgKJI4N8Zks5hS8suMYjKs7lxMrTh+2WwiMqzu3cJUAAQuXyj3x4YtVsLyhAFq5ZiIZBkTddFTZe6e2/mISu48JfJk/x+hKwLMPC32eeA2tCzq/XZuvNb86ZxUp/pbjQxktowLb3XDafIoY0Ha7b+PDZDtcm+8eWzzY+fDbcbUZZzl8CXPqQSPkPdbK/bZz+VqbVb+fRo+MxURQaOvmlyz+uhpZtfPicIk9iOR6vataolvL4hrNy8sn/87ycnylS8L8VnTFvRaUPHUMO16304zAdxS5kqpBRHB8/12lmF2Sst/PDywUud/JkRJaQ8+zQk8dfrueEuz+HxxeADAFYxt9mtAIIswvz2HJWCNxTh83f3r7Q4/RkHtvmLgF57DudIcnYvB05ZR6RBhEGosAdtgAizM5UFYBLP77iq1KQc8X5cQOuJ4W/J38tDRFpMK2ssCznhL8WDn9NgJAxnpvzM/0tFAoILHaRKs4b3GaE/OGTDfEoNDaE+asP1tuM8HLhk430KLQAAos3c7nzSSA/Co1w6eQfqSidWTGPv5a6rnPCUdZJ4SAfk8J+97BymxCOmbsF3n6M7631ujWqavhY19uEcEDNNkH9innAfqWM57vF28eEcMBevUDiH98p6T5V/S7h5V66R3u/j+qQz9ks3gecT0x8/GGnQ2XP5vpktM+la98KqHsnY/yNmPHG30eqfxus7+L1Tcjy91Cj9C1giZ1NSRp5A36CAd8fFP/6o7+96S+fcsoMyomgJud9okUVIYQhOHKRFTjCCMGA740nsMDI9b72lvPbL9R1kNPYr0QgHzNPgDB1+PvPfIAoxMeOpwOhsh+ly4VWX4VMXYoACIoKAxIHUXXXi0wYUZIMioCgpDCS6/7OEMQeUI3NrlzNkA8QTZtHmNJEYUIUpHDlfo8xpZnCLN5Ma6211v4DPI1wVwR7xR8AAAAASUVORK5CYII=",
         },
