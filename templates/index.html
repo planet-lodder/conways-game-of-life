@@ -135,6 +135,7 @@
 
           // Load the preset (if exists)
           console.log("Loading preset:", preset_name);
+          board.innerHTML = "<em>Loading...</em>";
           let preset = presets[preset_name];
           if (preset_name == "blank") {
             // Load a blank canvas
@@ -225,7 +226,8 @@
           };
           img = document.createElement("IMG");
           img.src = src;
-          img.style.position = "static";
+          img.style.display = "none";
+          img.style.position = "absolute";
           img.style.bottom = "0";
           img.style.right = "0";
           img.addEventListener("load", (e) => onLoad(e, img));
