@@ -5,10 +5,12 @@ app = AnyServer()
 app.templates('./templates')
 app.static("./public")
 
+
 @app.get('/')
 @app.renders('index')
-def ping(req, resp):
-    return {"ping": "pong"}
+def index(req, resp):
+    return {}
+
 
 def main():
     app.start()
