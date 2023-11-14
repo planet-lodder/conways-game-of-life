@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 from anyserver import AnyServer
+from app import router as GAME_ROUTES
 
 app = AnyServer()
-app.templates('./templates')
+app.register(GAME_ROUTES)
 app.static("./public")
-
-
-@app.get('/')
-@app.renders('index')
-def index(req, resp):
-    return {}
 
 
 def main():
