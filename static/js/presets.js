@@ -31,6 +31,20 @@ let presets = {
       [0, 0, 0, 0, 0, 0, 0, 0],
     ],
   },
+  max: {
+    title: "Max example",
+    scale: 16,
+    delay: 25,
+    image:
+      "/presets/101.gif",
+  },
+  primes: {
+    title: "Prime examples",
+    scale: 5,
+    delay: 0,
+    image:
+      "/presets/gormet.gif",
+  },
   // Advanced use case loaded from a PNG
   advanced: {
     title: "Advanced example",
