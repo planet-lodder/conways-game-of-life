@@ -13,28 +13,14 @@
 >
   <form>
     <div class="flex relative">
-      <div class="flex relative">
+      <div class="flex relative text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700">
         <!-- Load Preset -->
         <label
-          for="preset"
-          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center border border-gray-300 dark:border-gray-700"
         >
-          Preset
+          {{data.title or 'Game'}}
         </label>
-        <div class="relative">
-          <div
-            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-          >
-            <input
-              name="preset"
-              x-model="preset"
-              placeholder="blank"
-              class="w-full px-4 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
-              disabled
-            />
-          </div>
-        </div>
-
+        
         <!-- Width -->
         <label
           for="width"
@@ -122,7 +108,7 @@
       <div
         class="flex flex-1 flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
       ></div>
-      <div class="inline-flex shadow-sm rounded-lg" role="group">
+      <div class="inline-flex shadow-sm" role="group">
         <!-- Stop Button -->
         <button
           type="button"
@@ -136,7 +122,7 @@
         <!-- Start Button -->
         <button
           type="button"
-          class="flex text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
+          class="flex text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
           @click="started = true; engine.start()"
           :disabled="started"
         >
