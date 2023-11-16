@@ -25,6 +25,9 @@
     </script>
   </head>
   <body>
+    <!-- Load script to toggle dark mode before loading content (avoids flashing of dark mode) -->
+    <script src="/js/dark-mode.js"></script>
+
     <!-- Main template -->
     <div
       class="flex flex-col min-h-screen w-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
@@ -49,9 +52,6 @@
           <!-- {% endif %} -->
         </main>
       </div>
-    </div>
-
-    <!-- Script block for initialisation hooks -->
-    <script src="/js/dark-mode.js"></script>
+    </div>    
   </body>
 </html>
