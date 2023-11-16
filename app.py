@@ -11,7 +11,7 @@ router = TemplateRouter(prefix='/game-of-life', base=f'{THIS_DIR}/templates')
 groups = {
     "basic": "Basic Concepts",
     "simple": "Simple Examples",
-    "ships": "Moving gliders and ships",
+    "ships": "Gliders and ships",
     "signals": "Signal Generators",
     "complex": "Large & Complex Examples",
     "other": "Other",
@@ -27,7 +27,7 @@ def loadPresets():
 
     # Scan for additional presets
     path = f'{THIS_DIR}/static/presets'
-    for file in os.listdir(path):
+    for file in sorted(os.listdir(path)):
         is_img = file.endswith(".png") or file.endswith(
             ".jpg") or file.endswith(".jpeg") or file.endswith(".gif")
         if (is_img):

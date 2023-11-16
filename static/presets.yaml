@@ -66,6 +66,18 @@ zip:
   image: /presets/simple/zip.gif
   scale: 16
   delay: 50
+lightspeed-wire:
+  title: Lightspeed Wire
+  group: simple
+  image: /presets/simple/lightspeed-wire.gif
+  scale: 10
+  delay: 50
+traffic-circle:
+  title: Traffic Circle
+  group: simple
+  image: /presets/simple/traffic-circle.gif
+  scale: 10
+  delay: 10
 oscillators_1:
   title: Oscillerators
   image: /presets/simple/oscillators_1.gif
@@ -165,6 +177,12 @@ lonedots:
   scale: 5
   delay: 0
   image: /presets/complex/lonedots.gif
+primes:
+  title: Lonedots
+  group: complex
+  scale: 5
+  delay: 0
+  image: /presets/complex/primes.gif
 hotel:
   title: Hotel
   group: complex
