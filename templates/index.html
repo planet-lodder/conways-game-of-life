@@ -24,13 +24,7 @@
       htmx.config.useTemplateFragments = true;
     </script>
   </head>
-  <body
-    x-init="preset && engine.load(preset, '.game-board')"
-    x-data="{ 
-      preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
-      started: false 
-    }"
-  >
+  <body>
     <!-- Main template -->
     <div
       class="flex flex-col min-h-screen w-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
@@ -44,28 +38,20 @@
 
       <div class="flex flex-grow flex-row">
         <!-- Side Navigation -->
-        {% block sidenav %}{% include 'sidenav.html' %}{% endblock sidenav %}
+        {% include 'sidenav.html' %}
 
         <!-- Main content page -->
         <main class="flex flex-col flex-1 overflow-y-auto">
-          {% block content %}
           <!-- {% if preset %} -->
           {% include 'board.html' %}
           <!-- {% else %} -->
           {% include 'browse.html' %}
           <!-- {% endif %} -->
-          {% endblock content %}
         </main>
       </div>
     </div>
 
     <!-- Script block for initialisation hooks -->
     <script src="/js/dark-mode.js"></script>
-    {% block scripts %}
-    <!-- {% if preset %} -->
-    <script src="/js/app.js"></script>
-    <script src="/js/presets.js"></script>
-    <!-- {% endif %} -->
-    {% endblock scripts %}
   </body>
 </html>

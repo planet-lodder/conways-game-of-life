@@ -1,7 +1,163 @@
-<div class="flex flex-col min-h-full justify-center">
-  <link rel="stylesheet" href="/css/board.css" />
-  <div class="game-board">
-    <!--
+<!--
+{% set data = presets[preset] if preset in presets else None %}
+{% if data %}
+-->
+<link href="/css/board.css" rel="stylesheet" />
+<script src="/js/app.js"></script>
+<div
+  x-data="{ 
+    preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
+    started: false 
+  }"
+  class="flex flex-col min-h-full justify-start"
+>
+  <form>
+    <div class="flex relative">
+      <div class="flex relative">
+        <!-- Load Preset -->
+        <label
+          for="preset"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Preset
+        </label>
+        <div class="relative">
+          <div
+            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          >
+            <input
+              name="preset"
+              x-model="preset"
+              placeholder="blank"
+              class="w-full px-4 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Width -->
+        <label
+          for="width"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Width
+        </label>
+        <div class="relative">
+          <div
+            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          >
+            <input
+              name="width"
+              x-model="engine.width"
+              class="w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+              :disabled="started"
+            />
+          </div>
+        </div>
+
+        <!-- Height -->
+        <label
+          for="height"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Height
+        </label>
+        <div class="relative">
+          <div
+            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          >
+            <input
+              name="height"
+              x-model="engine.height"
+              class="w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+              :disabled="started"
+            />
+          </div>
+        </div>
+
+        <!-- Set Delay -->
+        <label
+          for="delay"
+          style="display: inline-block"
+          x-show="!started"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Delay
+        </label>
+        <div class="relative" style="display: inline-block" x-show="!started">
+          <div
+            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          >
+            <input
+              name="delay"
+              x-model="engine.delay"
+              class="game-fps w-10 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+            />
+          </div>
+        </div>
+
+        <!-- Frames Per Second -->
+        <label
+          for="fps"
+          style="display: none"
+          x-show="started"
+          class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          FPS
+        </label>
+        <div class="relative" style="display: none" x-show="started">
+          <div
+            class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          >
+            <input
+              id="fps-counter"
+              name="fps"
+              value="0"
+              class="game-fps w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+              disabled
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex flex-1 flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+      ></div>
+      <div class="inline-flex shadow-sm rounded-lg" role="group">
+        <!-- Stop Button -->
+        <button
+          type="button"
+          class="flex text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
+          @click="started = false; engine.stop()"
+          :disabled="!started"
+        >
+          <span class="p-2 pr-0"> {% include 'icons/stop.svg' %} </span>
+          <span class="p-2.5 pr-4">Stop</span>
+        </button>
+        <!-- Start Button -->
+        <button
+          type="button"
+          class="flex text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
+          @click="started = true; engine.start()"
+          :disabled="started"
+        >
+          <span class="p-2 pr-0"> {% include 'icons/play.svg' %} </span>
+          <span class="p-2.5 pr-4">Start</span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="flex flex-col flex-1 justify-center">
+    <div
+      title="{{data.title}}"
+      image="{{data.image}}"
+      width="{{data.width}}"
+      height="{{data.height}}"
+      scale="{{data.scale}}"
+      delay="{{data.delay}}"
+      wrapped="{{data.wrapped}}"
+      class="game-board"
+    >
+      <!--
     <div class="row">
       <div id="1x1" value="0"></div>
       <div id="1x2" value="1"></div>
@@ -17,6 +173,23 @@
       <div id="3x2" value="1"></div>
       <div id="3x3" value="0"></div>
     </div>
-    -->
-  </div>
+    --></div>
+  </div>  
+  <script>
+    // Define the selected preset
+    let presets = {
+      "{{preset}}": {
+        title: "{{data.title}}",
+        image: "{{data.image}}",
+        width: "{{data.width}}",
+        height: "{{data.height}}",
+        scale: "{{data.scale}}",
+        delay: "{{data.delay}}",
+        wrapped: "{{data.wrapped}}",
+      },
+    };
+    // Bootstrap the game engine
+    engine.load("{{preset}}", ".game-board");
+  </script>
 </div>
+<!-- {% endif %} -->
