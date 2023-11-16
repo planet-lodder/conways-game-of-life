@@ -1,61 +1,22 @@
-<style>
-  .game-board {
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .game-board .row {
-    display: flex;
-    flex-grow: 1;
-  }
-  .game-board .row [value] {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    outline: solid 1px #88888866;
-    min-width: 3px;
-    min-height: 3px;
-  }
-  .game-board .row [value]:hover {
-    cursor: pointer;
-  }
-  .game-board .row [value="0"] {
-    outline: solid 1px #aaaaaa88;
-  }
-  .game-board .row [value="0"]:hover {
-    background-color: #aaaaaa44;
-  }
-  .game-board .row [value="1"] {
-    background-color: #000000;
-  }
-
-  .dark .game-board .row [value] {
-    outline: solid 1px #88888844;
-  }
-  .dark .game-board .row [value="0"]:hover {
-    background-color: #aaaaaa44;
-  }
-  .dark .game-board .row [value="1"] {
-    background-color: #ffffff;
-  }
-</style>
-<div class="game-board">
-  <div class="row">
-    <div id="1x1" value="0"></div>
-    <div id="1x2" value="1"></div>
-    <div id="1x3" value="0"></div>
-  </div>
-  <div class="row">
-    <div id="2x1" value="1"></div>
-    <div id="2x2" value="1"></div>
-    <div id="2x3" value="1"></div>
-  </div>
-  <div class="row">
-    <div id="3x1" value="0"></div>
-    <div id="3x2" value="1"></div>
-    <div id="3x3" value="0"></div>
+<div class="flex flex-col min-h-full justify-center">
+  <link rel="stylesheet" href="/css/board.css" />
+  <div class="game-board">
+    <!--
+    <div class="row">
+      <div id="1x1" value="0"></div>
+      <div id="1x2" value="1"></div>
+      <div id="1x3" value="0"></div>
+    </div>
+    <div class="row">
+      <div id="2x1" value="1"></div>
+      <div id="2x2" value="1"></div>
+      <div id="2x3" value="1"></div>
+    </div>
+    <div class="row">
+      <div id="3x1" value="0"></div>
+      <div id="3x2" value="1"></div>
+      <div id="3x3" value="0"></div>
+    </div>
+    -->
   </div>
 </div>

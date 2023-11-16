@@ -4,7 +4,8 @@ let presets = {
     title: "Simple and stable",
     scale: 32,
     delay: 100,
-    text: [
+    image: '/presets/simple/stable.gif',
+    ztext: [
       "        ",
       "  11    ",
       " 1  1   ",
@@ -20,7 +21,8 @@ let presets = {
     title: "Repeating Patterns",
     scale: 32,
     delay: 100,
-    data: [
+    image: '/presets/simple/repeaters.gif',
+    zdata: [
       [0, 0, 0, 0, 0, 0, 1, 1],
       [0, 0, 0, 0, 0, 0, 1, 1],
       [0, 0, 0, 0, 1, 1, 0, 0],

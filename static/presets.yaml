@@ -1,25 +1,13 @@
 stable:
   title: Simple and stable
+  image: /presets/simple/stable.gif
   scale: 32
   delay: 100
-  text:
-    "        \n  11    \n 1  1   \n  11    \n        \n        \n   11   \n  \
-    \ 11   "
 repeater:
   title: Repeating Patterns
   scale: 32
   delay: 100
-  data:
-    [
-      [0, 0, 0, 0, 0, 0, 1, 1],
-      [0, 0, 0, 0, 0, 0, 1, 1],
-      [0, 0, 0, 0, 1, 1, 0, 0],
-      [0, 0, 0, 0, 1, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 1, 1, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-    ]
+  image: /presets/simple/repeaters.gif
 advanced:
   title: Advanced example
   scale: 16

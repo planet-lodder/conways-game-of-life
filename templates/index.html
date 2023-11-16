@@ -25,11 +25,11 @@
     </script>
   </head>
   <body
+    x-init="preset && engine.load(preset, '.game-board')"
     x-data="{ 
       preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
       started: false 
     }"
-    x-init="engine.load(preset, '.game-board')"
   >
     <!-- Main template -->
     <div
@@ -44,34 +44,28 @@
 
       <div class="flex flex-grow flex-row">
         <!-- Side Navigation -->
-        <sidenav
-          class="w-80 h-screen overscroll-contain flex flex-col flex-0 overflow-y-auto border-gray-200 bg-white dark:bg-gray-600"
-        >
-          {% block sidenav %}{% include 'sidenav.html' %}{% endblock sidenav %}
-        </sidenav>
+        {% block sidenav %}{% include 'sidenav.html' %}{% endblock sidenav %}
 
         <!-- Main content page -->
         <main class="flex flex-col flex-1 overflow-y-auto">
           {% block content %}
-          <div class="flex flex-col min-h-full justify-center">
-            {% include 'board.html' %}
-          </div>
+          <!-- {% if preset %} -->
+          {% include 'board.html' %}
+          <!-- {% else %} -->
+          {% include 'browse.html' %}
+          <!-- {% endif %} -->
           {% endblock content %}
         </main>
-
-        <!-- Side panel (right) -->
-        <aside
-          id="aside"
-          class="flex flex-col space-y-2 min-w-0 border-gray-200 bg-white dark:bg-gray-600"
-        >
-          {% block aside %}{% endblock aside %}
-        </aside>
       </div>
     </div>
 
     <!-- Script block for initialisation hooks -->
     <script src="/js/dark-mode.js"></script>
+    {% block scripts %}
+    <!-- {% if preset %} -->
     <script src="/js/app.js"></script>
     <script src="/js/presets.js"></script>
+    <!-- {% endif %} -->
+    {% endblock scripts %}
   </body>
 </html>

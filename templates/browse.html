@@ -1,78 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
-    <title>Conway's Game of Life</title>
-    <!-- Load HTMX, Alpine and Tailwind from a CDN -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.4/htmx.min.js"
-      integrity="sha512-ZM2vxgVBxhBI5Etj/c/qcJV+upate3VzbVQOQRCx1YGuyEX9dYdMh8pRUot4xIwtAay6QwRQC/FdXRjSWIEHrg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"
-      integrity="sha512-nIwdJlD5/vHj23CbO2iHCXtsqzdTTx3e3uAmpTm4x2Y8xCIFyWu4cSIV8GaGe2UNVq86/1h9EgUZy7tn243qdA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script>
-      htmx.config.useTemplateFragments = true;
-    </script>
-  </head>
-  <body>
-    <!-- Main template -->
+<div class="flex items-start justify-center lg:h-screen">
+  <div class="container mx-auto p-4">
     <div
-      class="flex flex-col min-h-screen w-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
-      <!-- App Toolbar -->
-      <header
-        class="flex w-full p-2 items-center justify-between border-b-2 bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-      >
-        {% include 'toolbar.html' %}
-      </header>
-
-      <div class="flex flex-grow flex-row">
-        <!-- Side Navigation -->
-        <sidenav
-          class="w-80 h-screen overscroll-contain flex flex-col flex-0 overflow-y-auto border-gray-200 bg-white dark:bg-gray-600"
-        >
-          {% block sidenav %}{% include 'sidenav.html' %}{% endblock sidenav %}
-        </sidenav>
-
-        <!-- Main content page -->
-        <main class="flex flex-col flex-1 overflow-y-auto">
-          {% block content %}
-          <div
-            class="flex items-start justify-center lg:h-screen"
-          >
-            <div class="container mx-auto p-4">
-              <div
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-              >
-                <!-- {% for preset in presets %} -->
-                <a href="#" class="bg-white rounded-lg border p-4 block">
-                  <img
-                    src="/presets/{{ preset.src }}"
-                    alt="Placeholder Image"
-                    class="w-full h-24 object-contain"
-                  />
-                  <div class="px-1 pt-4">
-                    <div class="font-bold text-xl capitalize">{{ preset.title }}</div>
-                  </div>                  
-                </a>
-                <!-- {% endfor %} -->
-              </div>
-            </div>
-          </div>
-          {% endblock content %}
-        </main>
-      </div>
+      <!-- {% for key, preset in presets.items() %} -->
+      <a href="?preset={{key}}" class="bg-white rounded-lg border p-4 block">
+        <img
+          alt="{{ preset.title }}"
+          src="{{ preset.image }}"
+          class="w-full h-24 object-contain"
+        />
+        <div class="px-1 pt-4">
+          <div class="font-bold text-xl capitalize">{{ preset.title }}</div>
+        </div>
+      </a>
+      <!-- {% endfor %} -->
     </div>
-    <script src="/js/dark-mode.js"></script>
-  </body>
-</html>
+  </div>
+</div>

@@ -1,28 +1,45 @@
-<div
-  class="px-3 py-4 overflow-y-auto rounded"
-  x-data="{ items: Object.keys(presets) }"
+<sidenav
+  class="w-80 h-screen overscroll-contain flex flex-col flex-0 overflow-y-auto border-gray-200 bg-white dark:bg-gray-600"
 >
-  <h1 class="py-2 font-bold text-2xl">Game Presets</h1>
-  <ul class="space-y-2">
-    <li>
-      <a
-        href="?preset="
-        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-      >
-        {% include 'icons/document.svg' %}
-        <span class="ml-3">Blank Canvas</span>
-      </a>
-    </li>
-    <template x-for="name in items">
-      <li>
+  <div
+    class="px-3 py-4 overflow-y-auto rounded"
+    x-data="{ items: Object.keys(presets) }"
+  >
+    <h1 class="py-2 font-bold text-2xl">Game Presets</h1>
+    <ul class="px-3 py-4 space-y-2">
+      <!-- {% for key in groups %} -->
+      <li class="opcion-con-desplegable">
+        <!-- {% if group == key %} -->
         <a
-          :href="'?preset=' + name"
+          href="?group="
           class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
         >
-          {% include 'icons/arrow-circle-right.svg' %}
-          <span class="ml-3" x-text="presets[name].title"></span>
+          {% include 'icons/folder-minus.svg' %}
+          <span class="ml-3">{{groups[key]}}</span>
         </a>
+        <!-- {% else %} -->
+        <a
+          href="?group={{key}}"
+          class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          {% include 'icons/folder-plus.svg' %}
+          <span class="ml-3">{{groups[key]}}</span>
+        </a>
+        <!-- {% endif %} -->
+        <!-- {% if group == key %} -->
+        <ul class="desplegable ml-0">
+          <!-- {% for name, preset in presets.items() %} -->
+          <li>
+            <a href="?group={{key}}&preset={{name}}" class="block p-2 hover:bg-gray-700 flex items-center">
+              {% include 'icons/document.svg' %}
+              <span class="ml-3">{{ preset.title or key }}</span>
+            </a>
+          </li>
+          <!-- {% endfor %} -->
+        </ul>
+        <!-- {% endif %} -->
       </li>
-    </template>
-  </ul>
-</div>
+      <!-- {% endfor %} -->
+    </ul>
+  </div>
+</sidenav>
