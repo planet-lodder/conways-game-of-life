@@ -12,12 +12,12 @@ repeater:
   group: basic
   image: /presets/simple/repeaters.gif
   scale: 32
-  delay: 100
+  delay: 200
 oscillator:
   title: Stable Oscillator
   group: basic
   image: /presets/101.gif
-  scale: 8
+  scale: 16
   delay: 100
 
 # ---------------------------------------------------------------
