@@ -4,7 +4,7 @@ from app import router as GAME_ROUTES
 
 app = AnyServer()
 app.register(GAME_ROUTES)
-app.static("./public")
+app.static("./static")
 
 
 def main():
