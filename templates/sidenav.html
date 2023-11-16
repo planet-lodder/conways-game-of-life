@@ -5,7 +5,7 @@
     class="px-3 py-4 overflow-y-auto rounded"
     x-data="{ items: Object.keys(presets) }"
   >
-    <h1 class="py-2 font-bold text-2xl">Game Presets</h1>
+    <h1 class="px-3 py-2 font-bold text-2xl">Game Presets</h1>
     <ul class="px-3 py-4 space-y-2">
       <!-- {% for key in groups %} -->
       <li class="opcion-con-desplegable">
@@ -28,13 +28,23 @@
         <!-- {% endif %} -->
         <!-- {% if group == key %} -->
         <ul class="desplegable ml-0">
-          <!-- {% for name, preset in presets.items() %} -->
+          <!-- {% for name, item in presets.items() %} -->
+          <!-- {% if item.group == key %} -->
           <li>
-            <a href="?group={{key}}&preset={{name}}" class="block p-2 hover:bg-gray-700 flex items-center">
+            <a
+              href="?group={{key}}&preset={{name}}"
+              class="block p-2 hover:bg-gray-700 flex items-center"
+            >
+              <!-- {% if name == preset %} -->
+              {% include 'icons/arrow-circle-right.svg' %}
+              <span class="ml-3 font-bold">{{ item.title or key }}</span>
+              <!-- {% else %} -->
               {% include 'icons/document.svg' %}
-              <span class="ml-3">{{ preset.title or key }}</span>
+              <span class="ml-3">{{ item.title or key }}</span>
+              <!-- {% endif %} -->
             </a>
           </li>
+          <!-- {% endif %} -->
           <!-- {% endfor %} -->
         </ul>
         <!-- {% endif %} -->

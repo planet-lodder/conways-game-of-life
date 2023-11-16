@@ -11,8 +11,9 @@ router = TemplateRouter(prefix='/game-of-life', base=f'{THIS_DIR}/templates')
 groups = {
     "basic": "Basic Concepts",
     "simple": "Simple Examples",
-    "repeat": "Repeating Oscillators",
-    "complex": "Advanced Examples",
+    "ships": "Moving gliders and ships",
+    "signals": "Signal Generators",
+    "complex": "Large & Complex Examples",
     "other": "Other",
 }
 

@@ -4,6 +4,7 @@
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
       <!-- {% for key, preset in presets.items() %} -->
+      <!-- {% if not group or group == preset.group %} -->
       <a href="?preset={{key}}" class="bg-white rounded-lg border p-4 block">
         <img
           alt="{{ preset.title }}"
@@ -14,6 +15,7 @@
           <div class="font-bold text-xl capitalize">{{ preset.title }}</div>
         </div>
       </a>
+      <!-- {% endif %} -->
       <!-- {% endfor %} -->
     </div>
   </div>
