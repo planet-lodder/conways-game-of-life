@@ -1,8 +1,4 @@
-
-
 let engine = {
-  preset: "",
-  target: ".game-board",
   fpsSelector: "#fps-counter",
   scale: 5,
   width: 60,
@@ -12,18 +8,36 @@ let engine = {
   wrapped: false,
   generation: 0,
   intv: null,
-  load: function (preset_name, target) {
+  load: function (target) {
     // Find the target element to use as the board canvas
-    engine.preset = preset_name;
-    engine.target = target || engine.target;
-    board = document.querySelector(engine.target);
-    data = [];
-
-    // Load the preset (if exists)
-    console.log("Loading preset:", preset_name);
+    board = document.querySelector(target);
     board.innerHTML = "<em>Loading...</em>";
-    let preset = presets[preset_name];
-    if (preset_name == "blank") {
+
+    // Load the preset (by reading attributes)
+    let preset = {
+      title: board.getAttribute("title"),
+      image: board.getAttribute("image"),
+      width: board.getAttribute("width"),
+      height: board.getAttribute("height"),
+      scale: board.getAttribute("scale"),
+      delay: board.getAttribute("delay"),
+      wrapped: board.getAttribute("wrapped"),
+    };
+    console.log("Loading board game...", preset);
+
+    if (preset.image) {
+      // Load the board game data from the source image
+      data = engine.loadImage(preset.image, (data) =>
+        engine.init(board, preset, data)
+      );
+      return; // Wait for image to load and then initialise...
+    } else {
+      // Set defaults if no image is supplied
+      preset.title = preset.title || "Blank Canvas";
+      preset.width = preset.width || 60;
+      preset.height = preset.height || 40;
+      preset.scale = preset.scale || 16;
+
       // Load a blank canvas
       data = Array(engine.width);
       for (x = 0; x < engine.width; x++) {
@@ -32,55 +46,9 @@ let engine = {
           data[x][y] = 0;
         }
       }
-      preset = {
-        title: "Blank Canvas",
-        data: data,
-        scale: 16,
-      };
-    } else if (!preset) {
-      throw new Error("Preset not found!");
-    } else if (preset.data) {
-      // Raw data
-      data = engine.loadRaw(preset.data);
-    } else if (preset.text) {
-      // Textual representation
-      data = engine.loadText(preset.text);
-    } else if (preset.image) {
-      // Image supplied
-      engine.scale = preset.scale || engine.scale;
-      engine.delay = !isNaN(preset.delay) ? preset.delay : engine.delay;
-      data = engine.loadImage(preset.image, (data) =>
-        engine.init(preset, data)
-      );
-      return; // Wait for image to load...
+      engine.init(board, preset, data);
     }
-
-    console.log(
-      `Preset '${preset_name}' loaded: ${engine.width} x ${engine.height}`
-    );
-    engine.init(preset, data);
-  },
-  loadRaw: function (data) {
-    // Load the raw data and make a deep copy
-    return JSON.parse(JSON.stringify(data));
-  },
-  loadText: function (input) {
-    // Load the data from textual representation
-    lines = input.split("\n");
-    height = lines.length;
-    width = 0;
-    data = [];
-    for (let y = 0; y < lines.length; y++) {
-      let line = lines[y];
-      for (let x = 0; x < line.length; x++) {
-        val = [" ", ".", "0"].indexOf(line[x]) >= 0 ? 0 : 1;
-        data[x] = data[x] || Array(lines.length);
-        data[x][y] = val;
-      }
-      width = Math.max(width, line.length);
-    }
-    return data;
-  },
+  },  
   loadImage: function (src, callback) {
     let onLoad = (evt, target) => {
       const img = target;
@@ -115,7 +83,7 @@ let engine = {
     img.addEventListener("load", (e) => onLoad(e, img));
     document.body.appendChild(img);
   },
-  init: function (preset, data) {
+  init: function (board, preset, data) {
     engine.data = data;
     engine.width = preset.width || data.length;
     engine.height = preset.height || data[0].length;

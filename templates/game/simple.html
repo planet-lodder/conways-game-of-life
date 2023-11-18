@@ -5,13 +5,6 @@
 <link href="/css/board.css" rel="stylesheet" />
 <script src="/game/engine.js"></script>
 <div
-  title="{{data.title}}"
-  image="{{data.image}}"
-  width="{{data.width}}"
-  height="{{data.height}}"
-  scale="{{data.scale}}"
-  delay="{{data.delay}}"
-  wrapped="{{data.wrapped}}"
   x-data="{ 
     preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
     started: false 
@@ -142,9 +135,17 @@
     </div>
   </form>
   <div class="flex flex-col flex-1 justify-center">
-    <div class="game-board">
-      <!--
-    <div class="row">
+    <div
+      class="game-board"
+      title="{{data.title}}"
+      image="{{data.image}}"
+      width="{{data.width}}"
+      height="{{data.height}}"
+      scale="{{data.scale}}"
+      delay="{{data.delay}}"
+      wrapped="{{data.wrapped}}"
+    >
+      <!--<div class="row">
       <div id="1x1" value="0"></div>
       <div id="1x2" value="1"></div>
       <div id="1x3" value="0"></div>
@@ -158,24 +159,12 @@
       <div id="3x1" value="0"></div>
       <div id="3x2" value="1"></div>
       <div id="3x3" value="0"></div>
+    </div>-->
     </div>
-    --></div>
   </div>
   <script>
-    // Define the selected preset
-    let presets = {
-      "{{preset}}": {
-        title: "{{data.title}}",
-        image: "{{data.image}}",
-        width: "{{data.width}}",
-        height: "{{data.height}}",
-        scale: "{{data.scale}}",
-        delay: "{{data.delay}}",
-        wrapped: "{{data.wrapped}}",
-      },
-    };
     // Bootstrap the game engine
-    engine.load("{{preset}}", ".game-board");
+    engine.load(".game-board");
   </script>
 </div>
 <!-- {% endif %} -->
