@@ -1,0 +1,16 @@
+<!--
+{% set data = presets[preset] if preset in presets else None %}
+{% if data %}
+-->
+<link href="/css/board.css" rel="stylesheet" />
+<script src="/game/game-board.js"></script>
+<game-board
+  title="{{data.title}}"
+  image="{{data.image}}"
+  width="{{data.width}}"
+  height="{{data.height}}"
+  scale="{{data.scale}}"
+  delay="{{data.delay}}"
+  wrapped="{{data.wrapped}}"
+></game-board>
+<!-- {% endif %} -->

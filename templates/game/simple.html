@@ -3,8 +3,15 @@
 {% if data %}
 -->
 <link href="/css/board.css" rel="stylesheet" />
-<script src="/js/engine.js"></script>
+<script src="/game/engine.js"></script>
 <div
+  title="{{data.title}}"
+  image="{{data.image}}"
+  width="{{data.width}}"
+  height="{{data.height}}"
+  scale="{{data.scale}}"
+  delay="{{data.delay}}"
+  wrapped="{{data.wrapped}}"
   x-data="{ 
     preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
     started: false 
@@ -13,14 +20,16 @@
 >
   <form>
     <div class="flex relative">
-      <div class="flex relative text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700">
+      <div
+        class="flex relative text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
+      >
         <!-- Load Preset -->
         <label
           class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center border border-gray-300 dark:border-gray-700"
         >
           {{data.title or 'Game'}}
         </label>
-        
+
         <!-- Width -->
         <label
           for="width"
@@ -133,16 +142,7 @@
     </div>
   </form>
   <div class="flex flex-col flex-1 justify-center">
-    <div
-      title="{{data.title}}"
-      image="{{data.image}}"
-      width="{{data.width}}"
-      height="{{data.height}}"
-      scale="{{data.scale}}"
-      delay="{{data.delay}}"
-      wrapped="{{data.wrapped}}"
-      class="game-board"
-    >
+    <div class="game-board">
       <!--
     <div class="row">
       <div id="1x1" value="0"></div>
@@ -160,7 +160,7 @@
       <div id="3x3" value="0"></div>
     </div>
     --></div>
-  </div>  
+  </div>
   <script>
     // Define the selected preset
     let presets = {
