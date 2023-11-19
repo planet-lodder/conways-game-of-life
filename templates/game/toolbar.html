@@ -11,32 +11,37 @@
     </p>
 
     <!-- Dimentions -->
-    <label class="flex flex-0 py-1.5 text-sm font-thin" x-show="!started">
+    <label
+      class="flex flex-0 py-1.5 text-sm font-thin"
+      style="display: none"
+      x-show="!started"
+    >
       (
-      <span x-text="game.width"></span>
+      <span class="board-width"></span>
       x
-      <span x-text="game.height"></span>
+      <span class="board-height"></span>
       )
     </label>
+
+    <div class="flex flex-1 flex-shrink-0"></div>
 
     <!-- Frames Per Second -->
     <label
       x-show="started"
       style="display: none"
-      class="py-1.5 px-2 text-sm font-slim italic"
+      class="py-1.5 text-sm font-slim italic"
     >
       <span id="fps-counter" class="game-fps font-bold">0</span> fps
     </label>
-    <div class="flex flex-1 flex-shrink-0"></div>
 
     <div class="inline-flex text-sm font-medium px-2 space-x-2" role="group">
       <!-- Revert to beginning -->
       <button
         type="button"
         class="flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500"
-        x-show="started === false"
+        x-show="started === false && game.generation > 0"
       >
-        <span @click="game.load(view.target)" title="Reset"
+        <span @click="game.reset(); started = null" title="Reset"
           >{% include 'icons/revert.svg' %}</span
         >
       </button>
