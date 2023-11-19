@@ -1,32 +1,193 @@
 class GameEngine {
   generation = 0;
+  view = null;
   intv = null;
 
-  constructor() {}
+  constructor(view) {
+    this.view = view;
+    this.config();
+    this.load(this.image);
+  }
 
-  load(target) {}
+  config() {
+    let root = this.view.root;
+    if (root) {
+      // Load the preset (by reading attributes)
+      this.image = root.getAttribute("image");
+      this.title = root.getAttribute("title");
+      this.width = root.getAttribute("width");
+      this.height = root.getAttribute("height");
+      this.scale = root.getAttribute("scale");
+      this.delay = root.getAttribute("delay");
+      this.wrapped = root.getAttribute("wrapped");
+    }
+  }
 
-  init(board, preset, data) {}
+  reset() {
+    this.config();
+    this.load(this.image);
+    this.generation = 0;
+  }
 
-  start() {}
+  load(image) {
+    // Set view port to 'loading' state
+    this.view.setLoading(true);
 
-  stop() {}
+    if (image) {
+      // Load the board game data from the source image
+      this.view.loadImage(image, (data) => this.init(data));
+      return; // Wait for image to load and then initialise...
+    } else {
+      // Set defaults if no image is supplied
+      this.title = this.title || "Blank Canvas";
+      this.width = this.width || 60;
+      this.height = this.height || 40;
+      this.scale = this.scale || 16;
+
+      // Load a blank canvas
+      let data = Array(this.width);
+      for (let x = 0; x < this.width; x++) {
+        data[x] = Array(this.height);
+        for (let y = 0; y < this.height; y++) {
+          data[x][y] = 0;
+        }
+      }
+      this.init(data);
+    }
+  }
+
+  init(data) {
+    let config = this;
+    let root = this.view.root;
+
+    // Set the updated properties given the data
+    this.data = data;
+    this.width = config.width || data.length;
+    this.height = config.height || data[0].length;
+    this.scale = config.scale || this.scale;
+    this.wrapped = config.wrapped || this.wrapped;
+    this.delay = !isNaN(config.delay) ? config.delay : this.delay;
+
+    // Clear and reset loading message
+    this.view.setLoading(false);
+
+    // Calculate the new dimentions
+    this.view.createView(this, data);
+  }
+
+  start() {
+    engine.start();
+  }
+
+  stop() {
+    engine.stop();
+  }
 
   tick() {}
-
 }
 
 class HtmlRenderer {
-  board = null
+  target = null;
+  root = null;
 
   constructor(target) {
-    self.board = document.querySelector(target);
+    this.target = target;
+    this.root = document.querySelector(target);
   }
+  setLoading(active, context) {
+    let root = this.root;
+    if (active) {
+      // Set the loading screen feedback
+      console.log("Loading board game into: ", self.target);
+      root.innerHTML = "<em>Loading...</em>";
+    } else {
+      // Crear previous contents
+      root.innerHTML = "";
+    }
+  }
+  loadImage(src, callback) {
+    let onLoad = (evt, target) => {
+      const img = target;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
 
+      let data = Array(canvas.width);
+      let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let x = 0; x < canvas.width; x++) {
+        for (let y = 0; y < canvas.height; y++) {
+          let i = (x + y * canvas.width) * 4;
+          let r = buffer[i];
+          let g = buffer[i + 1];
+          let b = buffer[i + 2];
+          let a = buffer[i + 3];
+          let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
+          data[x] = data[x] || Array(canvas.height);
+          data[x][y] = val;
+        }
+      }
+      if (callback) callback(data);
+    };
+    let img = document.createElement("IMG");
+    img.src = src;
+    img.style.display = "none";
+    img.style.position = "absolute";
+    img.style.bottom = "0";
+    img.style.right = "0";
+    img.addEventListener("load", (e) => onLoad(e, img));
+    document.body.appendChild(img);
+  }
+  createView(config, data) {
+    let width = config.width;
+    let height = config.height;
+    let scale = config.scale || 1;
+
+    console.log("Creating game board...", [width, height]);
+    let root = this.root;
+    if (root) {
+      root.style["min-width"] = `${width * scale}px`;
+      root.style["min-height"] = `${height * scale}px`;
+    }
+
+    // Create the canvas to visualise the data
+    let canvas = Array(height);
+    this.canvas = canvas;
+    for (let y = 0; y < height; y++) {
+      // Create a new data colum
+      canvas[y] = Array(width);
+
+      // Create the element to put on the board
+      let rowElem = document.createElement("DIV");
+      rowElem.className = "row";
+      root.appendChild(rowElem);
+
+      // Create each row and populate each row
+      for (let x = 0; x < width; x++) {
+        // Compute the target cell's value
+        let col = data && data.length >= x ? data[x] : [];
+        let cell = col && col.length >= y ? col[y] : null;
+        let val = cell ? 1 : 0;
+
+        // Create the cell at this x/y position on the board
+        let cellElem = document.createElement("DIV");
+        cellElem.id = `${x}x${y}`;
+        cellElem.setAttribute("value", val);
+        cellElem.onclick = engine.handleClick(x, y, cellElem);
+        cellElem.onmouseenter = engine.handleOnEnter(x, y, cellElem);
+        rowElem.appendChild(cellElem);
+
+        canvas[y][x] = cellElem;
+      }
+    }
+  }
+  updateView(config, data) {
+    console.log("...");
+  }
   paint(x, y, elem, val) {}
   handleClick(x, y, elem, val) {}
   handleOnEnter(x, y, elem, val) {}
-
 }
 
 let engine = {
@@ -134,7 +295,7 @@ let engine = {
     // Create the canvas to visualise the data
     console.log("Creating game board...", [w, h]);
     canvas = Array(h);
-    self.canvas = canvas;
+    this.canvas = canvas;
     for (y = 0; y < h; y++) {
       // Create a new data colum
       canvas[y] = Array(w);
@@ -181,7 +342,7 @@ let engine = {
       }
       if (fpsElem) {
         // Update DOM element
-        fpsElem.innerHTML = `${engine.generation - oldCount}`
+        fpsElem.innerHTML = `${engine.generation - oldCount}`;
       }
       oldCount = engine.generation;
     }, 1000);

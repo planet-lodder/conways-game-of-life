@@ -6,11 +6,11 @@
 <script src="/game/engines/latest.js"></script>
 <div
   class="flex flex-col flex-1 justify-start"
-  x-init="engine.load('.game-board')"
+  x-init="game = new GameEngine(view)"
   x-data="{ 
-    started: null,
+    view: new HtmlRenderer('.game-board'),
     show_config: false, 
-    presenter: new HtmlRenderer()
+    started: null,
   }"
 >
   {% include 'game/toolbar.html' %}
