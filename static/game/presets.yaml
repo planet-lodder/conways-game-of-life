@@ -77,7 +77,7 @@ traffic-circle:
   group: simple
   image: /game/presets/simple/traffic-circle.gif
   scale: 10
-  delay: 10
+  delay: 0
 oscillators_1:
   title: Oscillerators
   image: /game/presets/simple/oscillators_1.gif
