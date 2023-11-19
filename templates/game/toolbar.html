@@ -1,121 +1,107 @@
-<form class="flex relative">
+<form class="flex flex-col flex-0">
   <div
-    class="flex relative text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
+    class="flex flex-0 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500"
   >
-    <!-- Load Preset -->
-    <label
-      class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center border border-gray-300 dark:border-gray-700"
+    <!-- Game Title -->
+    <p
+      class="flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold"
+      style="overflow: hidden; white-space: nowrap"
     >
-      {{data.title or 'Game'}}
-    </label>
+      {{data.title or 'Game of Life'}}
+    </p>
 
-    <!-- Width -->
-    <label
-      for="width"
-      class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
-    >
-      Width
+    <!-- Dimentions -->
+    <label class="flex flex-0 py-1.5 text-sm font-thin" x-show="!started">
+      (
+      <span x-text="engine.width"></span>
+      x
+      <span x-text="engine.height"></span>
+      )
     </label>
-    <div class="relative">
-      <div
-        class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-      >
-        <input
-          name="width"
-          x-model="engine.width"
-          class="w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
-          :disabled="started"
-        />
-      </div>
-    </div>
-
-    <!-- Height -->
-    <label
-      for="height"
-      class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
-    >
-      Height
-    </label>
-    <div class="relative">
-      <div
-        class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-      >
-        <input
-          name="height"
-          x-model="engine.height"
-          class="w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
-          :disabled="started"
-        />
-      </div>
-    </div>
-
-    <!-- Set Delay -->
-    <label
-      for="delay"
-      style="display: inline-block"
-      x-show="!started"
-      class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
-    >
-      Delay
-    </label>
-    <div class="relative" style="display: inline-block" x-show="!started">
-      <div
-        class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-      >
-        <input
-          name="delay"
-          x-model="engine.delay"
-          class="game-fps w-10 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
-        />
-      </div>
-    </div>
 
     <!-- Frames Per Second -->
     <label
-      for="fps"
-      style="display: none"
       x-show="started"
-      class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
+      style="display: none"
+      class="py-1.5 px-2 text-sm font-slim italic"
     >
-      FPS
+      <span id="fps-counter" class="game-fps font-bold">0</span> fps
     </label>
-    <div class="relative" style="display: none" x-show="started">
-      <div
-        class="flex items-center block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+    <div class="flex flex-1 flex-shrink-0"></div>
+
+    <div class="inline-flex text-sm font-medium px-2 space-x-2" role="group">
+      <button
+        type="button"
+        class="flex flex-1 space-x-2 items-center justify-center text-gray-500"
+        x-show="started === false"
       >
-        <input
-          id="fps-counter"
-          name="fps"
-          value="0"
-          class="game-fps w-16 appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
-          disabled
-        />
-      </div>
+        <span @click="engine.load('.game-board')" title="Reset"
+          >{% include 'icons/revert.svg' %}</span
+        >
+      </button>
+      <button
+        type="button"
+        class="flex flex-1 space-x-2 items-center justify-center text-gray-500"
+        x-show="!started"
+      >
+        <span @click="show_config = !show_config" title="Configure"
+          >{% include 'icons/gears.svg' %}</span
+        >
+      </button>
+    </div>
+
+    <div class="inline-flex text-sm font-medium shadow-sm w-24" role="group">
+      <!-- Stop Button -->
+      <button
+        type="button"
+        class="flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        @click="started = false; engine.stop()"
+        x-show="started"
+      >
+        <span>{% include 'icons/stop.svg' %}</span>
+        <span>Stop</span>
+      </button>
+      <!-- Start Button -->
+      <button
+        type="button"
+        class="flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        @click="started = true; engine.start()"
+        x-show="!started"
+      >
+        <span>{% include 'icons/play.svg' %}</span>
+        <span>Start</span>
+      </button>
     </div>
   </div>
   <div
-    class="flex flex-1 flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-bold text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:focus:ring-gray-800"
-  ></div>
-  <div class="inline-flex shadow-sm" role="group">
-    <!-- Stop Button -->
-    <button
-      type="button"
-      class="flex text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
-      @click="started = false; engine.stop()"
-      :disabled="!started"
-    >
-      <span class="p-2 pr-0"> {% include 'icons/stop.svg' %} </span>
-      <span class="p-2.5 pr-4">Stop</span>
-    </button>
-    <!-- Start Button -->
-    <button
-      type="button"
-      class="flex text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-300 disabled:border-gray-200 disabled:dark:bg-gray-700 dark:disabled:border-gray-700"
-      @click="started = true; engine.start()"
-      :disabled="started"
-    >
-      <span class="p-2 pr-0"> {% include 'icons/play.svg' %} </span>
-      <span class="p-2.5 pr-4">Start</span>
-    </button>
+    class="flex flex-0 z-20 h-8 -mb-8 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-600 border-b border-gray-400 dark:border-gray-500"
+    x-show="show_config && !started"
+  >
+    <div class="flex relative space-x-2 border-y-1">
+      <!-- Set Width -->
+      <label class="py-1.5 text-sm font-slim">
+        <span class="px-1">Width</span>
+        <input
+          x-model="engine.width"
+          class="w-12 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+        />
+      </label>
+      <!-- Set Height -->
+      <label class="py-1.5 text-sm font-slim">
+        <span class="px-1">Height</span>
+        <input
+          x-model="engine.height"
+          class="w-12 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+        />
+      </label>
+      <!-- Set Delay -->
+      <label class="py-1.5 text-sm font-slim">
+        <span class="px-1">Delay</span>
+        <input
+          x-model="engine.delay"
+          class="w-10 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+        />
+      </label>
+    </div>
   </div>
 </form>

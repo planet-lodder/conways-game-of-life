@@ -22,7 +22,7 @@
   cursor: pointer;
 }
 .game-board .row [value="0"] {
-  outline: solid 1px #aaaaaa88;
+  outline: solid 1px #aaaaaa22;
 }
 .game-board .row [value="0"]:hover {
   background-color: #aaaaaa44;
@@ -32,7 +32,7 @@
 }
 
 .dark .game-board .row [value] {
-  outline: solid 1px #88888844;
+  outline: solid 1px #88888822;
 }
 .dark .game-board .row [value="0"]:hover {
   background-color: #aaaaaa44;

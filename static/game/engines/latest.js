@@ -30,7 +30,7 @@ class HtmlRenderer {
 }
 
 let engine = {
-  fpsSelector: "#fps-counter",
+  fpsSelector: ".game-fps",
   scale: 5,
   width: 60,
   height: 40,
@@ -181,7 +181,7 @@ let engine = {
       }
       if (fpsElem) {
         // Update DOM element
-        fpsElem.setAttribute("value", engine.generation - oldCount);
+        fpsElem.innerHTML = `${engine.generation - oldCount}`
       }
       oldCount = engine.generation;
     }, 1000);

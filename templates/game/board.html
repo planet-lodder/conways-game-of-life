@@ -1,5 +1,6 @@
 <!--
 {% set data = presets[preset] if preset in presets else None %}
+{% set view = req.query.get('view', 'basic') if req else 'basic' %}
 {% if data %}
 -->
 <div
@@ -25,7 +26,7 @@
       'flex-0 min-w-1/2 min-h-1/2': !fullscreen,
     }"
   >
-    {% include 'game/presenters/basic.html' %}
+    {% include 'game/views/'+view+'.html' %}
   </div>
 </div>
 <!-- {% endif %} -->

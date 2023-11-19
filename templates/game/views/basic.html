@@ -3,14 +3,15 @@
 {% if data %}
 -->
 <link href="/game/css/board.css" rel="stylesheet" />
-<script src="/game/engines/default.js"></script>
+<script src="/game/engines/latest.js"></script>
 <div
+  class="flex flex-col flex-1 justify-start"
   x-init="engine.load('.game-board')"
   x-data="{ 
-    preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
-    started: false 
+    started: null,
+    show_config: false, 
+    presenter: new HtmlRenderer()
   }"
-  class="flex flex-col flex-1 justify-start"
 >
   {% include 'game/toolbar.html' %}
   <div class="flex flex-col flex-1 justify-center">
@@ -24,7 +25,8 @@
       delay="{{data.delay}}"
       wrapped="{{data.wrapped}}"
     >
-      <!--<div class="row">
+      <!--
+    <div class="row">
       <div id="1x1" value="0"></div>
       <div id="1x2" value="1"></div>
       <div id="1x3" value="0"></div>
@@ -38,7 +40,8 @@
       <div id="3x1" value="0"></div>
       <div id="3x2" value="1"></div>
       <div id="3x3" value="0"></div>
-    </div>-->
+    </div>
+  -->
     </div>
   </div>
 </div>
