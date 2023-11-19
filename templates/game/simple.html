@@ -2,9 +2,10 @@
 {% set data = presets[preset] if preset in presets else None %}
 {% if data %}
 -->
-<link href="/css/board.css" rel="stylesheet" />
-<script src="/game/engine.js"></script>
+<link href="/game/css/board.css" rel="stylesheet" />
+<script src="/game/engines/default.js"></script>
 <div
+  x-init="engine.load('.game-board')"
   x-data="{ 
     preset: (new URLSearchParams(window.location.search)).get('preset') || 'blank', 
     started: false 
@@ -162,9 +163,5 @@
     </div>-->
     </div>
   </div>
-  <script>
-    // Bootstrap the game engine
-    engine.load(".game-board");
-  </script>
 </div>
 <!-- {% endif %} -->

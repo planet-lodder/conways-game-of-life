@@ -5,6 +5,8 @@ from anyserver import TemplateRouter
 import yaml
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+GAME_DIR = './static/game/'
+BASE_DIR = '/game'
 
 # Define a router that we can load some routes into
 router = TemplateRouter(prefix='/game-of-life', base=f'{THIS_DIR}/templates')
@@ -17,16 +19,17 @@ groups = {
     "other": "Other",
 }
 
+
 def loadPresets():
     presets = {}
 
     # Load the presets into memory
-    with open(f'./static/presets.yaml', 'r') as file:
+    with open(f'{GAME_DIR}/presets.yaml', 'r') as file:
         data = yaml.safe_load(file.read())
         presets = data
 
     # Scan for additional presets
-    path = f'{THIS_DIR}/static/presets'
+    path = f'{GAME_DIR}/presets'
     for file in sorted(os.listdir(path)):
         is_img = file.endswith(".png") or file.endswith(
             ".jpg") or file.endswith(".jpeg") or file.endswith(".gif")
@@ -34,7 +37,7 @@ def loadPresets():
             presets[file] = {
                 "group": "other",
                 "title": os.path.splitext(file)[0],
-                "image": f'/presets/{file}',
+                "image": f'{BASE_DIR}/presets/{file}',
             }
 
     # Return all presets that was found

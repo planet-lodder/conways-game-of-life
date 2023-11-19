@@ -1,3 +1,34 @@
+class GameEngine {
+  generation = 0;
+  intv = null;
+
+  constructor() {}
+
+  load(target) {}
+
+  init(board, preset, data) {}
+
+  start() {}
+
+  stop() {}
+
+  tick() {}
+
+}
+
+class HtmlRenderer {
+  board = null
+
+  constructor(target) {
+    self.board = document.querySelector(target);
+  }
+
+  paint(x, y, elem, val) {}
+  handleClick(x, y, elem, val) {}
+  handleOnEnter(x, y, elem, val) {}
+
+}
+
 let engine = {
   fpsSelector: "#fps-counter",
   scale: 5,
@@ -48,7 +79,7 @@ let engine = {
       }
       engine.init(board, preset, data);
     }
-  },  
+  },
   loadImage: function (src, callback) {
     let onLoad = (evt, target) => {
       const img = target;
