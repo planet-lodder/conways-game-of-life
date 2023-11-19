@@ -6,7 +6,7 @@ class GameEngine {
   constructor(view) {
     this.view = view;
     this.config();
-    this.load(this.image);
+    this.init(this.image);
   }
 
   config() {
@@ -25,17 +25,17 @@ class GameEngine {
 
   reset() {
     this.config();
-    this.load(this.image);
+    this.init(this.image);
     this.generation = 0;
   }
 
-  load(image) {
+  init(image) {
     // Set view port to 'loading' state
     this.view.setLoading(true);
 
     if (image) {
       // Load the board game data from the source image
-      this.view.loadImage(image, (data) => this.init(data));
+      this.view.loadImage(image, (data) => this.load(data));
       return; // Wait for image to load and then initialise...
     } else {
       // Set defaults if no image is supplied
@@ -52,11 +52,11 @@ class GameEngine {
           data[x][y] = 0;
         }
       }
-      this.init(data);
+      this.load(data);
     }
   }
 
-  init(data) {
+  load(data) {
     let config = this;
     let root = this.view.root;
 
