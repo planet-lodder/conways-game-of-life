@@ -2,8 +2,8 @@
 {% set data = presets[preset] if preset in presets else None %}
 {% if data %}
 -->
-<link href="/css/board.css" rel="stylesheet" />
-<script src="/game/game-board.js"></script>
+<link href="/game/css/board.css" rel="stylesheet" />
+<script src="/game/presenters/game-board.js"></script>
 <game-board
   title="{{data.title}}"
   image="{{data.image}}"
