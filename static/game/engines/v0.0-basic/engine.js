@@ -124,16 +124,14 @@ class GameEngine {
     // Calculate for each cell its new value
     let data = []; // New data frame
     for (let x = 0; x < this.width; x++) {
-      data[x] = Array(this.width);
+      data[x] = Array(this.height);
       for (let y = 0; y < this.height; y++) {
-        // Set new value for the cell
-        let val = newValue(x, y);
-        data[x][y] = val;
-
-        // Update DOM element
-        this.view.paint(x, y, val);
+        data[x][y] = newValue(x, y);
       }
     }
-    this.data = data;
+    this.data = data; // Save new data frame
+
+    // Paint on screen
+    this.view.updateView(this, data);
   }
 }

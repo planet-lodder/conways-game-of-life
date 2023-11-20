@@ -123,7 +123,11 @@ class HtmlRenderer {
     }
   }
   updateView(config, data) {
-    console.log("...");
+    for (let x = 0; x < config.width; x++) {
+      for (let y = 0; y < config.height; y++) {
+        this.paint(x, y, data[x][y]);
+      }
+    }
   }
   paint(x, y, val) {
     let elem = this.canvas[y][x];
@@ -134,7 +138,7 @@ class HtmlRenderer {
   handleClick(x, y, elem, val) {
     return () => {
       val = elem.getAttribute("value") == "1" ? 0 : 1;
-      this.paint(x, y, elem, val);
+      this.paint(x, y, val);
     };
   }
   handleOnEnter(x, y, elem, val) {
