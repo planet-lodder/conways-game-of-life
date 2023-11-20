@@ -1,10 +1,11 @@
 <!--
 {% set data = presets[preset] if preset in presets else None %}
+{% set version = req.query.get('v', 'latest') if req else 'latest' %}
 {% if data %}
 -->
 <link href="/game/css/board.css" rel="stylesheet" />
-<script src="/game/js/latest/engine.js"></script>
-<script src="/game/js/latest/view.js"></script>
+<script src="/game/js/{{version}}/engine.js"></script>
+<script src="/game/js/{{version}}/view.js"></script>
 <div
   class="flex flex-col flex-1 justify-start"
   x-init="game = new GameEngine(view)"
