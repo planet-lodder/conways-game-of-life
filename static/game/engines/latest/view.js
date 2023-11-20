@@ -26,7 +26,7 @@ class HtmlRenderer {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      let data = Array(canvas.width);
+      let data = Array(canvas.width * canvas.height);
       let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       for (let x = 0; x < canvas.width; x++) {
         for (let y = 0; y < canvas.height; y++) {
@@ -36,19 +36,23 @@ class HtmlRenderer {
           let b = buffer[i + 2];
           let a = buffer[i + 3];
           let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
-          data[x] = data[x] || Array(canvas.height);
-          data[x][y] = val;
+          data[x + y * canvas.width] = val;
         }
       }
-      if (callback) callback(data);
+      if (callback) callback(data, img.width, img.height);
     };
+
+    // Add an invisible image tag to load the image
     let img = document.createElement("IMG");
     img.src = src;
     img.style.display = "none";
     img.style.position = "absolute";
     img.style.bottom = "0";
     img.style.right = "0";
-    img.addEventListener("load", (e) => onLoad(e, img));
+    img.addEventListener("load", (e) => {
+      onLoad(e, img);
+      document.body.removeChild(img);
+    });
     document.body.appendChild(img);
   }
   trackFPS(config) {
@@ -92,12 +96,10 @@ class HtmlRenderer {
     setText(".board-height", height);
 
     // Create the canvas to visualise the data
-    let canvas = Array(height);
-    this.canvas = canvas;
+    this.width = width;
+    this.height = height;
+    this.canvas = Array(width * height);    
     for (let y = 0; y < height; y++) {
-      // Create a new data colum
-      canvas[y] = Array(width);
-
       // Create the element to put on the board
       let rowElem = document.createElement("DIV");
       rowElem.className = "row";
@@ -106,9 +108,7 @@ class HtmlRenderer {
       // Create each row and populate each row
       for (let x = 0; x < width; x++) {
         // Compute the target cell's value
-        let col = data && data.length >= x ? data[x] : [];
-        let cell = col && col.length >= y ? col[y] : null;
-        let val = cell ? 1 : 0;
+        let val = data[x + y * width] ? 1 : 0;
 
         // Create the cell at this x/y position on the board
         let cellElem = document.createElement("DIV");
@@ -118,15 +118,22 @@ class HtmlRenderer {
         cellElem.onmouseenter = this.handleOnEnter(x, y, cellElem);
         rowElem.appendChild(cellElem);
 
-        canvas[y][x] = cellElem;
+        // Save ref to element
+        this.canvas[x + y * width] = cellElem;
       }
     }
   }
   updateView(config, data) {
-    console.log("...");
+    let total = config.width * config.height;
+    for (let i = 0; i < total; i++) {
+      let elem = this.canvas[i];
+      if (elem) {
+        elem.setAttribute("value", data[i] || 0);
+      }
+    }    
   }
   paint(x, y, val) {
-    let elem = this.canvas[y][x];
+    let elem = this.canvas[x + y * this.width];
     if (elem) {
       elem.setAttribute("value", val || 0);
     }
@@ -134,13 +141,14 @@ class HtmlRenderer {
   handleClick(x, y, elem, val) {
     return () => {
       val = elem.getAttribute("value") == "1" ? 0 : 1;
-      this.paint(x, y, elem, val);
+      this.paint(x, y, val);
     };
   }
   handleOnEnter(x, y, elem, val) {
     return (evt) => {
       if (evt.buttons === 1) {
-        this.paint(x, y, 1);
+        val = elem.getAttribute("value") == "1" ? 0 : 1;
+        this.paint(x, y, val);
       }
     };
   }

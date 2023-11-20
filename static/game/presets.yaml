@@ -178,9 +178,9 @@ lonedots:
   delay: 0
   image: /game/presets/complex/lonedots.gif
 primes:
-  title: Lonedots
+  title: Primes
   group: complex
-  scale: 5
+  scale: 2
   delay: 0
   image: /game/presets/complex/primes.gif
 hotel:

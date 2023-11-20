@@ -84,7 +84,7 @@
     class="flex flex-0 z-20 h-8 -mb-8 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 border-b border-gray-400 dark:border-gray-500"
     x-show="show_config && !started"
   >
-    <div class="flex relative space-x-2 border-y-1">
+    <div class="flex w-full relative space-x-2 border-y-1">
       <!-- Set Width -->
       <label class="py-1.5 text-sm font-slim">
         <span class="px-1">Width</span>
@@ -112,6 +112,12 @@
           class="w-10 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
         />
       </label>
+      <div class="flex flex-1"></div>
+      <div class="flex flex-0">
+        <button type="button" class="p-2 -m-2" @click="">
+          <span>{% include 'icons/ellipsis-vertical.svg' %}</span>
+        </button>
+      </div>
     </div>
   </div>
 </form>
