@@ -154,9 +154,9 @@
                 Select View Type
               </div>
               <a
-                @click="show_menu = ''; update_query_params({view: 'basic'})"
+                @click="show_menu = ''; update_query_params({view: 'html'})"
                 class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'basic' == (new URLSearchParams(window.location.search)).get('view') }"
+                :class="{ 'font-bold text-gray-900 dark:text-white': 'html' == (new URLSearchParams(window.location.search)).get('view') }"
                 role="menuitem"
               >
                 <span>{% include 'icons/html.svg' %}</span>
