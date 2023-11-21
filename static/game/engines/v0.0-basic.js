@@ -26,6 +26,7 @@ class GameEngine {
   reset() {
     this.config();
     this.init(this.image);
+    this.generation = 0;
   }
 
   init(image) {
@@ -34,7 +35,9 @@ class GameEngine {
 
     if (image) {
       // Load the board game data from the source image
-      this.view.loadImage(image, (data, width, height) => {
+      this.view.loadImage(image, (buffer, width, height) => {
+        // Parse raw image data into a simple array of 1's and 0's
+        let data = this.imageData(buffer, width, height);
         this.width = width;
         this.height = height;
         this.load(data);
@@ -48,12 +51,32 @@ class GameEngine {
       this.scale = this.scale || 16;
 
       // Load a blank canvas
-      let data = Array(this.width * this.height).fill(0);
+      let data = Array(this.width);
+      for (let x = 0; x < this.width; x++) {
+        data[x] = Array(this.height);
+        for (let y = 0; y < this.height; y++) {
+          data[x][y] = 0;
+        }
+      }
       this.load(data);
     }
+  }
 
-    // Reset the version number
-    this.generation = 0;
+  imageData(buffer, width, height) {
+    let data = Array(width);
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        let i = (x + y * width) * 4;
+        let r = buffer[i];
+        let g = buffer[i + 1];
+        let b = buffer[i + 2];
+        let a = buffer[i + 3];
+        let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
+        data[x] = data[x] || Array(height);
+        data[x][y] = val;
+      }
+    }
+    return data;
   }
 
   load(data) {
@@ -63,13 +86,26 @@ class GameEngine {
     this.data = data;
     this.width = config.width || data.length;
     this.height = config.height || data[0].length;
+    this.scale = config.scale || this.scale;
+    this.wrapped = config.wrapped || this.wrapped;
     this.delay = !isNaN(config.delay) ? config.delay : this.delay;
 
     // Clear and reset loading message
     this.view.setLoading(false);
 
     // Calculate the new dimentions
-    this.view.createView(this, data);
+    this.view.createView(this, this.dataMapped(data));
+  }
+
+  dataMapped(data) {
+    let mappedData = Array(this.width * this.height);
+    for (let y = 0; y < this.height; y++) {
+      let offset = y * this.width;
+      for (let x = 0; x < this.width; x++) {
+        mappedData[x + offset] = data[x][y];
+      }
+    }
+    return mappedData;
   }
 
   start(delay) {
@@ -85,10 +121,8 @@ class GameEngine {
   }
 
   stop() {
-    if (this.intv > 0) {
-      console.log("Stopping the game");
-      clearInterval(this.intv);
-    }
+    console.log("Stopping the game");
+    clearInterval(this.intv);
     this.intv = null;
   }
 
@@ -97,13 +131,13 @@ class GameEngine {
     this.generation++;
 
     const getValue = (x, y) => {
-      if (this.wrapped) {
-        x = (x + this.width) % this.width;
-        y = (y + this.height) % this.height;
+      if (!this.wrapped) {
+        if (x < 0 || x >= this.width) return 0;
+        if (y < 0 || y >= this.height) return 0;
       }
-      if (x < 0 || x >= this.width) return 0;
-      if (y < 0 || y >= this.height) return 0;
-      return this.data[x + y * this.width];
+      x = (x + this.width) % this.width;
+      y = (y + this.height) % this.height;
+      return this.data[x][y];
     };
     const newValue = (x, y) => {
       // Check each neighbor cell and count them
@@ -119,45 +153,18 @@ class GameEngine {
       if (count == 2 && val) return 1; // Cell stays alive if 2 neighbors
       return 0; // Cell is dead or not enough siblings
     };
-    
-    const newValueIndexed = (i) => {
-      let x = i % this.width;
-      let y = Math.floor(i / this.width);
-      let data = this.data;
-      let val = data[i]; // Get current value
-
-      // Check each neighbor cell and count them
-      let topLeft = x - 1 + (y - 1) * this.width;
-      let bottomLeft = topLeft + 2 * this.width;
-      let neighbors = [
-        data[topLeft],
-        data[topLeft + 1],
-        data[topLeft + 2],
-        data[i - 1],
-        data[i + 1],
-        data[bottomLeft],
-        data[bottomLeft + 1],
-        data[bottomLeft + 2],
-      ];
-      //neighbors.push(...data.slice(topLeft, topLeft + 3))
-      //neighbors.push(data[i-1], data[i+1])
-      //neighbors.push(...data.slice(bottomLeft, bottomLeft + 3))
-
-      let count = neighbors.reduce((val, agg) => agg + val, 0);      
-      if (count == 3) return 1; // Cell is alive if count exactly 3
-      if (count == 2 && val) return 1; // Cell stays alive if 2 neighbors
-      return 0; // Cell is dead or not enough siblings
-    };
 
     // Calculate for each cell its new value
-    let data = Array(this.width * this.height); // New data frame
-    for (let i = 0; i < data.length; i++) {
-      data[i] = newValue(i % this.width, Math.floor(i/this.width));
-      //data[i] = newValueIndexed(i);
+    let data = []; // New data frame
+    for (let x = 0; x < this.width; x++) {
+      data[x] = Array(this.height);
+      for (let y = 0; y < this.height; y++) {
+        data[x][y] = newValue(x, y);
+      }
     }
     this.data = data; // Save new data frame
 
     // Paint on screen
-    this.view.updateView(this, data);
+    this.view.updateView(this, this.dataMapped(data));
   }
 }

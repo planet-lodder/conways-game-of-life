@@ -3,20 +3,48 @@ class HtmlRenderer {
   root = null;
 
   constructor(target) {
-    this.target = target;
-    this.root = document.querySelector(target);
+    if (typeof target == "string") {
+      target = document.querySelector(target);
+    }
+    this.create(target);
   }
-  setLoading(active, context) {
-    let root = this.root;
+
+  create(target) {
+    let toolbar = target.querySelector(".game-toolbar");
+
+    // Create the board game contents
+    this.root = target;
+    this.root.innerHTML = `
+    <link href="/game/css/board.css" rel="stylesheet" />
+    <div class="flex flex-col flex-1 justify-center">
+      <div class="game-board"></div>
+    </div>
+`;
+
+    // Add back the original toolbar (if found)
+    if (toolbar) this.root.insertBefore(toolbar, this.root.firstChild);
+
+    // Get a refference to the board game elements
+    this.board = target.querySelector(".game-board");
+  }
+
+  toolbar() {
+    // TODO: Generate the toolbar programatically
+    return this.root.querySelector(".game-toolbar");
+  }
+
+  setLoading(active) {
+    if (!this.board) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading board game into:", root);
-      root.innerHTML = "<em>Loading...</em>";
+      console.log("Loading board game into:", this.root);
+      this.board.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents
-      root.innerHTML = "";
+      this.board.innerHTML = "";
     }
   }
+
   loadImage(src, callback) {
     let onLoad = (evt, target) => {
       const img = target;
@@ -28,18 +56,7 @@ class HtmlRenderer {
 
       let data = Array(canvas.width * canvas.height);
       let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      for (let x = 0; x < canvas.width; x++) {
-        for (let y = 0; y < canvas.height; y++) {
-          let i = (x + y * canvas.width) * 4;
-          let r = buffer[i];
-          let g = buffer[i + 1];
-          let b = buffer[i + 2];
-          let a = buffer[i + 3];
-          let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
-          data[x + y * canvas.width] = val;
-        }
-      }
-      if (callback) callback(data, img.width, img.height);
+      if (callback) callback(buffer, img.width, img.height);
     };
 
     // Add an invisible image tag to load the image
@@ -51,13 +68,14 @@ class HtmlRenderer {
     img.style.right = "0";
     img.addEventListener("load", (e) => {
       onLoad(e, img);
-      document.body.removeChild(img);
+      this.root.removeChild(img);
     });
-    document.body.appendChild(img);
+    this.root.appendChild(img);
   }
+
   trackFPS(config) {
     let fpsSelector = ".game-fps";
-    let fpsElem = document.querySelector(fpsSelector);
+    let fpsElem = this.root.querySelector(fpsSelector);
     let oldCount = config.generation || 0;
     let fps_intv = setInterval(() => {
       if (!config.intv) {
@@ -73,23 +91,24 @@ class HtmlRenderer {
       oldCount = newCount;
     }, 1000);
   }
+
   createView(config, data) {
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
 
     console.log("Creating game board...", [width, height]);
-    let root = this.root;
-    if (root) {
-      root.style["min-width"] = `${width * scale}px`;
-      root.style["min-height"] = `${height * scale}px`;
-    }
+
+    let board = this.board;
+    if (!board) return;
+
+    // Set the board dimentions
+    board.style["min-width"] = `${width * scale}px`;
+    board.style["min-height"] = `${height * scale}px`;
 
     let setText = (qry, val) => {
       let elem = document.querySelector(qry);
-      if (elem) {
-        elem.innerHTML = val;
-      }
+      if (elem) elem.innerHTML = val;
     };
 
     setText(".board-width", width);
@@ -98,12 +117,12 @@ class HtmlRenderer {
     // Create the canvas to visualise the data
     this.width = width;
     this.height = height;
-    this.canvas = Array(width * height);    
+    this.canvas = Array(width * height);
     for (let y = 0; y < height; y++) {
       // Create the element to put on the board
       let rowElem = document.createElement("DIV");
       rowElem.className = "row";
-      root.appendChild(rowElem);
+      board.appendChild(rowElem);
 
       // Create each row and populate each row
       for (let x = 0; x < width; x++) {
@@ -123,6 +142,7 @@ class HtmlRenderer {
       }
     }
   }
+
   updateView(config, data) {
     let total = config.width * config.height;
     for (let i = 0; i < total; i++) {
@@ -130,20 +150,23 @@ class HtmlRenderer {
       if (elem) {
         elem.setAttribute("value", data[i] || 0);
       }
-    }    
+    }
   }
+
   paint(x, y, val) {
     let elem = this.canvas[x + y * this.width];
     if (elem) {
       elem.setAttribute("value", val || 0);
     }
   }
+
   handleClick(x, y, elem, val) {
     return () => {
       val = elem.getAttribute("value") == "1" ? 0 : 1;
       this.paint(x, y, val);
     };
   }
+
   handleOnEnter(x, y, elem, val) {
     return (evt) => {
       if (evt.buttons === 1) {

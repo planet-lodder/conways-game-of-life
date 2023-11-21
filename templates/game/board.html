@@ -1,30 +1,59 @@
 <!--
-{% set data = presets[preset] if preset in presets else None %}
+{% set preset = presets[preset] if preset in presets else None %}
 {% set view = req.query.get('view', 'basic') if req else 'basic' %}
-{% if data %}
+{% set engine = req.query.get('engine', 'latest') if req else 'latest' %}
+{% if preset %}
 -->
-<div
-  class="relative flex flex-col flex-1 justify-center"
-  x-data="{ fullscreen: false }"
->
-  <!-- Overlay to make window fullscreen / detached -->
-  <div
-    class="flex px-4 space-x-2 absolute z-20 top-0 right-1/2 border border-t-0 border-gray-500 rounded-b-2xl bg-gray-300 dark:bg-gray-700 opacity-25 hover:opacity-100"
-  >
-    <a href="#" @click="fullscreen = true">Fullscreen</a>
-    <a>|</a>
-    <a href="#" @click="fullscreen = false">Detach Window</a>
-  </div>
+<script src="/game/engines/{{engine}}.js"></script>
+<script src="/game/views/{{view}}.js"></script>
+<script>
+  function autostart(game) {
+    // Remove the auto start param
+    let params = new URLSearchParams(window.location.search);
+    params.delete('autostart')
+    history.pushState(null, null, "?" + params.toString());
 
-  <!-- Game board view panel -->
-  <div
-    class="flex flex-col mx-auto justify-center border border-gray-500 resize-none hover:resize"
-    :class="{ 
-      'flex-1 w-full h-full': fullscreen,
-      'flex-0 min-w-1/2 min-h-1/2': !fullscreen,
-    }"
-  >
-    {% include 'game/views/'+view+'.html' %}
+    // Start the game
+    game.start()
+  }
+</script>
+<game-of-life
+  title="{{preset.title}}"
+  image="{{preset.image}}"
+  width="{{preset.width}}"
+  height="{{preset.height}}"
+  scale="{{preset.scale}}"
+  delay="{{preset.delay}}"
+  wrapped="{{preset.wrapped}}"
+  class="flex flex-col flex-1 justify-start"
+  x-init="game = new GameEngine(view); started && autostart(game);"
+  x-data="{ 
+    view: new HtmlRenderer('game-of-life', '.game-board'),
+    show_config: false, 
+    started: (new URLSearchParams(window.location.search)).get('autostart') ? true : null,
+  }"
+>
+  {% include 'game/toolbar.html' %}
+  <div class="flex flex-col flex-1 justify-center">
+    <div class="game-board">
+      <!--
+      <div class="row">
+        <div id="1x1" value="0"></div>
+        <div id="1x2" value="1"></div>
+        <div id="1x3" value="0"></div>
+      </div>
+      <div class="row">
+        <div id="2x1" value="1"></div>
+        <div id="2x2" value="1"></div>
+        <div id="2x3" value="1"></div>
+      </div>
+      <div class="row">
+        <div id="3x1" value="0"></div>
+        <div id="3x2" value="1"></div>
+        <div id="3x3" value="0"></div>
+      </div>
+      -->
+    </div>
   </div>
-</div>
+</game-board>
 <!-- {% endif %} -->

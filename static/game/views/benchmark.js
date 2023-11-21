@@ -1,16 +1,94 @@
-class BenchmarkRenderer {
-  constructor(target, fpsSelector, titleSelector, subtitleSelector) {
-    console.log("BenchmarkRenderer", [
-      target,
-      fpsSelector,
-      titleSelector,
-      subtitleSelector,
-    ]);
-    this.root = document.querySelector(target);
-    this.fpsSelector = document.querySelector(fpsSelector);
-    this.fpsTitle = document.querySelector(titleSelector);
-    this.subtitleSelector = document.querySelector(subtitleSelector);
+class HtmlRenderer {
+  constructor(target) {
+    if (typeof target == "string") {
+      target = document.querySelector(target);
+    }
+    this.create(target);
   }
+
+  create(target) {
+    let toolbar = target.querySelector(".game-toolbar");
+
+    // Create the board game contents
+    this.root = target;
+    this.root.innerHTML = `
+<link href="/game/css/benchmark.css" rel="stylesheet" />
+<div class="flex flex-col flex-1 justify-center">
+  <div class="flex flex-col w-full mx-auto space-y-2 text-center">
+    <div class="metric w-full">
+      <svg viewBox="0 0 1000 500">
+        <path d="M 950 500 A 450 450 0 0 0 50 500"></path>
+        <path class="data-arc" d=""></path>
+        <text
+          class="benchmark-fps"
+          text-anchor="middle"
+          alignment-baseline="middle"
+          x="500"
+          y="300"
+          font-size="140"
+          font-weight="bold"
+        ></text>
+        <text
+          class="benchmark-title"
+          text-anchor="middle"
+          alignment-baseline="middle"
+          x="500"
+          y="450"
+          font-size="90"
+          font-weight="normal"
+        >
+          Press Start
+        </text>
+      </svg>
+    </div>
+    <!--
+    <div
+      class="benchmark-timeline max-w-96 w-full h-20 space-x-1 flex flex-0 justify-end items-end border border-gray-200 dark:border-gray-700"
+    >
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-16 w-2 bg-blue-500"></div>
+      <div class="h-12 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-24 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+      <div class="h-20 w-2 bg-blue-500"></div>
+    </div>
+    -->
+    <h4 class="benchmark-subtitle text-2xl font-bold dark:text-white"></h4>
+  </div>
+</div>
+`;
+
+    // Add back the original toolbar (if found)
+    if (toolbar) this.root.insertBefore(toolbar, this.root.firstChild);
+
+    // Get a refference to the board game elements
+    this.board = target.querySelector(".game-board");
+    this.fpsSelector = document.querySelector(".benchmark-fps");
+    this.fpsTitle = document.querySelector(".benchmark-title");
+    this.subtitleSelector = document.querySelector(".benchmark-subtitle");
+  }
+
+  toolbar() {
+    // TODO: Generate the toolbar programatically
+    return this.root.querySelector(".game-toolbar");
+  }
+
   setLoading(active, context) {
     if (!this.subtitleSelector) return;
     if (active) {
@@ -22,6 +100,7 @@ class BenchmarkRenderer {
       this.subtitleSelector.innerHTML = "";
     }
   }
+
   loadImage(src, callback) {
     let onLoad = (evt, target) => {
       const img = target;
@@ -31,21 +110,8 @@ class BenchmarkRenderer {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      let data = Array(canvas.width);
       let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      for (let x = 0; x < canvas.width; x++) {
-        for (let y = 0; y < canvas.height; y++) {
-          let i = (x + y * canvas.width) * 4;
-          let r = buffer[i];
-          let g = buffer[i + 1];
-          let b = buffer[i + 2];
-          let a = buffer[i + 3];
-          let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
-          data[x] = data[x] || Array(canvas.height);
-          data[x][y] = val;
-        }
-      }
-      if (callback) callback(data);
+      if (callback) callback(buffer, img.width, img.height);
     };
     let img = document.createElement("IMG");
     img.src = src;
@@ -56,6 +122,7 @@ class BenchmarkRenderer {
     img.addEventListener("load", (e) => onLoad(e, img));
     document.body.appendChild(img);
   }
+
   trackFPS(config) {
     // Define some vars before we start
     let svgPath = document.querySelector(".metric svg .data-arc");
@@ -135,23 +202,22 @@ class BenchmarkRenderer {
       oldCount = newCount;
     }, 1000);
   }
+
   createView(config, data) {
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
 
     console.log("Creating game board...", [width, height]);
-    let root = this.root;
-    if (root) {
-      root.style["min-width"] = `${width * scale}px`;
-      root.style["min-height"] = `${height * scale}px`;
+    let board = this.board;
+    if (board) {
+      board.style["min-width"] = `${width * scale}px`;
+      board.style["min-height"] = `${height * scale}px`;
     }
 
     let setText = (qry, val) => {
       let elem = document.querySelector(qry);
-      if (elem) {
-        elem.innerHTML = val;
-      }
+      if (elem) elem.innerHTML = val;
     };
 
     setText(".board-width", width);
@@ -159,6 +225,7 @@ class BenchmarkRenderer {
 
     this.subtitleSelector.innerHTML = `${config.title} ( ${width} x ${height} )`;
   }
+
   updateView(config, data) {
     if (this.fpsTitle) {
       this.fpsTitle.innerHTML = `Generation: ${config.generation}`;

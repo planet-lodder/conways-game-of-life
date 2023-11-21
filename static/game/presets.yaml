@@ -180,7 +180,7 @@ lonedots:
 primes:
   title: Primes
   group: complex
-  scale: 2
+  scale: 1
   delay: 0
   image: /game/presets/complex/primes.gif
 hotel:
