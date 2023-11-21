@@ -1,18 +1,29 @@
 <!--
 {% set data = presets[preset] if preset in presets else None %}
-{% set version = req.query.get('v', 'latest') if req else 'latest' %}
+{% set version = req.query.get('engine', 'latest') if req else 'latest' %}
 {% if data %}
 -->
 <link href="/game/engines/{{version}}/board.css" rel="stylesheet" />
 <script src="/game/engines/{{version}}/engine.js"></script>
 <script src="/game/engines/benchmark.js"></script>
+<script>
+  function autostart(game) {
+    // Remove the auto start param
+    let params = new URLSearchParams(window.location.search);
+    params.delete('autostart')
+    history.pushState(null, null, "?" + params.toString());
+
+    // Start the game
+    game.start()
+  }
+</script>
 <div
   class="game-board flex flex-col flex-1 w-full justify-start"
-  x-init="game = new GameEngine(view)"
+  x-init="game = new GameEngine(view); started && autostart(game);"
   x-data="{ 
     view: new BenchmarkRenderer('.game-board', '.benchmark-fps', '.benchmark-title', '.benchmark-subtitle'),
     show_config: false, 
-    started: null,
+    started: (new URLSearchParams(window.location.search)).get('autostart') ? true : null,
   }"
   title="{{data.title}}"
   image="{{data.image}}"
