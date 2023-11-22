@@ -1,6 +1,13 @@
-class HtmlRenderer extends GameRendererCore {
-  constructor(target) {
-    super(target);
+class HtmlDivRenderer extends GameRendererCore {
+  static {
+    // Register game engine view type
+    customElements.define("view-html-divs", HtmlDivRenderer);
+    GameOfLife.addViewType(
+      "html",
+      "HTML Divs",
+      "icons/html.svg",
+      () => new HtmlDivRenderer()
+    );
   }
 
   render(target) {

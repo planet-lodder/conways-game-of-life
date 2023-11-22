@@ -5,23 +5,12 @@
 {% if preset %}
 -->
 <script src="/game/core.js"></script>
-<script src="/game/engines/{{engine}}.js"></script>
+<script src="/game/toolbar.js"></script>
 <script src="/game/views/{{view}}.js"></script>
-<script>
-  function autostart(game) {
-    // Remove the auto start param
-    let params = new URLSearchParams(window.location.search);
-    params.delete('autostart')
-    history.pushState(null, null, "?" + params.toString());
+<script src="/game/engines/{{engine}}.js"></script>
 
-    // Start the game
-    game.start()
-  }
-</script>
 <game-of-life
   view="{{view}}"
-  engine="{{engine}}"
-  engines="{{engines|tojson|safe}}"
 
   title="{{preset.title}}"
   image="{{preset.image}}"
@@ -32,11 +21,10 @@
   wrapped="{{preset.wrapped}}"
   
   class="flex flex-col flex-1 justify-start"
-  x-init="game = new GameEngine(view); started && autostart(game);"
+  x-init="game = document.querySelector('game-of-life').game"
   x-data="{ 
-    view: new HtmlRenderer('game-of-life', '.game-board'),
     show_config: false, 
-    started: (new URLSearchParams(window.location.search)).get('autostart') ? true : null,
+    started: null,
   }"
 >
   {% include 'game/toolbar.html' %}
@@ -44,4 +32,5 @@
     <div class="game-board"></div>
   </div>
 </game-board>
+
 <!-- {% endif %} -->

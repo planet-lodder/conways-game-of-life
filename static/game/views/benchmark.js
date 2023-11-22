@@ -1,11 +1,16 @@
-class HtmlRenderer extends GameRendererCore {
-  constructor(target) {
-    super(target)
+class BenchmarkRenderer extends GameRendererCore {
+  static {
+    // Register game engine view type
+    customElements.define("view-benchmark", BenchmarkRenderer);
+    GameOfLife.addViewType(
+      "benchmark",
+      "Run Benchmark",
+      "icons/benchmark.svg",
+      () => new BenchmarkRenderer()
+    );
   }
 
   render(target) {
-    let toolbar = target.querySelector(".game-toolbar");
-
     // Create the board game contents
     target.innerHTML = `
 <link href="/game/css/benchmark.css" rel="stylesheet" />
@@ -69,9 +74,6 @@ class HtmlRenderer extends GameRendererCore {
   </div>
 </div>
 `;
-
-    // Add back the original toolbar (if found)
-    if (toolbar) target.insertBefore(toolbar, target.firstChild);
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");

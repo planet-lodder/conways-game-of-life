@@ -98,7 +98,7 @@ class GameEngineCore extends GameTickEngineCore {
       this.scale = this.scale || 16;
 
       // Load a blank canvas
-      let data = this.mapData(null, width, height);
+      let data = this.mapData(null, this.width, this.height);
       this.view.setLoading(false);
       this.load(data);
     }
@@ -140,17 +140,18 @@ class GameEngineCore extends GameTickEngineCore {
   clear() {}
 }
 
-class GameRendererCore {
-  constructor(target) {
+class GameRendererCore extends HTMLElement {
+  constructor() {
+    super();
     if (this.constructor == GameRendererCore) {
       throw new Error("Class is of abstract type and can't be instantiated");
     }
-    if (!target) throw new Error("Game 'target' is required");
-    if (typeof target == "string") {
-      target = document.querySelector(target);
-    }
-    this.root = target;
-    this.render(target);
+    this.root = this;
+    //this.shadow = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render(this);
   }
 
   render(target) {
@@ -201,3 +202,75 @@ class GameRendererCore {
     this.root.appendChild(img);
   }
 }
+
+class GameOfLife extends HTMLElement {
+  static views = {};
+  static addViewType(name, label, icon, viewInit) {
+    GameOfLife.views[name] = {
+      label,
+      icon,
+      viewInit,
+    };
+  }
+
+  constructor() {
+    super();
+    //this.shadow = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.config();
+    this.render(this);
+  }
+
+  config() {
+    // Check for a specified view type
+    this.viewType = this.getAttribute("view");
+
+    // Parse and evaluate game parameters
+    this.start = this.getAttribute("start");
+    this.title = this.getAttribute("title");
+    this.image = this.getAttribute("image");
+    this.width = this.getAttribute("width");
+    this.height = this.getAttribute("height");
+    this.scale = this.getAttribute("scale");
+    this.delay = this.getAttribute("delay");
+    this.wrapped = this.getAttribute("wrapped");
+  }
+
+  render(target) {
+    // Define the game board elements
+    let toolbar = new GameToolbar();
+    let view = this.getView(this.viewType);
+    target.appendChild(toolbar);
+    target.appendChild(view);
+
+    if (!this.game) {
+      // Create a new game engine
+      this.game = new GameEngine(view);
+    } else {
+      // Update existing engine
+      this.game.view = view;
+    }
+
+    // Auto start the game (if required)
+    if (this.start) this.game.start();
+  }
+
+  getView(name) {
+    let views = GameOfLife.views;
+    let viewKeys = Object.keys(views || {});
+    if (!viewKeys.length) {
+      throw new Error("No view types registered. Nothing to display");
+    }
+    let viewType = name ? views[name] : views[viewKeys[0]];
+    if (!viewType) {
+      let name = this.view || "default";
+      throw new Error(
+        `Game view type '${name}' not found. Available: ${viewKeys}`
+      );
+    }
+    return viewType.viewInit();
+  }
+}
+customElements.define("game-of-life", GameOfLife);
