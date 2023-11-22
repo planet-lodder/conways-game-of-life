@@ -5,7 +5,7 @@ from anyserver import TemplateRouter
 import yaml
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-GAME_DIR = './static/game/'
+GAME_DIR = './static/game'
 BASE_DIR = '/game'
 
 # Define a router that we can load some routes into
@@ -44,6 +44,15 @@ def loadPresets():
     return presets
 
 
+def loadEngines():
+    engines = []
+    path = f'{GAME_DIR}/engines'
+    for file in sorted(os.listdir(path)):
+        if (file.endswith(".js")):
+            engines.append(os.path.splitext(file)[0])
+    return engines
+
+
 @router.get('')
 @router.renders('index')
 def index(req, resp):
@@ -51,5 +60,6 @@ def index(req, resp):
         "group": req.query.get('group'),
         "groups": groups,
         "preset": req.query.get('preset'),
-        "presets": loadPresets()
+        "presets": loadPresets(),
+        "engines": loadEngines()
     }

@@ -33,12 +33,11 @@ class HtmlRenderer extends GameRendererCore {
     super(target);
   }
 
-  init(target) {
+  render(target) {
     let toolbar = target.querySelector(".game-toolbar");
 
     // Create the board game contents
-    this.root = target;
-    this.root.innerHTML = `
+    target.innerHTML = `
     <style>
         .game-board {
             width: 100px;
@@ -55,15 +54,10 @@ class HtmlRenderer extends GameRendererCore {
   `;
 
     // Add back the original toolbar (if found)
-    if (toolbar) this.root.insertBefore(toolbar, this.root.firstChild);
+    if (toolbar) target.insertBefore(toolbar, target.firstChild);
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
-  }
-
-  toolbar() {
-    // TODO: Generate the toolbar programatically
-    return this.root.querySelector(".game-toolbar");
   }
 
   setLoading(active, context) {}

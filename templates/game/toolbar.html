@@ -8,6 +8,7 @@
       window.location.reload();
     }
   </script>
+
   <div
     class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500"
   >
@@ -49,7 +50,7 @@
         type="button"
         class="flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500"
         x-show="started === false && game.generation > 0"
-        style="display: none;"
+        style="display: none"
       >
         <span @click="game.reset(); started = null" title="Reset"
           >{% include 'icons/revert.svg' %}</span
@@ -60,7 +61,7 @@
         type="button"
         class="flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500"
         x-show="!started"
-        style="display: none;"
+        style="display: none"
       >
         <span @click="show_config = !show_config" title="Configure"
           >{% include 'icons/gears.svg' %}</span
@@ -75,7 +76,7 @@
         class="flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         @click="started = false; game.stop()"
         x-show="started"
-        style="display: none;"
+        style="display: none"
       >
         <span>{% include 'icons/stop.svg' %}</span>
         <span>Stop</span>
@@ -86,13 +87,14 @@
         class="flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         @click="started = true; game.start()"
         x-show="!started"
-        style="display: none;"
+        style="display: none"
       >
         <span>{% include 'icons/play.svg' %}</span>
         <span>Start</span>
       </button>
     </div>
   </div>
+
   <div
     class="flex flex-0 z-20 h-8 -mb-8 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 border-b border-gray-400 dark:border-gray-500"
     x-show="show_config && !started"
@@ -126,7 +128,55 @@
         />
       </label>
       <div class="flex flex-1"></div>
-      <div class="flex flex-0 relative space-x-2" x-data="{ show_menu: '' }">
+      <div class="flex flex-0 relative space-x-2 pr-2" x-data="{ show_menu: '' }">
+        <div class="flex flex-0">
+          <button
+            type="button"
+            title="Game Engine Settings"
+            class="p-2 -m-2"
+            @click="show_menu = show_menu == 'engines' ? '' : 'engines'"
+          >
+            <span>{% include 'icons/cpu.svg' %}</span>
+          </button>
+          <div
+            id="dropdown-menu"
+            style="display: none"
+            x-show="show_menu == 'engines'"
+            class="origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700"
+          >
+            <div
+              class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="dropdown-button"
+            >
+              <div
+                class="px-2 py-2 text-sm font-bold border-b border-gray-200 dark:border-gray-500"
+              >
+                Select Game Engine
+              </div>
+              <a
+                @click="show_menu = ''; update_query_params({engine: 'latest'})"
+                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
+                :class="{ 'font-bold text-gray-900 dark:text-white': 'latest' == ((new URLSearchParams(window.location.search)).get('engine') || 'latest') }"
+                role="menuitem"
+              >
+                <span>{% include 'icons/cpu.svg' %}</span>
+                <span class="py-0.5">latest</span>
+              </a>
+              <a
+                @click="show_menu = ''; update_query_params({engine: 'v0.0-basic'})"
+                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
+                :class="{ 'font-bold text-gray-900 dark:text-white': 'v0.0-basic' == (new URLSearchParams(window.location.search)).get('engine') }"
+                role="menuitem"
+              >
+                <span>{% include 'icons/cpu.svg' %}</span>
+                <span class="py-0.5">v0.0-basic</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div class="flex flex-0">
           <button
             type="button"
@@ -134,11 +184,11 @@
             class="p-2 -m-2"
             @click="show_menu = show_menu == 'views' ? '' : 'views'"
           >
-            <span>{% include 'icons/view.svg' %}</span>
+            <span>{% include 'icons/ellipsis-vertical.svg' %}</span>
           </button>
           <div
             id="dropdown-menu"
-            style="display: none;"
+            style="display: none"
             x-show="show_menu == 'views'"
             class="origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
           >
@@ -198,63 +248,6 @@
                 role="menuitem"
               >
                 <span>{% include 'icons/benchmark.svg' %}</span>
-                <span class="py-0.5">FPS Counter</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-0">
-          <button
-            type="button"
-            title="Game Engine Settings"
-            class="p-2 -m-2 mr-0"
-            @click="show_menu = show_menu == 'engines' ? '' : 'engines'"
-          >
-            <span>{% include 'icons/cpu.svg' %}</span>
-          </button>
-          <div
-            id="dropdown-menu"
-            style="display: none;"
-            x-show="show_menu == 'engines'"
-            class="origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700"
-          >
-            <div
-              class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="dropdown-button"
-            >
-              <div
-                class="px-2 py-2 text-sm font-bold border-b border-gray-200 dark:border-gray-500"
-              >
-                Select Game Engine
-              </div>
-              <a
-                @click="show_menu = ''; update_query_params({engine: 'latest'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'latest' == ((new URLSearchParams(window.location.search)).get('engine') || 'latest') }"
-                role="menuitem"
-              >
-                <span>{% include 'icons/cpu.svg' %}</span>
-                <span class="py-0.5">latest</span>
-              </a>
-              <a
-                @click="show_menu = ''; update_query_params({engine: 'v0.0-basic'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'v0.0-basic' == (new URLSearchParams(window.location.search)).get('engine') }"
-                role="menuitem"
-              >
-                <span>{% include 'icons/cpu.svg' %}</span>
-                <span class="py-0.5">v0.0-basic</span>
-              </a>
-              <hr class="border border-gray-200 dark:border-gray-500" />
-              <a
-                @click="show_menu = ''; update_query_params({view: 'benchmark', autostart: true})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'benchmark' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-              >
-                <span>{% include 'icons/play.svg' %}</span>
                 <span class="py-0.5">Run Benchmark</span>
               </a>
             </div>

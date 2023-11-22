@@ -150,11 +150,11 @@ class GameRendererCore {
       target = document.querySelector(target);
     }
     this.root = target;
-    this.init(target);
+    this.render(target);
   }
 
-  init(target) {
-    throw new Error("<GameRendererCore>.init(target) not implemented");
+  render(target) {
+    throw new Error("<GameRendererCore>.render(target) not implemented");
   }
 
   setLoading(active) {}

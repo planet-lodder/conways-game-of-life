@@ -19,6 +19,10 @@
   }
 </script>
 <game-of-life
+  view="{{view}}"
+  engine="{{engine}}"
+  engines="{{engines|tojson|safe}}"
+
   title="{{preset.title}}"
   image="{{preset.image}}"
   width="{{preset.width}}"
@@ -26,6 +30,7 @@
   scale="{{preset.scale}}"
   delay="{{preset.delay}}"
   wrapped="{{preset.wrapped}}"
+  
   class="flex flex-col flex-1 justify-start"
   x-init="game = new GameEngine(view); started && autostart(game);"
   x-data="{ 
@@ -36,25 +41,7 @@
 >
   {% include 'game/toolbar.html' %}
   <div class="flex flex-col flex-1 justify-center">
-    <div class="game-board">
-      <!--
-      <div class="row">
-        <div id="1x1" value="0"></div>
-        <div id="1x2" value="1"></div>
-        <div id="1x3" value="0"></div>
-      </div>
-      <div class="row">
-        <div id="2x1" value="1"></div>
-        <div id="2x2" value="1"></div>
-        <div id="2x3" value="1"></div>
-      </div>
-      <div class="row">
-        <div id="3x1" value="0"></div>
-        <div id="3x2" value="1"></div>
-        <div id="3x3" value="0"></div>
-      </div>
-      -->
-    </div>
+    <div class="game-board"></div>
   </div>
 </game-board>
 <!-- {% endif %} -->

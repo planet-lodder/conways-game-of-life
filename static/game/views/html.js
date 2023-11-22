@@ -3,12 +3,11 @@ class HtmlRenderer extends GameRendererCore {
     super(target);
   }
 
-  init(target) {
+  render(target) {
     let toolbar = target.querySelector(".game-toolbar");
 
     // Create the board game contents
-    this.root = target;
-    this.root.innerHTML = `
+    target.innerHTML = `
     <link href="/game/css/board.css" rel="stylesheet" />
     <div class="flex flex-col flex-1 justify-center">
       <div class="game-board"></div>
@@ -16,16 +15,11 @@ class HtmlRenderer extends GameRendererCore {
 `;
 
     // Add back the original toolbar (if found)
-    if (toolbar) this.root.insertBefore(toolbar, this.root.firstChild);
+    if (toolbar) target.insertBefore(toolbar, target.firstChild);
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
-    this.fpsCounter = this.root.querySelector(".game-fps");
-  }
-
-  toolbar() {
-    // TODO: Generate the toolbar programatically
-    return this.root.querySelector(".game-toolbar");
+    this.fpsCounter = target.querySelector(".game-fps");
   }
 
   setLoading(active) {
@@ -107,7 +101,7 @@ class HtmlRenderer extends GameRendererCore {
       this.fpsCounter.innerHTML = `${fps}`;
     }
   }
-  
+
   paint(x, y, val) {
     let elem = this.canvas[x + y * this.width];
     if (elem) {

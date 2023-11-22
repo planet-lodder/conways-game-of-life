@@ -3,12 +3,11 @@ class HtmlRenderer extends GameRendererCore {
     super(target)
   }
 
-  init(target) {
+  render(target) {
     let toolbar = target.querySelector(".game-toolbar");
 
     // Create the board game contents
-    this.root = target;
-    this.root.innerHTML = `
+    target.innerHTML = `
 <link href="/game/css/benchmark.css" rel="stylesheet" />
 <div class="flex flex-col flex-1 justify-center">
   <div class="flex flex-col w-full mx-auto space-y-2 text-center">
@@ -72,20 +71,15 @@ class HtmlRenderer extends GameRendererCore {
 `;
 
     // Add back the original toolbar (if found)
-    if (toolbar) this.root.insertBefore(toolbar, this.root.firstChild);
+    if (toolbar) target.insertBefore(toolbar, target.firstChild);
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
-    this.fpsCounter = document.querySelector(".game-fps");
-    this.fpsMetric = this.root.querySelector(".benchmark-fps");
-    this.fpsTitle = this.root.querySelector(".benchmark-title");
-    this.subtitleSelector = this.root.querySelector(".benchmark-subtitle");
-    this.svgPath = document.querySelector(".metric svg .data-arc");
-  }
-
-  toolbar() {
-    // TODO: Generate the toolbar programatically
-    return this.root.querySelector(".game-toolbar");
+    this.fpsCounter = target.querySelector(".game-fps");
+    this.fpsMetric = target.querySelector(".benchmark-fps");
+    this.fpsTitle = target.querySelector(".benchmark-title");
+    this.subtitleSelector = target.querySelector(".benchmark-subtitle");
+    this.svgPath = target.querySelector(".metric svg .data-arc");
   }
 
   setLoading(active, context) {
