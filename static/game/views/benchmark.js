@@ -1,12 +1,9 @@
-class HtmlRenderer {
+class HtmlRenderer extends GameRendererCore {
   constructor(target) {
-    if (typeof target == "string") {
-      target = document.querySelector(target);
-    }
-    this.create(target);
+    super(target)
   }
 
-  create(target) {
+  init(target) {
     let toolbar = target.querySelector(".game-toolbar");
 
     // Create the board game contents
@@ -101,28 +98,6 @@ class HtmlRenderer {
       // Crear previous contents
       this.subtitleSelector.innerHTML = "";
     }
-  }
-
-  loadImage(src, callback) {
-    let onLoad = (evt, target) => {
-      const img = target;
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      if (callback) callback(buffer, img.width, img.height);
-    };
-    let img = document.createElement("IMG");
-    img.src = src;
-    img.style.display = "none";
-    img.style.position = "absolute";
-    img.style.bottom = "0";
-    img.style.right = "0";
-    img.addEventListener("load", (e) => onLoad(e, img));
-    document.body.appendChild(img);
   }
 
   createView(config, data) {

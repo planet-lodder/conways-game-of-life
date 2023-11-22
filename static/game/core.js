@@ -39,12 +39,12 @@ class GameTickEngineCore {
       }
       let newCount = this.generation;
       let diffFPS = newCount - oldCount;
-      this.setFPS(diffFPS);
+      this.updateFPS(diffFPS);
       oldCount = newCount;
     }, 1000);
   }
 
-  setFPS(fps) {}
+  updateFPS(fps) {}
 }
 
 class GameEngineCore extends GameTickEngineCore {
@@ -127,7 +127,7 @@ class GameEngineCore extends GameTickEngineCore {
     return data;
   }
 
-  setFPS(fps) {
+  updateFPS(fps) {
     this.view.updateFPS(fps);
   }
 
@@ -142,9 +142,62 @@ class GameEngineCore extends GameTickEngineCore {
 
 class GameRendererCore {
   constructor(target) {
-    if (!target) throw new Error("Game 'target' is required");
     if (this.constructor == GameRendererCore) {
       throw new Error("Class is of abstract type and can't be instantiated");
     }
+    if (!target) throw new Error("Game 'target' is required");
+    if (typeof target == "string") {
+      target = document.querySelector(target);
+    }
+    this.root = target;
+    this.init(target);
+  }
+
+  init(target) {
+    throw new Error("<GameRendererCore>.init(target) not implemented");
+  }
+
+  setLoading(active) {}
+
+  createView(config, data) {
+    throw new Error(
+      "<GameRendererCore>.createView(config, data) not implemented"
+    );
+  }
+
+  updateView(config, data) {
+    throw new Error(
+      "<GameRendererCore>.updateView(config, data) not implemented"
+    );
+  }
+
+  updateFPS(fps) {}
+
+  loadImage(src, callback) {
+    let onLoad = (evt, target) => {
+      const img = target;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      let data = Array(canvas.width * canvas.height);
+      let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      if (callback) callback(buffer, img.width, img.height);
+    };
+
+    // Add an invisible image tag to load the image
+    let img = document.createElement("IMG");
+    img.src = src;
+    img.style.display = "none";
+    img.style.position = "absolute";
+    img.style.bottom = "0";
+    img.style.right = "0";
+    img.addEventListener("load", (e) => {
+      onLoad(e, img);
+      this.root.removeChild(img);
+    });
+    this.root.appendChild(img);
   }
 }
