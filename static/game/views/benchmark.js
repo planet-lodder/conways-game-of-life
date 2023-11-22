@@ -79,9 +79,11 @@ class HtmlRenderer {
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
-    this.fpsSelector = document.querySelector(".benchmark-fps");
-    this.fpsTitle = document.querySelector(".benchmark-title");
-    this.subtitleSelector = document.querySelector(".benchmark-subtitle");
+    this.fpsCounter = document.querySelector(".game-fps");
+    this.fpsMetric = this.root.querySelector(".benchmark-fps");
+    this.fpsTitle = this.root.querySelector(".benchmark-title");
+    this.subtitleSelector = this.root.querySelector(".benchmark-subtitle");
+    this.svgPath = document.querySelector(".metric svg .data-arc");
   }
 
   toolbar() {
@@ -123,112 +125,97 @@ class HtmlRenderer {
     document.body.appendChild(img);
   }
 
-  trackFPS(config) {
-    // Define some vars before we start
-    let svgPath = document.querySelector(".metric svg .data-arc");
-    let gameFPS = document.querySelector(".game-fps");
-    let timeline = document.querySelector(".benchmark-timeline");
-    let oldCount = config.generation || 0;
-
-    // Check every second how many frames were rendered
-    let fps_intv = setInterval(() => {
-      if (!config.intv) {
-        clearInterval(fps_intv);
-        return; // Simulation stopped
-      }
-
-      let newCount = config.generation;
-      let framesPerSecond = newCount - oldCount;
-      let percentage = Math.min(1, framesPerSecond / 250); // Theoretical max frequency with setTimeout
-
-      // Update FPS counters
-      if (this.fpsSelector) {
-        this.fpsSelector.innerHTML = `${framesPerSecond} fps`;
-      }
-      if (gameFPS) {
-        gameFPS.innerHTML = `${framesPerSecond}`;
-      }
-
-      // Update SVG element(s)
-      if (svgPath) {
-        let polar_to_cartesian = (cx, cy, radius, angle) => {
-          let radians = ((angle - 90) * Math.PI) / 180.0;
-          return [
-            Math.round((cx + radius * Math.cos(radians)) * 100) / 100,
-            Math.round((cy + radius * Math.sin(radians)) * 100) / 100,
-          ];
-        };
-        let svg_circle_arc_path = (x, y, radius, start_angle, end_angle) => {
-          let start_xy = polar_to_cartesian(x, y, radius, end_angle);
-          let end_xy = polar_to_cartesian(x, y, radius, start_angle);
-          return (
-            "M " +
-            start_xy[0] +
-            " " +
-            start_xy[1] +
-            " A " +
-            radius +
-            " " +
-            radius +
-            " 0 0 0 " +
-            end_xy[0] +
-            " " +
-            end_xy[1]
-          );
-        };
-        let path = svg_circle_arc_path(
-          500,
-          500,
-          450,
-          -90,
-          percentage * 180.0 - 90
-        );
-        svgPath.setAttribute("d", path);
-      }
-
-      //console.log(timeline);
-      //if (timeline) {
-      //  let bar = document.createElement("DIV");
-      //  bar.setAttribute("style", `height: ${Math.floor(100 * percentage)}%`);
-      //  bar.classList.add("w-2");
-      //  bar.classList.add("bg-green-500");
-      //  if (timeline.children.length > 256) {
-      //    // Truncate trailing part of the timeline...
-      //    timeline.removeChild(timeline.children[0]);
-      //  }
-      //  // Add latest slice
-      //  timeline.appendChild(bar);
-      //}
-      oldCount = newCount;
-    }, 1000);
-  }
-
   createView(config, data) {
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
 
     console.log("Creating game board...", [width, height]);
-    let board = this.board;
-    if (board) {
-      board.style["min-width"] = `${width * scale}px`;
-      board.style["min-height"] = `${height * scale}px`;
+    if (this.board) {
+      this.board.style["min-width"] = `${width * scale}px`;
+      this.board.style["min-height"] = `${height * scale}px`;
     }
 
     let setText = (qry, val) => {
-      let elem = document.querySelector(qry);
+      let elem = this.root.querySelector(qry);
       if (elem) elem.innerHTML = val;
     };
 
     setText(".board-width", width);
     setText(".board-height", height);
 
-    this.subtitleSelector.innerHTML = `${config.title} ( ${width} x ${height} )`;
+    if (this.subtitleSelector) {
+      this.subtitleSelector.innerHTML = `${config.title} ( ${width} x ${height} )`;
+    }
   }
 
   updateView(config, data) {
     if (this.fpsTitle) {
       this.fpsTitle.innerHTML = `Generation: ${config.generation}`;
     }
+  }
+
+  updateFPS(fps) {
+    // Theoretical max frequency with setTimeout is 250 hertz
+    let percentage = Math.min(1, fps / 250);
+
+    // Update DOM elements for benchmark stats
+    if (this.fpsCounter) {
+      this.fpsCounter.innerHTML = `${fps}`;
+    }
+    if (this.fpsMetric) {
+      this.fpsMetric.innerHTML = `${fps} fps`;
+    }
+
+    // Update SVG element(s)
+    if (this.svgPath) {
+      let polar_to_cartesian = (cx, cy, radius, angle) => {
+        let radians = ((angle - 90) * Math.PI) / 180.0;
+        return [
+          Math.round((cx + radius * Math.cos(radians)) * 100) / 100,
+          Math.round((cy + radius * Math.sin(radians)) * 100) / 100,
+        ];
+      };
+      let svg_circle_arc_path = (x, y, radius, start_angle, end_angle) => {
+        let start_xy = polar_to_cartesian(x, y, radius, end_angle);
+        let end_xy = polar_to_cartesian(x, y, radius, start_angle);
+        return (
+          "M " +
+          start_xy[0] +
+          " " +
+          start_xy[1] +
+          " A " +
+          radius +
+          " " +
+          radius +
+          " 0 0 0 " +
+          end_xy[0] +
+          " " +
+          end_xy[1]
+        );
+      };
+      let path = svg_circle_arc_path(
+        500,
+        500,
+        450,
+        -90,
+        percentage * 180.0 - 90
+      );
+      this.svgPath.setAttribute("d", path);
+    }
+
+    //console.log(timeline);
+    //if (timeline) {
+    //  let bar = document.createElement("DIV");
+    //  bar.setAttribute("style", `height: ${Math.floor(100 * percentage)}%`);
+    //  bar.classList.add("w-2");
+    //  bar.classList.add("bg-green-500");
+    //  if (timeline.children.length > 256) {
+    //    // Truncate trailing part of the timeline...
+    //    timeline.removeChild(timeline.children[0]);
+    //  }
+    //  // Add latest slice
+    //  timeline.appendChild(bar);
+    //}
   }
 }

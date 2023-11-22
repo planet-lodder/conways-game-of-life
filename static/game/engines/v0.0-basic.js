@@ -1,69 +1,30 @@
-class GameEngine {
-  generation = 0;
-  view = null;
-  intv = null;
-
+class GameEngine extends GameEngineCore {
   constructor(view) {
-    this.view = view;
-    this.config();
-    this.init(this.image);
+    super(view);
   }
 
-  config() {
-    let root = this.view.root;
-    if (root) {
-      // Load the preset (by reading attributes)
-      this.image = root.getAttribute("image");
-      this.title = root.getAttribute("title");
-      this.width = root.getAttribute("width");
-      this.height = root.getAttribute("height");
-      this.scale = root.getAttribute("scale");
-      this.delay = root.getAttribute("delay");
-      this.wrapped = root.getAttribute("wrapped");
-    }
+  load(data) {
+    // Set the updated properties given the data
+    this.data = data;
+
+    // Calculate the new dimentions
+    this.view.createView(this, this.dataMapped(data));
   }
 
-  reset() {
-    this.config();
-    this.init(this.image);
-    this.generation = 0;
-  }
-
-  init(image) {
-    // Set view port to 'loading' state
-    this.view.setLoading(true);
-
-    if (image) {
-      // Load the board game data from the source image
-      this.view.loadImage(image, (buffer, width, height) => {
-        // Parse raw image data into a simple array of 1's and 0's
-        let data = this.imageData(buffer, width, height);
-        this.width = width;
-        this.height = height;
-        this.load(data);
-      });
-      return; // Wait for image to load and then initialise...
-    } else {
-      // Set defaults if no image is supplied
-      this.title = this.title || "Blank Canvas";
-      this.width = this.width || 60;
-      this.height = this.height || 40;
-      this.scale = this.scale || 16;
-
-      // Load a blank canvas
-      let data = Array(this.width);
-      for (let x = 0; x < this.width; x++) {
-        data[x] = Array(this.height);
-        for (let y = 0; y < this.height; y++) {
+  mapData(buffer, width, height) {
+    let data = Array(width);
+    if (!buffer) {
+      // No buffer data, fill with empty zeros
+      for (let x = 0; x < width; x++) {
+        data[x] = Array(height);
+        for (let y = 0; y < height; y++) {
           data[x][y] = 0;
         }
       }
-      this.load(data);
+      return data;
     }
-  }
 
-  imageData(buffer, width, height) {
-    let data = Array(width);
+    // Load data from buffer
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         let i = (x + y * width) * 4;
@@ -76,25 +37,8 @@ class GameEngine {
         data[x][y] = val;
       }
     }
+
     return data;
-  }
-
-  load(data) {
-    let config = this;
-
-    // Set the updated properties given the data
-    this.data = data;
-    this.width = config.width || data.length;
-    this.height = config.height || data[0].length;
-    this.scale = config.scale || this.scale;
-    this.wrapped = config.wrapped || this.wrapped;
-    this.delay = !isNaN(config.delay) ? config.delay : this.delay;
-
-    // Clear and reset loading message
-    this.view.setLoading(false);
-
-    // Calculate the new dimentions
-    this.view.createView(this, this.dataMapped(data));
   }
 
   dataMapped(data) {
@@ -106,24 +50,6 @@ class GameEngine {
       }
     }
     return mappedData;
-  }
-
-  start(delay) {
-    console.log("Starting the game...");
-
-    // Start running game in ticks
-    this.generation = 0;
-    this.delay = delay || this.delay || 0;
-    this.intv = setInterval(() => this.tick(), this.delay);
-
-    // Compute the fps each second
-    this.view.trackFPS(this);
-  }
-
-  stop() {
-    console.log("Stopping the game");
-    clearInterval(this.intv);
-    this.intv = null;
   }
 
   tick() {

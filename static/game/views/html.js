@@ -26,6 +26,7 @@ class HtmlRenderer {
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
+    this.fpsCounter = this.root.querySelector(".game-fps");
   }
 
   toolbar() {
@@ -73,23 +74,11 @@ class HtmlRenderer {
     this.root.appendChild(img);
   }
 
-  trackFPS(config) {
-    let fpsSelector = ".game-fps";
-    let fpsElem = this.root.querySelector(fpsSelector);
-    let oldCount = config.generation || 0;
-    let fps_intv = setInterval(() => {
-      if (!config.intv) {
-        // Simulation stopped
-        clearInterval(fps_intv);
-        return;
-      }
-      let newCount = config.generation;
-      if (fpsElem) {
-        // Update DOM element
-        fpsElem.innerHTML = `${newCount - oldCount}`;
-      }
-      oldCount = newCount;
-    }, 1000);
+  updateFPS(fps) {
+    // Update DOM element for FPS (if available)
+    if (this.fpsCounter) {
+      this.fpsCounter.innerHTML = `${fps}`;
+    }
   }
 
   createView(config, data) {

@@ -1,113 +1,14 @@
-class GameEngine {
-  generation = 0;
-  view = null;
-  intv = null;
-
+class GameEngine extends GameEngineCore {
   constructor(view) {
-    this.view = view;
-    this.config();
-    this.init(this.image);
-  }
-
-  config() {
-    let root = this.view.root;
-    if (root) {
-      // Load the preset (by reading attributes)
-      this.image = root.getAttribute("image");
-      this.title = root.getAttribute("title");
-      this.width = root.getAttribute("width");
-      this.height = root.getAttribute("height");
-      this.scale = root.getAttribute("scale");
-      this.delay = root.getAttribute("delay");
-      this.wrapped = root.getAttribute("wrapped");
-    }
-  }
-
-  reset() {
-    this.config();
-    this.init(this.image);
-  }
-
-  init(image) {
-    // Set view port to 'loading' state
-    this.view.setLoading(true);
-
-    if (image) {
-      // Load the board game data from the source image
-      this.view.loadImage(image, (buffer, width, height) => {
-        // Parse raw image data into a simple array of 1's and 0's
-        let data = this.imageData(buffer, width, height);
-        this.width = width;
-        this.height = height;
-        this.load(data);
-      });
-      return; // Wait for image to load and then initialise...
-    } else {
-      // Set defaults if no image is supplied
-      this.title = this.title || "Blank Canvas";
-      this.width = this.width || 60;
-      this.height = this.height || 40;
-      this.scale = this.scale || 16;
-
-      // Load a blank canvas
-      let data = Array(this.width * this.height).fill(0);
-      this.load(data);
-    }
-
-    // Reset the version number
-    this.generation = 0;
-  }
-
-  imageData(buffer, width, height) {
-    let data = Array(width * height);
-    for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        let i = (x + y * width) * 4;
-        let r = buffer[i];
-        let g = buffer[i + 1];
-        let b = buffer[i + 2];
-        let a = buffer[i + 3];
-        let val = a < 64 || (r + g + b) / 3 > 192 ? 0 : 1;
-        data[x + y * width] = val;
-      }
-    }
-    return data;
+    super(view);
   }
 
   load(data) {
-    let config = this;
-
-    // Set the updated properties given the data
+    // Set the updated properties for new data
     this.data = data;
-    this.width = config.width || data.length;
-    this.height = config.height || data[0].length;
-    this.delay = !isNaN(config.delay) ? config.delay : this.delay;
 
-    // Clear and reset loading message
-    this.view.setLoading(false);
-
-    // Calculate the new dimentions
+    // Create the initial display
     this.view.createView(this, data);
-  }
-
-  start(delay) {
-    console.log("Starting the game...");
-
-    // Start running game in ticks
-    this.generation = 0;
-    this.delay = delay || this.delay || 0;
-    this.intv = setInterval(() => this.tick(), this.delay);
-
-    // Compute the fps each second
-    this.view.trackFPS(this);
-  }
-
-  stop() {
-    if (this.intv > 0) {
-      console.log("Stopping the game");
-      clearInterval(this.intv);
-    }
-    this.intv = null;
   }
 
   tick() {
