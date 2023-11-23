@@ -4,7 +4,7 @@ class GameEngine extends GameEngineCore {
     this.data = data;
 
     // Calculate the new dimentions
-    if (this.view) {
+    if (this.view) {      
       this.view.createView(this, this.dataMapped(data));
     }
   }
@@ -40,7 +40,7 @@ class GameEngine extends GameEngineCore {
   }
 
   dataMapped(data) {
-    let config = this.config
+    let config = this.config;
     let mappedData = Array(config.width * config.height);
     for (let y = 0; y < config.height; y++) {
       let offset = y * config.width;
@@ -52,7 +52,7 @@ class GameEngine extends GameEngineCore {
   }
 
   tick() {
-    let config = this.config
+    let config = this.config;
 
     // Start new generation
     this.generation++;

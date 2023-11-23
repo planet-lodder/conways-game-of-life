@@ -16,8 +16,8 @@
 </script>
 <!-- {% endif %} -->
 <game-of-life
+  class="flex flex-col flex-1 justify-start"
   view="{{view}}"
-
   title="{{preset.title}}"
   image="{{preset.image}}"
   width="{{preset.width}}"
@@ -25,13 +25,6 @@
   scale="{{preset.scale}}"
   delay="{{preset.delay}}"
   wrapped="{{preset.wrapped}}"
-  
-  class="flex flex-col flex-1 justify-start"
-  x-init="game = document.querySelector('game-of-life').game"
-  x-data="{ 
-    show_config: false, 
-    started: null,
-  }"
->{% include 'game/toolbar.html' %}</game-board>
-
+  engines='{{engines|tojson|safe}}'
+></game-board>
 <!-- {% endif %} -->

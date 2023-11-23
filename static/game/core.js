@@ -57,7 +57,7 @@ class GameEngineCore extends GameTickEngineCore {
   }
 
   init(config) {
-    this.config = config = config || {};
+    config = this.config = config || {};
 
     // Reset the version number
     this.generation = 0;
@@ -72,8 +72,7 @@ class GameEngineCore extends GameTickEngineCore {
         let data = this.mapData(buffer, width, height);
         config.width = width;
         config.height = height;
-        this.view && this.view.setLoading(false);
-        this.load(data);
+        this.dataLoaded(data);
       });
       return; // Wait for image to load and then initialise...
     } else {
@@ -85,9 +84,29 @@ class GameEngineCore extends GameTickEngineCore {
 
       // Load a blank canvas
       let data = this.mapData(null, config.width, config.height);
-      this.view && this.view.setLoading(false);
-      this.load(data);
+      this.dataLoaded(data);
     }
+  }
+
+  dataLoaded(data) {
+    console.log(
+      "Creating game board...",
+      [this.config.width, this.config.height],
+      this.config.image
+    );
+
+    if (this.view) {
+      // Trigger event that the view has been loaded (with updated config)
+      const event = new CustomEvent("game:updated", {
+        bubbles: true,
+        detail: this.config,
+      });
+      this.view.dispatchEvent(event);
+      this.view.setLoading(false);
+    }
+
+    // Load the data for this game
+    this.load(data);
   }
 
   mapData(buffer, width, height) {
@@ -115,17 +134,51 @@ class GameEngineCore extends GameTickEngineCore {
 
   updateFPS(fps) {
     if (this.view) {
-      this.view.updateFPS(fps);
+      const event = new CustomEvent("game:fps", {
+        bubbles: true,
+        detail: fps,
+      });
+      this.view.dispatchEvent(event);
     }
+  }
+
+  resize(width, height) {
+    let config = this.config;
+    if (width < config.width || height < config.height) {
+      // Prompt user before clipping contents
+      if (!confirm("Image will be trucated. Continue?")) return false;
+    }
+
+    let data = this.data;
+    let buffer = Array(width * height).fill(0);
+    let offsetX = Math.floor((config.width - width) / 2);
+    let offsetY = Math.floor((config.height - height) / 2);
+    for (let y = 0; y < height; y++) {
+      let offset = y * width;
+      let dy = offsetY + y;
+      let offsetOrig = dy * config.width;
+      for (let x = 0; x < width; x++) {
+        let dx = offsetX + x;
+        if (0 <= dx && dx < config.width && 0 <= dy && dy < config.height) {
+          buffer[x + offset] = data[dx + offsetOrig];
+        }
+      }
+    }
+    // Trigger a reload of the view
+    config.width = width;
+    config.height = height;
+    this.dataLoaded(buffer);
   }
 
   reset() {
     this.clear();
-    this.config();
-    this.init();
+    this.init(this.config);
   }
 
-  clear() {}
+  clear() {
+    this.data = [];
+    this.updateFPS(0);
+  }
 }
 
 class GameRendererCore extends HTMLElement {

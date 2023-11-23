@@ -17,7 +17,60 @@ class GameOfLife extends HTMLElement {
   connectedCallback() {
     this.config();
     this.render(this);
-    
+
+    let gameUpdated = () => {
+      this.dispatchEvent(new CustomEvent("game:updated", { detail: this }));
+    };
+    let events = {
+      "game:resize": (e) => {
+        let success =
+          this.game && this.game.resize(e.detail.width, e.detail.height);
+        if (!success) {
+          let src = e.detail.event;
+          src.cancel = true;
+          src.cancelBubble = true;
+          src.stopPropagation();
+        }
+        gameUpdated();
+        return success;
+      },
+      "game:speed": (e) => {
+        let delay = Number(e.detail);
+        this.delay = delay;
+        if (this.game) {
+          this.game.delay = delay;
+          if (this.started) {
+            this.game.stop();
+            this.game.start(delay);
+          }
+        }
+        gameUpdated();
+      },
+      "game:reset": (e) => {
+        if (this.game) {
+          this.game.reset();
+        }
+        gameUpdated();
+      },
+      "game:start": (e) => {
+        if (this.game) {
+          this.game.start();
+          this.started = true;
+        }
+        gameUpdated();
+      },
+      "game:stop": (e) => {
+        if (this.game) {
+          this.game.stop();
+          this.started = false;
+        }
+        gameUpdated();
+      },
+    };
+    Object.keys(events).forEach((eventName) => {
+      this.addEventListener(eventName, events[eventName]);
+    });
+
     // Auto start the game (if requested)
     if (this.start) this.game.start();
   }
@@ -25,7 +78,7 @@ class GameOfLife extends HTMLElement {
   config() {
     // Check for a specified view type
     this.viewType = this.getAttribute("view");
-    this.engines = GameOfLife.engines || []
+    this.engines = GameOfLife.engines || [];
 
     // Parse and evaluate game parameters
     this.start = this.getAttribute("start");
@@ -40,9 +93,9 @@ class GameOfLife extends HTMLElement {
 
   render(target) {
     // Define the game board elements
+    this.toolbar = new GameToolbar(this);
     this.view = this.getView(this.viewType);
     this.game = this.game || new GameEngine(this, this.view);
-    this.toolbar = new GameToolbar(this.game);
 
     target.innerHTML = ``;
     target.appendChild(this.toolbar);

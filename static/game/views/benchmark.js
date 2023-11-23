@@ -10,6 +10,13 @@ class BenchmarkRenderer extends GameRendererCore {
     );
   }
 
+  constructor() {
+    super();
+    this.addEventListener("game:fps", (e) => {
+      this.updateFPS(e.detail);
+    });
+  }
+
   render(target) {
     // Create the board game contents
     target.innerHTML = `
@@ -97,12 +104,11 @@ class BenchmarkRenderer extends GameRendererCore {
   }
 
   createView(game, data) {
-    let config = game.config
+    let config = game.config;
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
-
-    console.log("Creating game board...", [width, height]);
+    
     if (this.board) {
       this.board.style["min-width"] = `${width * scale}px`;
       this.board.style["min-height"] = `${height * scale}px`;

@@ -6,14 +6,28 @@ class GameToolbar extends HTMLElement {
 
   constructor(game) {
     super();
-    this.game = game;
+    this.parent = game;
+    this.config = game || {};
   }
 
   connectedCallback() {
     this.render(this);
+    let events = {
+      // Keep toolbar values in sync with config values
+      "game:updated": (e) => this.update(e.detail),
+      // Track and display the frames per second
+      "game:fps": (e) => this.gameFpsCounter(e.detail),
+    };
+    if (this.parent) {
+      Object.keys(events).forEach((eventName) => {
+        this.parent.addEventListener(eventName, events[eventName]);
+      });
+    }
   }
 
   render(target) {
+    let config = this.config;
+
     target.innerHTML = `
     <link href="/game/css/toolbar.css" rel="stylesheet" />
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
@@ -26,10 +40,10 @@ class GameToolbar extends HTMLElement {
         <p
           class="game-title flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold"
           style="overflow: hidden; white-space: nowrap"
-        >Game of Life</p>
+        ></p>
     
         <!-- Dimentions -->
-        <label class="game-dimentions flex flex-0 py-1.5 text-sm font-thin">
+        <label class="game-dimentions flex flex-0 py-2 text-xs font-thin">
           ( <span class="board-width"></span> x <span class="board-height"></span> )
         </label>
     
@@ -37,7 +51,7 @@ class GameToolbar extends HTMLElement {
     
         <!-- Frames Per Second -->
         <label class="game-fps-container py-1.5 text-sm font-slim italic">
-          <span class="game-fps font-bold">0</span> fps
+          <span class="game-fps font-bold pl-2">0</span> fps
         </label>
     
         <div class="inline-flex text-sm font-medium px-2 space-x-2" role="group">
@@ -45,7 +59,7 @@ class GameToolbar extends HTMLElement {
           <button
             type="button"
             title="Reset Game"
-            class="game-revert flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500 hidden"
+            class="game-reset flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500 hidden"
           >
             <img class="include w-6 h-6" src="/icons/revert.svg" />
           </button>
@@ -87,22 +101,82 @@ class GameToolbar extends HTMLElement {
     
   `;
 
+    // Hook up button events
+    this.onClick(".game-reset", () => this.trigger("game:reset"));
+    this.onClick(".game-start", () => this.trigger("game:start"));
+    this.onClick(".game-stop", () => this.trigger("game:stop"));
+    this.onClick(".game-config", () => {
+      this.show_settigs = !this.show_settigs;
+      this.gameSettings(config);
+    });
+
     // Populate the toolbar with its UI elements
-    this.gameEngine(target.querySelector(".game-engine"));
-    this.gameTitle(target.querySelector(".game-title"));
-    this.gameDimentions(target.querySelector(".game-dimentions"));
-    this.gameFpsCounter(target.querySelector(".game-fps-container"));
-    this.gameReset(target.querySelector(".game-revert"));
-    this.gameConfigBtn(target.querySelector(".game-config"));
-    this.gameStartBtn(target.querySelector(".game-start"));
-    this.gameStopBtn(target.querySelector(".game-stop"));
-    this.gameSettings(target.querySelector(".game-settings"));
+    this.gameEngine(config && config.engines);
+    this.gameSettingsPopulate(config);
+    this.gameFpsCounter(0);
+
+    // Update UI elements
+    this.update(config);
+
+    // Capture Config changes
+    this.onChanged(".game-width", (e) =>
+      this.trigger("game:resize", {
+        width: Number(e.target.value),
+        height: config.height,
+        event: e,
+      })
+    );
+    this.onChanged(".game-height", (e) =>
+      this.trigger("game:resize", {
+        width: config.width,
+        height: Number(e.target.value),
+        event: e,
+      })
+    );
+    this.onChanged(".game-delay", (e) =>
+      this.trigger("game:speed", e.target.value)
+    );
 
     // Try and load the SVG images inline, so it can take advantage of styling
     this.inlineIncludeImages(target);
   }
 
-  gameEngine(container) {
+  update(config) {
+    this.gameTitle(config.title);
+    this.gameDimentions(config);
+    this.gameResetBtn(!config.started && config.game && config.game.generation);
+    this.gameConfigBtn(!config.started);
+    this.gameStartBtn(!config.started);
+    this.gameStopBtn(config.started);
+    this.gameSettings(config);
+
+    if (!config.started) {
+        // Hide the FPS counter
+        this.gameFpsCounter(0);
+    }
+  }
+
+  onClick(selector, action) {
+    let elem = this.querySelector(selector);
+    if (elem) {
+      elem.addEventListener("click", action);
+    }
+  }
+
+  onChanged(selector, action) {
+    let elem = this.querySelector(selector);
+    if (elem) {
+      elem.addEventListener("change", action);
+    }
+  }
+
+  trigger(eventName, payload) {
+    let event = new CustomEvent(eventName, { bubbles: true, detail: payload });
+    this.dispatchEvent(event);
+  }
+
+  gameEngine(engines) {
+    let container = this.querySelector(".game-engine");
     if (!container) return;
 
     // Set the templated content
@@ -138,7 +212,6 @@ class GameToolbar extends HTMLElement {
     // Check if we have additional game engines that can be bound
     let queryParams = window.location.search;
     let selected = new URLSearchParams(queryParams).get("engine") || "latest";
-    let engines = this.game ? this.game.config.engines : null;
     if (engines && engines.length && this.gameEnginesMenu) {
       // Clear previous contents
       this.gameEnginesMenuItems.innerHTML = "";
@@ -176,43 +249,108 @@ class GameToolbar extends HTMLElement {
     }
   }
 
-  gameTitle(container) {
-    if (!container) return;
-    //container.innerHTML = `TODO: Title`;
+  gameTitle(title) {
+    let container = this.querySelector(".game-title");
+    if (container) {
+      container.innerHTML = title || `Game of Life`;
+    }
   }
 
-  gameDimentions(container) {
+  gameDimentions(config) {
+    let container = this.querySelector(".game-dimentions");
     if (!container) return;
-    container.classList.add("hidden");
+
+    let setText = (qry, val) => {
+      let elem = container.querySelector(qry);
+      if (elem) elem.innerHTML = val;
+    };
+
+    if (config.width && config.height) {
+      setText(".board-width", config.width);
+      setText(".board-height", config.height);
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameFpsCounter(container) {
+  gameFpsCounter(fps) {
+    let container = this.querySelector(".game-fps-container");
+    let label = this.querySelector(".game-fps");
     if (!container) return;
-    container.classList.add("hidden");
+    if (fps) {
+      label.innerHTML = fps;
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameReset(container) {
+  gameResetBtn(show) {
+    let container = this.querySelector(".game-reset");
     if (!container) return;
-    container.classList.add("hidden");
+    if (show) {
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameConfigBtn(container) {
+  gameConfigBtn(show) {
+    let container = this.querySelector(".game-config");
     if (!container) return;
-    container.classList.add("hidden");
+    if (show) {
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameStartBtn(container) {
+  gameStartBtn(show) {
+    let container = this.querySelector(".game-start");
     if (!container) return;
-    //container.classList.add('hidden')
+    if (show) {
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameStopBtn(container) {
+  gameStopBtn(show) {
+    let container = this.querySelector(".game-stop");
     if (!container) return;
-    container.classList.add("hidden");
+    if (show) {
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
   }
 
-  gameSettings(container) {
+  gameSettings(config) {
+    let show = !config.started && this.show_settigs;
+    let container = this.querySelector(".game-settings");
     if (!container) return;
+    if (show) {
+      container.classList.remove("hidden");
+    } else {
+      container.classList.add("hidden");
+    }
+
+    let setValue = (qry, val) => {
+      let elem = this.querySelector(qry);
+      if (elem) elem.value = val;
+    };
+
+    // Update the input values
+    setValue("input.game-width", config.width);
+    setValue("input.game-height", config.height);
+    setValue("input.game-delay", config.delay);
+  }
+
+  gameSettingsPopulate(config) {
+    let container = this.querySelector(".game-settings");
+    if (!container) return;
+
     container.innerHTML = `
     <div class="flex w-full relative px-2 space-x-2 border-y-1">
 
@@ -224,6 +362,7 @@ class GameToolbar extends HTMLElement {
           class="game-width w-12 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
         />
       </label>
+
       <!-- Set Height -->
       <label class="py-1.5 text-sm font-slim">
         <span class="px-1">Height</span>
@@ -232,23 +371,24 @@ class GameToolbar extends HTMLElement {
           class="game-height w-12 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
         />
       </label>
+
       <!-- Set Delay -->
       <label class="py-1.5 text-sm font-slim">
         <span class="px-1">Delay</span>
         <input
           type="text"
-          class="game-delay w-10 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
+          class="game-delay w-12 -my-2 px-2 text-sm appearance-none outline-none text-gray-800 bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
         />
       </label>
 
       <div class="flex flex-1"></div>
 
-      <div class="flex flex-0 relative space-x-2 pr-2">
+      <div class="flex flex-0 relative space-x-2">
         <div class="flex flex-0">
           <button
             type="button"
             title="View Options"
-            class="p-2 -m-2"
+            class="px-2 -mx-2"
             @click="show_menu = show_menu == 'views' ? '' : 'views'"
           >
             <img class="include w-6 h-6" src="/icons/ellipsis-vertical.svg" />
@@ -323,6 +463,7 @@ class GameToolbar extends HTMLElement {
       </div>
     </div>
 `;
+    this.inlineIncludeImages(container);
   }
 
   inlineIncludeImages(target) {
@@ -335,7 +476,9 @@ class GameToolbar extends HTMLElement {
         var attr = target.attributes[i];
         replace.setAttribute(attr.name, attr.value);
       }
-      target.parentNode.replaceChild(replace, target);
+      if (target.parentNode) {
+        target.parentNode.replaceChild(replace, target);
+      }
     };
     if (includes) {
       includes.forEach((elem) => {

@@ -26,7 +26,6 @@ class HtmlDivRenderer extends GameRendererCore {
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
-    this.fpsCounter = target.querySelector(".game-fps");
   }
 
   setLoading(active) {
@@ -46,8 +45,6 @@ class HtmlDivRenderer extends GameRendererCore {
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
-
-    console.log("Creating game board...", [width, height]);
 
     let board = this.board;
     if (!board) return;
@@ -101,13 +98,6 @@ class HtmlDivRenderer extends GameRendererCore {
       if (elem) {
         elem.setAttribute("value", data[i] || 0);
       }
-    }
-  }
-
-  updateFPS(fps) {
-    // Update DOM element for FPS (if available)
-    if (this.fpsCounter) {
-      this.fpsCounter.innerHTML = `${fps}`;
     }
   }
 

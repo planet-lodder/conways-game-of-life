@@ -18,5 +18,4 @@ class WebGLRenderer extends GameRendererCore {
 
   updateView(game, data) {}
 
-  updateFPS(fps) {}
 }

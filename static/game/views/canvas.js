@@ -18,5 +18,4 @@ class ImageCanvasRenderer extends GameRendererCore {
 
   updateView(game, data) {}
 
-  updateFPS(fps) {}
 }
