@@ -86,7 +86,7 @@ class GameToolbar extends HTMLElement {
     </form>
     
   `;
-    
+
     // Populate the toolbar with its UI elements
     this.gameEngine(target.querySelector(".game-engine"));
     this.gameTitle(target.querySelector(".game-title"));
@@ -109,17 +109,11 @@ class GameToolbar extends HTMLElement {
     container.innerHTML = `
     <button
         type="button"
-        title="Game Engine Settings"
-        class="p-2 -m-2"
-        @click="show_menu = show_menu == 'engines' ? '' : 'engines'"
+        class="game-engines-btn p-2 -m-2 cursor-default"
     >
         <img class="include w-6 h-6" src="/icons/cpu.svg" />
     </button>
-    <div
-        style="display: none"
-        x-show="show_menu == 'engines'"
-        class="game-menu-engines absolute origin-top-left left-0 z-30 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700"
-    >
+    <div class="game-engines-menu hidden absolute origin-top-left left-0 z-30 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700">
         <div
             class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
             role="menu"
@@ -129,27 +123,57 @@ class GameToolbar extends HTMLElement {
             <div class="px-2 py-2 text-sm font-bold border-b border-gray-200 dark:border-gray-500">
                 Select Game Engine
             </div>
-            <a
-            @click="show_menu = ''; update_query_params({engine: 'latest'})"
-            class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-            :class="{ 'font-bold text-gray-900 dark:text-white': 'latest' == ((new URLSearchParams(window.location.search)).get('engine') || 'latest') }"
-            role="menuitem"
-            >
-            <img class="include w-6 h-6" src="/icons/cpu.svg" />
-            <span class="py-0.5">latest</span>
-            </a>
-            <a
-            @click="show_menu = ''; update_query_params({engine: 'v0.0-basic'})"
-            class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-            :class="{ 'font-bold text-gray-900 dark:text-white': 'v0.0-basic' == (new URLSearchParams(window.location.search)).get('engine') }"
-            role="menuitem"
-            >
-            <img class="include w-6 h-6" src="/icons/cpu.svg" />
-            <span class="py-0.5">v0.0-basic</span>
-            </a>
+            <div class=game-engines-menu-items></div>
         </div>
     </div>
 `;
+
+    // Get refs to UI components
+    this.gameEnginesButton = container.querySelector(".game-engines-btn");
+    this.gameEnginesMenu = container.querySelector(".game-engines-menu");
+    this.gameEnginesMenuItems = container.querySelector(
+      ".game-engines-menu-items"
+    );
+
+    // Check if we have additional game engines that can be bound
+    let queryParams = window.location.search;
+    let selected = new URLSearchParams(queryParams).get("engine") || "latest";
+    let engines = this.game ? this.game.config.engines : null;
+    if (engines && engines.length && this.gameEnginesMenu) {
+      // Clear previous contents
+      this.gameEnginesMenuItems.innerHTML = "";
+
+      // Hook up button click to toggle the menu
+      this.gameEnginesButton.classList.add("cursor-pointer");
+      this.gameEnginesButton.classList.remove("cursor-default");
+      this.gameEnginesButton.onclick = () => {
+        this.gameEnginesMenu.classList.toggle("hidden");
+      };
+
+      // Populate with menu items for selecting different engine types
+      engines.forEach((id) => {
+        let item = document.createElement("A");
+        let css =
+          "flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600";
+        let style =
+          id == selected
+            ? css + "font-bold text-gray-900 dark:text-white"
+            : css;
+
+        item.setAttribute("role", "menuitem");
+        item.className = style;
+        item.onclick = () => {
+          this.update_query_params({ engine: id });
+          this.gameEnginesMenu.classList.add("hidden");
+        };
+        item.innerHTML = `
+            <img class="include w-6 h-6" src="/icons/cpu.svg" />
+            <span class="py-0.5">${id}</span>
+        `;
+
+        this.gameEnginesMenuItems.appendChild(item);
+      });
+    }
   }
 
   gameTitle(container) {

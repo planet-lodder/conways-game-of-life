@@ -52,19 +52,19 @@ class GameEngineCore extends GameTickEngineCore {
     super();
 
     // Configure and initialise the component
-    this.config = config || {};
     this.view = view;
-    //this.init();
+    this.init(config);
   }
 
-  init() {
+  init(config) {
+    this.config = config = config || {};
+
     // Reset the version number
     this.generation = 0;
 
     // Set view port to 'loading' state
     this.view && this.view.setLoading(true);
 
-    let config = this.config;
     if (config.image) {
       // Load the board game data from the source image
       this.view.loadImage(config.image, (buffer, width, height) => {
@@ -184,8 +184,8 @@ class GameRendererCore extends HTMLElement {
     img.style.right = "0";
     img.addEventListener("load", (e) => {
       onLoad(e, img);
-      this.removeChild(img);
+      document.body.removeChild(img);
     });
-    this.appendChild(img);
+    document.body.appendChild(img);
   }
 }

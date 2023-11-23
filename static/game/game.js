@@ -1,4 +1,5 @@
 class GameOfLife extends HTMLElement {
+  static engines = [];
   static views = {};
   static addViewType(name, label, icon, viewInit) {
     GameOfLife.views[name] = {
@@ -16,7 +17,6 @@ class GameOfLife extends HTMLElement {
   connectedCallback() {
     this.config();
     this.render(this);
-    this.game.init()
     
     // Auto start the game (if requested)
     if (this.start) this.game.start();
@@ -25,6 +25,7 @@ class GameOfLife extends HTMLElement {
   config() {
     // Check for a specified view type
     this.viewType = this.getAttribute("view");
+    this.engines = GameOfLife.engines || []
 
     // Parse and evaluate game parameters
     this.start = this.getAttribute("start");

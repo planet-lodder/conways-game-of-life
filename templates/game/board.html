@@ -9,7 +9,12 @@
 <script src="/game/game.js"></script>
 <script src="/game/views/{{view}}.js"></script>
 <script src="/game/engines/{{engine}}.js"></script>
-
+<!-- {% if engines %} -->
+<script>
+  // Register known game engine versions
+  GameOfLife.engines = {{engines|tojson|safe}}
+</script>
+<!-- {% endif %} -->
 <game-of-life
   view="{{view}}"
 
