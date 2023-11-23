@@ -111,8 +111,9 @@ class GameToolbar extends HTMLElement {
     });
 
     // Populate the toolbar with its UI elements
-    this.gameEngine(config && config.engines);
-    this.gameSettingsPopulate(config);
+    this.gameEngine(config.engines);
+    this.populateSettings(config);
+    this.populateViewTypes(GameOfLife.views);
     this.gameFpsCounter(0);
 
     // Update UI elements
@@ -151,8 +152,8 @@ class GameToolbar extends HTMLElement {
     this.gameSettings(config);
 
     if (!config.started) {
-        // Hide the FPS counter
-        this.gameFpsCounter(0);
+      // Hide the FPS counter
+      this.gameFpsCounter(0);
     }
   }
 
@@ -347,7 +348,7 @@ class GameToolbar extends HTMLElement {
     setValue("input.game-delay", config.delay);
   }
 
-  gameSettingsPopulate(config) {
+  populateSettings(config) {
     let container = this.querySelector(".game-settings");
     if (!container) return;
 
@@ -383,21 +384,18 @@ class GameToolbar extends HTMLElement {
 
       <div class="flex flex-1"></div>
 
-      <div class="flex flex-0 relative space-x-2">
+      <div class="game-views flex flex-0 relative space-x-2">
         <div class="flex flex-0">
           <button
             type="button"
             title="View Options"
-            class="px-2 -mx-2"
-            @click="show_menu = show_menu == 'views' ? '' : 'views'"
+            class="game-views-btn px-2 -mx-2"
           >
             <img class="include w-6 h-6" src="/icons/ellipsis-vertical.svg" />
           </button>
           <div
             id="dropdown-menu"
-            style="display: none"
-            x-show="show_menu == 'views'"
-            class="origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
+            class="game-views-menu hidden origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
           >
             <div
               class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
@@ -405,64 +403,65 @@ class GameToolbar extends HTMLElement {
               aria-orientation="vertical"
               aria-labelledby="dropdown-button"
             >
-              <div
-                class="px-2 py-2 text-sm font-bold border-b border-gray-200 dark:border-gray-500"
-              >
+              <div class="px-2 py-2 text-sm font-bold border-b border-gray-200 dark:border-gray-500">
                 Select View Type
               </div>
-              <a
-                @click="show_menu = ''; update_query_params({view: 'html'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'html' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-              >
-                <img class="include w-6 h-6" src="/icons/html.svg" />
-                <span class="py-0.5">HTML Divs</span>
-              </a>
-              <a
-                @click="show_menu = ''; update_query_params({view: 'svg'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'svg' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-                aria-disabled="true"
-              >
-                <img class="include w-6 h-6" src="/icons/svg.svg" />
-                <span class="py-0.5">SVG Image</span>
-              </a>
-              <a
-                @click="show_menu = ''; update_query_params({view: 'canvas'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'canvas' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-              >
-                <img class="include w-6 h-6" src="/icons/canvas.svg" />
-                <span class="py-0.5">Image Canvas</span>
-              </a>
-              <a
-                @click="show_menu = ''; update_query_params({view: 'webgl'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'webgl' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-              >
-                <img class="include w-6 h-6" src="/icons/gpu.svg" />
-                <span class="py-0.5">WebGL (GPU)</span>
-              </a>
+              <div class="game-views-menu-body"></div>
               <hr class="border border-gray-200 dark:border-gray-500" />
-              <a
-                @click="show_menu = ''; update_query_params({view: 'benchmark'})"
-                class="flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600"
-                :class="{ 'font-bold text-gray-900 dark:text-white': 'benchmark' == (new URLSearchParams(window.location.search)).get('view') }"
-                role="menuitem"
-              >
-                <img class="include w-6 h-6" src="/icons/benchmark.svg" />
-                <span class="py-0.5">Run Benchmark</span>
-              </a>
+              <div class="game-views-menu-bottom"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 `;
+    this.inlineIncludeImages(container);
+  }
+
+  populateViewTypes(views) {
+    let container = this.querySelector(".game-views");
+    if (!container) return;
+
+    let current = new URLSearchParams(window.location.search).get("view");
+    let styles =
+      "flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600";
+    let styleSelected = "font-bold text-gray-900 dark:text-white";
+
+    let viewMenuBtn = container.querySelector(".game-views-btn");
+    let viewMenuWindow = container.querySelector(".game-views-menu");
+    let viewMenuContent = container.querySelector(".game-views-menu-body");
+    let viewMenuBottom = container.querySelector(".game-views-menu-bottom");
+
+    if (viewMenuBtn && viewMenuWindow)
+      viewMenuBtn.addEventListener("click", () => {
+        this.show_views = !this.show_views;
+        if (this.show_views) {
+          viewMenuWindow.classList.remove("hidden");
+        } else {
+          viewMenuWindow.classList.add("hidden");
+        }
+      });
+
+    // Attach the menu items for all the registered view types
+    Object.keys(views).forEach((key) => {
+      let info = views[key];
+      let css = current == key ? styles + styleSelected : styles;
+      let target = key == "benchmark" ? viewMenuBottom : viewMenuContent;
+      let item = document.createElement("A");
+      item.setAttribute("role", "menuitem");
+      item.className = css;
+      item.addEventListener("click", () => {
+        this.updateQueryParams({ view: key });
+        this.show_views = false;
+      });
+      item.innerHTML = `
+      <img class="include w-6 h-6" src="${info.icon}" />
+      <span class="py-0.5">${info.label}</span>
+      `;
+      target.appendChild(item);
+    });
+
+    // Inline SVG images
     this.inlineIncludeImages(container);
   }
 
@@ -488,7 +487,7 @@ class GameToolbar extends HTMLElement {
     }
   }
 
-  update_query_params(changes) {
+  updateQueryParams(changes) {
     if (!changes) return;
     let params = new URLSearchParams(window.location.search);
     Object.keys(changes).forEach((key) => params.set(key, changes[key]));
