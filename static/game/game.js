@@ -1,5 +1,4 @@
 class GameOfLife extends HTMLElement {
-  static engines = [];
   static views = {};
   static addViewType(name, label, icon, viewInit) {
     GameOfLife.views[name] = {
@@ -78,7 +77,10 @@ class GameOfLife extends HTMLElement {
   config() {
     // Check for a specified view type
     this.viewType = this.getAttribute("view");
-    this.engines = GameOfLife.engines || [];
+    this.engineTypes = this.getAttribute("engines");
+    if (this.engineTypes) {
+      this.engines = JSON.parse(this.engineTypes);
+    }
 
     // Parse and evaluate game parameters
     this.start = this.getAttribute("start");
