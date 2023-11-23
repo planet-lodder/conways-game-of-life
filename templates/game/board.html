@@ -6,6 +6,7 @@
 -->
 <script src="/game/core.js"></script>
 <script src="/game/toolbar.js"></script>
+<script src="/game/game.js"></script>
 <script src="/game/views/{{view}}.js"></script>
 <script src="/game/engines/{{engine}}.js"></script>
 
@@ -26,11 +27,6 @@
     show_config: false, 
     started: null,
   }"
->
-  {% include 'game/toolbar.html' %}
-  <div class="flex flex-col flex-1 justify-center">
-    <div class="game-board"></div>
-  </div>
-</game-board>
+>{% include 'game/toolbar.html' %}</game-board>
 
 <!-- {% endif %} -->

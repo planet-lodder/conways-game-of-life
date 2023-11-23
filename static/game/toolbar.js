@@ -4,16 +4,23 @@ class GameToolbar extends HTMLElement {
     customElements.define("game-toolbar", GameToolbar);
   }
 
+  constructor(game) {
+    super();
+    this.game = game;
+  }
+
   connectedCallback() {
     this.render(this);
   }
 
   render(target) {
     target.innerHTML = `
+    <link href="/game/css/toolbar.css" rel="stylesheet" />
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
-    
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
-        ${this.gameEngine()}
+
+        <!-- Game Engine Icon -->
+        <div class="game-engine flex flex-0 pl-1 relative"></div>
     
         <!-- Game Title -->
         <p
@@ -22,14 +29,14 @@ class GameToolbar extends HTMLElement {
         >Game of Life</p>
     
         <!-- Dimentions -->
-        <label class="board-dimentions flex flex-0 py-1.5 text-sm font-thin hidden">
+        <label class="game-dimentions flex flex-0 py-1.5 text-sm font-thin">
           ( <span class="board-width"></span> x <span class="board-height"></span> )
         </label>
     
         <div class="flex flex-1 flex-shrink-0"></div>
     
         <!-- Frames Per Second -->
-        <label class="py-1.5 text-sm font-slim italic">
+        <label class="game-fps-container py-1.5 text-sm font-slim italic">
           <span class="game-fps font-bold">0</span> fps
         </label>
     
@@ -67,7 +74,7 @@ class GameToolbar extends HTMLElement {
           <button
             type="button"
             title="Start Game"
-            class="flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"            
+            class="game-start flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"            
           >
             <img class="include w-6 h-6" src="/icons/play.svg" />
             <span>Start</span>
@@ -75,17 +82,31 @@ class GameToolbar extends HTMLElement {
         </div>
       </div>
     
-      ${this.gameSettings()}      
+      <div class="game-settings flex flex-0 z-20 h-8 -mb-8 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 border-b border-gray-400 dark:border-gray-500"></div>
     </form>
     
   `;
-    this.inlineInclude(target);
+    
+    // Populate the toolbar with its UI elements
+    this.gameEngine(target.querySelector(".game-engine"));
+    this.gameTitle(target.querySelector(".game-title"));
+    this.gameDimentions(target.querySelector(".game-dimentions"));
+    this.gameFpsCounter(target.querySelector(".game-fps-container"));
+    this.gameReset(target.querySelector(".game-revert"));
+    this.gameConfigBtn(target.querySelector(".game-config"));
+    this.gameStartBtn(target.querySelector(".game-start"));
+    this.gameStopBtn(target.querySelector(".game-stop"));
+    this.gameSettings(target.querySelector(".game-settings"));
+
+    // Try and load the SVG images inline, so it can take advantage of styling
+    this.inlineIncludeImages(target);
   }
 
-  
-  gameEngine() {
-    return `
-<div class="flex flex-0 pl-1 relative">
+  gameEngine(container) {
+    if (!container) return;
+
+    // Set the templated content
+    container.innerHTML = `
     <button
         type="button"
         title="Game Engine Settings"
@@ -128,13 +149,47 @@ class GameToolbar extends HTMLElement {
             </a>
         </div>
     </div>
-</div>
 `;
   }
 
-  gameSettings() {
-    return `
-<div class="game-config flex flex-0 z-20 h-8 -mb-8 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 border-b border-gray-400 dark:border-gray-500">
+  gameTitle(container) {
+    if (!container) return;
+    //container.innerHTML = `TODO: Title`;
+  }
+
+  gameDimentions(container) {
+    if (!container) return;
+    container.classList.add("hidden");
+  }
+
+  gameFpsCounter(container) {
+    if (!container) return;
+    container.classList.add("hidden");
+  }
+
+  gameReset(container) {
+    if (!container) return;
+    container.classList.add("hidden");
+  }
+
+  gameConfigBtn(container) {
+    if (!container) return;
+    container.classList.add("hidden");
+  }
+
+  gameStartBtn(container) {
+    if (!container) return;
+    //container.classList.add('hidden')
+  }
+
+  gameStopBtn(container) {
+    if (!container) return;
+    container.classList.add("hidden");
+  }
+
+  gameSettings(container) {
+    if (!container) return;
+    container.innerHTML = `
     <div class="flex w-full relative px-2 space-x-2 border-y-1">
 
       <!-- Set Width -->
@@ -243,11 +298,10 @@ class GameToolbar extends HTMLElement {
         </div>
       </div>
     </div>
-  </div>
 `;
   }
 
-  inlineInclude(target) {
+  inlineIncludeImages(target) {
     let includes = target.querySelectorAll("img.include");
     let loadSVG = async (target, src) => {
       let replace = document.createElement("span");

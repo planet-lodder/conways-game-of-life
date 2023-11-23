@@ -88,7 +88,7 @@ class BenchmarkRenderer extends GameRendererCore {
     if (!this.subtitleSelector) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading benchmark into:", this.root);
+      console.log("Loading benchmark into:", this);
       this.subtitleSelector.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents
@@ -96,7 +96,8 @@ class BenchmarkRenderer extends GameRendererCore {
     }
   }
 
-  createView(config, data) {
+  createView(game, data) {
+    let config = game.config
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
@@ -108,7 +109,7 @@ class BenchmarkRenderer extends GameRendererCore {
     }
 
     let setText = (qry, val) => {
-      let elem = this.root.querySelector(qry);
+      let elem = this.querySelector(qry);
       if (elem) elem.innerHTML = val;
     };
 
@@ -120,9 +121,9 @@ class BenchmarkRenderer extends GameRendererCore {
     }
   }
 
-  updateView(config, data) {
+  updateView(game, data) {
     if (this.fpsTitle) {
-      this.fpsTitle.innerHTML = `Generation: ${config.generation}`;
+      this.fpsTitle.innerHTML = `Generation: ${game.generation}`;
     }
   }
 

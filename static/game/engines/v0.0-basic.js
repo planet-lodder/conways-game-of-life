@@ -1,14 +1,12 @@
 class GameEngine extends GameEngineCore {
-  constructor(view) {
-    super(view);
-  }
-
   load(data) {
     // Set the updated properties given the data
     this.data = data;
 
     // Calculate the new dimentions
-    this.view.createView(this, this.dataMapped(data));
+    if (this.view) {
+      this.view.createView(this, this.dataMapped(data));
+    }
   }
 
   mapData(buffer, width, height) {
@@ -42,10 +40,11 @@ class GameEngine extends GameEngineCore {
   }
 
   dataMapped(data) {
-    let mappedData = Array(this.width * this.height);
-    for (let y = 0; y < this.height; y++) {
-      let offset = y * this.width;
-      for (let x = 0; x < this.width; x++) {
+    let config = this.config
+    let mappedData = Array(config.width * config.height);
+    for (let y = 0; y < config.height; y++) {
+      let offset = y * config.width;
+      for (let x = 0; x < config.width; x++) {
         mappedData[x + offset] = data[x][y];
       }
     }
@@ -53,16 +52,18 @@ class GameEngine extends GameEngineCore {
   }
 
   tick() {
+    let config = this.config
+
     // Start new generation
     this.generation++;
 
     const getValue = (x, y) => {
-      if (!this.wrapped) {
-        if (x < 0 || x >= this.width) return 0;
-        if (y < 0 || y >= this.height) return 0;
+      if (!config.wrapped) {
+        if (x < 0 || x >= config.width) return 0;
+        if (y < 0 || y >= config.height) return 0;
       }
-      x = (x + this.width) % this.width;
-      y = (y + this.height) % this.height;
+      x = (x + config.width) % config.width;
+      y = (y + config.height) % config.height;
       return this.data[x][y];
     };
     const newValue = (x, y) => {
@@ -82,15 +83,17 @@ class GameEngine extends GameEngineCore {
 
     // Calculate for each cell its new value
     let data = []; // New data frame
-    for (let x = 0; x < this.width; x++) {
-      data[x] = Array(this.height);
-      for (let y = 0; y < this.height; y++) {
+    for (let x = 0; x < config.width; x++) {
+      data[x] = Array(config.height);
+      for (let y = 0; y < config.height; y++) {
         data[x][y] = newValue(x, y);
       }
     }
     this.data = data; // Save new data frame
 
     // Paint on screen
-    this.view.updateView(this, this.dataMapped(data));
+    if (this.view) {
+      this.view.updateView(this, this.dataMapped(data));
+    }
   }
 }

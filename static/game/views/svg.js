@@ -39,9 +39,9 @@ class SvgImageRenderer extends GameRendererCore {
 
   setLoading(active, context) {}
 
-  createView(config, data) {}
+  createView(game, data) {}
 
-  updateView(config, data) {}
+  updateView(game, data) {}
 
   updateFPS(fps) {}
 }

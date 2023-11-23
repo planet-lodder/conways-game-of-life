@@ -48,28 +48,13 @@ class GameTickEngineCore {
 }
 
 class GameEngineCore extends GameTickEngineCore {
-  constructor(view) {
-    if (!view) throw new Error("Game 'view' is required");
+  constructor(config, view) {
     super();
 
     // Configure and initialise the component
+    this.config = config || {};
     this.view = view;
-    this.config();
-    this.init();
-  }
-
-  config() {
-    // Load the game settings (by reading attribute vals)
-    let root = this.view.root;
-    if (root) {
-      this.image = root.getAttribute("image");
-      this.title = root.getAttribute("title");
-      this.width = root.getAttribute("width");
-      this.height = root.getAttribute("height");
-      this.scale = root.getAttribute("scale");
-      this.delay = root.getAttribute("delay");
-      this.wrapped = root.getAttribute("wrapped");
-    }
+    //this.init();
   }
 
   init() {
@@ -77,29 +62,30 @@ class GameEngineCore extends GameTickEngineCore {
     this.generation = 0;
 
     // Set view port to 'loading' state
-    this.view.setLoading(true);
+    this.view && this.view.setLoading(true);
 
-    if (this.image) {
+    let config = this.config;
+    if (config.image) {
       // Load the board game data from the source image
-      this.view.loadImage(this.image, (buffer, width, height) => {
+      this.view.loadImage(config.image, (buffer, width, height) => {
         // Parse raw image data into a simple array of 1's and 0's
         let data = this.mapData(buffer, width, height);
-        this.width = width;
-        this.height = height;
-        this.view.setLoading(false);
+        config.width = width;
+        config.height = height;
+        this.view && this.view.setLoading(false);
         this.load(data);
       });
       return; // Wait for image to load and then initialise...
     } else {
       // Set defaults if no image is supplied
-      this.title = this.title || "Blank Canvas";
-      this.width = this.width || 60;
-      this.height = this.height || 40;
-      this.scale = this.scale || 16;
+      config.title = config.title || "Blank Canvas";
+      config.width = config.width || 60;
+      config.height = config.height || 40;
+      config.scale = config.scale || 10;
 
       // Load a blank canvas
-      let data = this.mapData(null, this.width, this.height);
-      this.view.setLoading(false);
+      let data = this.mapData(null, config.width, config.height);
+      this.view && this.view.setLoading(false);
       this.load(data);
     }
   }
@@ -128,7 +114,9 @@ class GameEngineCore extends GameTickEngineCore {
   }
 
   updateFPS(fps) {
-    this.view.updateFPS(fps);
+    if (this.view) {
+      this.view.updateFPS(fps);
+    }
   }
 
   reset() {
@@ -146,7 +134,6 @@ class GameRendererCore extends HTMLElement {
     if (this.constructor == GameRendererCore) {
       throw new Error("Class is of abstract type and can't be instantiated");
     }
-    this.root = this;
     //this.shadow = this.attachShadow({ mode: "open" });
   }
 
@@ -160,15 +147,15 @@ class GameRendererCore extends HTMLElement {
 
   setLoading(active) {}
 
-  createView(config, data) {
+  createView(game, data) {
     throw new Error(
-      "<GameRendererCore>.createView(config, data) not implemented"
+      "<GameRendererCore>.createView(game, data) not implemented"
     );
   }
 
-  updateView(config, data) {
+  updateView(game, data) {
     throw new Error(
-      "<GameRendererCore>.updateView(config, data) not implemented"
+      "<GameRendererCore>.updateView(game, data) not implemented"
     );
   }
 
@@ -197,80 +184,8 @@ class GameRendererCore extends HTMLElement {
     img.style.right = "0";
     img.addEventListener("load", (e) => {
       onLoad(e, img);
-      this.root.removeChild(img);
+      this.removeChild(img);
     });
-    this.root.appendChild(img);
+    this.appendChild(img);
   }
 }
-
-class GameOfLife extends HTMLElement {
-  static views = {};
-  static addViewType(name, label, icon, viewInit) {
-    GameOfLife.views[name] = {
-      label,
-      icon,
-      viewInit,
-    };
-  }
-
-  constructor() {
-    super();
-    //this.shadow = this.attachShadow({ mode: "open" });
-  }
-
-  connectedCallback() {
-    this.config();
-    this.render(this);
-  }
-
-  config() {
-    // Check for a specified view type
-    this.viewType = this.getAttribute("view");
-
-    // Parse and evaluate game parameters
-    this.start = this.getAttribute("start");
-    this.title = this.getAttribute("title");
-    this.image = this.getAttribute("image");
-    this.width = this.getAttribute("width");
-    this.height = this.getAttribute("height");
-    this.scale = this.getAttribute("scale");
-    this.delay = this.getAttribute("delay");
-    this.wrapped = this.getAttribute("wrapped");
-  }
-
-  render(target) {
-    // Define the game board elements
-    let toolbar = new GameToolbar();
-    let view = this.getView(this.viewType);
-    target.appendChild(toolbar);
-    target.appendChild(view);
-
-    if (!this.game) {
-      // Create a new game engine
-      this.game = new GameEngine(view);
-    } else {
-      // Update existing engine
-      this.game.view = view;
-    }
-
-    // Auto start the game (if required)
-    if (this.start) this.game.start();
-  }
-
-  getView(name) {
-    let views = GameOfLife.views;
-    let viewKeys = Object.keys(views || {});
-    if (!viewKeys.length) {
-      throw new Error("No view types registered. Nothing to display");
-    }
-    let viewType = name ? views[name] : views[viewKeys[0]];
-    if (!viewType) {
-      let name = this.view || "default";
-      throw new Error(
-        `Game view type '${name}' not found. Available: ${viewKeys}`
-      );
-    }
-    return viewType.viewInit();
-  }
-}
-customElements.define("game-of-life", GameOfLife);

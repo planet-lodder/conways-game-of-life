@@ -33,7 +33,7 @@ class HtmlDivRenderer extends GameRendererCore {
     if (!this.board) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading board game into:", this.root);
+      console.log("Loading board game into:", this);
       this.board.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents
@@ -41,7 +41,8 @@ class HtmlDivRenderer extends GameRendererCore {
     }
   }
 
-  createView(config, data) {
+  createView(game, data) {
+    let config = game.config
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
@@ -92,7 +93,8 @@ class HtmlDivRenderer extends GameRendererCore {
     }
   }
 
-  updateView(config, data) {
+  updateView(game, data) {
+    let config = game.config
     let total = config.width * config.height;
     for (let i = 0; i < total; i++) {
       let elem = this.canvas[i];
