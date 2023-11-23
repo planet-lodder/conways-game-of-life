@@ -4,7 +4,7 @@ class GameEngine extends GameEngineCore {
     this.data = data;
 
     // Calculate the new dimentions
-    if (this.view) {      
+    if (this.view) {
       this.view.createView(this, this.dataMapped(data));
     }
   }
@@ -49,6 +49,34 @@ class GameEngine extends GameEngineCore {
       }
     }
     return mappedData;
+  }
+
+  resize(width, height) {
+    let config = this.config;
+    if (width < config.width || height < config.height) {
+      // Prompt user before clipping contents
+      if (!confirm("Image will be trucated. Continue?")) return false;
+    }
+
+    let data = this.data;
+    let buffer = Array(width);
+    let offsetX = Math.floor((config.width - width) / 2);
+    let offsetY = Math.floor((config.height - height) / 2);
+    for (let x = 0; x < width; x++) {
+      buffer[x] = Array(height);
+      for (let y = 0; y < height; y++) {
+        let dx = offsetX + x;
+        let dy = offsetY + y;
+        if (0 <= dx && dx < config.width && 0 <= dy && dy < config.height) {
+          buffer[x][y] = data[dx][dy];
+        }
+      }
+    }
+    console.log(buffer);
+    // Trigger a reload of the view
+    config.width = width;
+    config.height = height;
+    this.dataLoaded(buffer);
   }
 
   tick() {
