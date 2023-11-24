@@ -7,10 +7,19 @@ class GameOfLife extends HTMLElement {
       viewInit,
     };
   }
+  static get observedAttributes() {
+    return ["width", "height"];
+  }
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "open" });
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === null) return
+    console.log(`Changed: ${name}`, [oldValue, newValue]);
+    //this[name] = newValue;
+    //this.render();
   }
 
   connectedCallback() {
@@ -128,7 +137,6 @@ class GameOfLife extends HTMLElement {
   setView(viewType) {
     let oldView = this.game.view;
     let newView = this.getView(viewType);
-    console.log(newView, oldView);
     if (newView && oldView) {
       oldView.parentElement.replaceChild(newView, oldView);
       this.game.view = newView;
