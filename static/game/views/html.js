@@ -38,12 +38,26 @@ class HtmlDivRenderer extends GameRendererCore {
     // Create the board game contents
     target.innerHTML = `
     <link href="/game/css/board.css" rel="stylesheet" />
-    <div class="game-container flex flex-col flex-1 justify-center" style="height: 100%">
-      <div class="game-board" style="height: 100%"></div>
+    <div class="game-container flex flex-col flex-1 justify-center" style="position: relative; height: 100%">      
+      <svg class="game-grid" style="position: absolute; left:0; top:0; right:0 bottom:0;" width="100%" height="100%" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+            <path d="M 1 0 L 0 0 0 1" fill="none" stroke="#8884" stroke-width="0.125"/>
+          </pattern>
+          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+            <rect width="10" height="10" fill="url(#smallGrid)"/>
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#8884" stroke-width="0.25"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />          
+      </svg>
+      <div class="game-board"></div>
+      
     </div>
 `;
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
+    this.grid = target.querySelector(".game-grid");
     this.container = target.querySelector(".game-container");
     this.updateTheme();
   }
@@ -66,12 +80,17 @@ class HtmlDivRenderer extends GameRendererCore {
     let height = config.height;
     let scale = config.scale || 1;
 
+    if (this.grid) {
+      this.grid.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    }
+
     let board = this.board;
     if (!board) return;
-    
+
     // Set the board dimentions
     board.style["min-width"] = `${width * scale}px`;
     board.style["min-height"] = `${height * scale}px`;
+    board.style["aspect-ratio"] = `${width} / ${height}`
 
     // Create the canvas to visualise the data
     this.width = width;

@@ -14,11 +14,16 @@
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
+  outline: solid 1px #88888866;
+  outline-width: 0.5;
   min-width: 1px;
   min-height: 1px;
 }
 .game-board .row [value]:hover {
   cursor: pointer;
+}
+.game-board .row [value="0"] {
+  outline: solid 1px #aaaaaa22;
 }
 .game-board .row [value="0"]:hover {
   background-color: #aaaaaa44;
@@ -27,6 +32,9 @@
   background-color: #000000;
 }
 
+.dark .game-board .row [value] {
+  outline: solid 1px #88888822;
+}
 .dark .game-board .row [value="0"]:hover {
   background-color: #aaaaaa44;
 }
