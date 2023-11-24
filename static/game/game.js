@@ -10,7 +10,7 @@ class GameOfLife extends HTMLElement {
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "open" });
+    //this.shadow = this.attachShadow({ mode: "open" });    
   }
 
   connectedCallback() {

@@ -122,7 +122,7 @@ wing:
   title: Ship Wing
   group: ships
   image: /game/presets/ships/wing.gif
-  scale: 4
+  scale: 6
   delay: 5
   wrapped: true
 slopuf:

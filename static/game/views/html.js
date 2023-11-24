@@ -10,6 +10,12 @@ class HtmlDivRenderer extends GameRendererCore {
     );
   }
 
+  constructor() {
+    super();
+    //this.shadow = this.attachShadow({ mode: "open" });
+    //this.root = this.shadow;
+  }
+
   render(target) {
     let toolbar = target.querySelector(".game-toolbar");
 
@@ -41,7 +47,7 @@ class HtmlDivRenderer extends GameRendererCore {
   }
 
   createView(game, data) {
-    let config = game.config
+    let config = game.config;
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
@@ -91,7 +97,7 @@ class HtmlDivRenderer extends GameRendererCore {
   }
 
   updateView(game, data) {
-    let config = game.config
+    let config = game.config;
     let total = config.width * config.height;
     for (let i = 0; i < total; i++) {
       let elem = this.canvas[i];

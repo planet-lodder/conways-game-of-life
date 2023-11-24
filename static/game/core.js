@@ -198,10 +198,11 @@ class GameRendererCore extends HTMLElement {
       throw new Error("Class is of abstract type and can't be instantiated");
     }
     //this.shadow = this.attachShadow({ mode: "open" });
+    this.root = this
   }
 
   connectedCallback() {
-    this.render(this);
+    this.render(this.root);
   }
 
   render(target) {
