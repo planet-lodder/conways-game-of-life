@@ -82,6 +82,7 @@ class SvgImageRenderer extends GameRendererCore {
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
     this.cells = target.querySelector(".game-cells");
+    this.updateTheme();
   }
 
   setLoading(active, context) {}
