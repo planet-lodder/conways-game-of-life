@@ -15,9 +15,23 @@ class HtmlDivRenderer extends GameRendererCore {
     this.shadow = this.attachShadow({ mode: "closed" });
     this.root = this.shadow;
 
-    this.addEventListener("game:fps", (e) => {
-      this.updateTheme();
+    // Track if and when dark mode changes occur
+    this.observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (
+          mutation.type !== "attributes" ||
+          mutation.attributeName !== "class"
+        ) {
+          return;
+        }
+        this.updateTheme();
+      }
     });
+    this.observer.observe(document.body, { attributes: true });
+  }
+
+  disconnectedCallback() {
+    this.observer.disconnect();
   }
 
   render(target) {
@@ -99,7 +113,6 @@ class HtmlDivRenderer extends GameRendererCore {
         this.canvas[x + y * width] = cellElem;
       }
     }
-    this.updateTheme();
   }
 
   updateView(game, data) {

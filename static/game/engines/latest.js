@@ -15,6 +15,16 @@ class GameEngine extends GameEngineCore {
     // Start new generation
     this.generation++;
 
+    const getValue = (x, y) => {
+      if (!config.wrapped) {
+        if (x < 0 || x >= config.width) return 0;
+        if (y < 0 || y >= config.height) return 0;
+      }
+      x = (x + config.width) % config.width;
+      y = (y + config.height) % config.height;
+      return this.data[x + y * config.width];
+    };
+
     const newValueIndexed = (i) => {
       let x = i % config.width;
       let y = Math.floor(i / config.width);
@@ -22,17 +32,34 @@ class GameEngine extends GameEngineCore {
       let val = data[i]; // Get current value
 
       // Check each neighbor cell and count them
+      let count = 0;
       let topLeft = x - 1 + (y - 1) * config.width;
       let bottomLeft = topLeft + 2 * config.width;
-      let count =
-        data[topLeft] +
-        data[topLeft + 1] +
-        data[topLeft + 2] +
-        data[i - 1] +
-        data[i + 1] +
-        data[bottomLeft] +
-        data[bottomLeft + 1] +
-        data[bottomLeft + 2];
+      let w = config.width - 1;
+      let h = config.height - 1;
+      if (0 < x && x < w && 0 < y && y < h) {
+        // Normal case, not close to an adge (no overflow)
+        count =
+          data[topLeft] +
+          data[topLeft + 1] +
+          data[topLeft + 2] +
+          data[i - 1] +
+          data[i + 1] +
+          data[bottomLeft] +
+          data[bottomLeft + 1] +
+          data[bottomLeft + 2];
+      } else {
+        // Edge case: count cells on the edge
+        count =
+          getValue(x - 1, y - 1) +
+          getValue(x, y - 1) +
+          getValue(x + 1, y - 1) +
+          getValue(x - 1, y) +
+          getValue(x + 1, y) +
+          getValue(x - 1, y + 1) +
+          getValue(x, y + 1) +
+          getValue(x + 1, y + 1);
+      }
 
       if (count == 3) return 1; // Cell is alive if count exactly 3
       if (count == 2 && val) return 1; // Cell stays alive if 2 neighbors
