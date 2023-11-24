@@ -38,8 +38,8 @@ class HtmlDivRenderer extends GameRendererCore {
     // Create the board game contents
     target.innerHTML = `
     <link href="/game/css/board.css" rel="stylesheet" />
-    <div class="game-container flex flex-col flex-1 justify-center">
-      <div class="game-board"></div>
+    <div class="game-container flex flex-col flex-1 justify-center" style="height: 100%">
+      <div class="game-board" style="height: 100%"></div>
     </div>
 `;
     // Get a refference to the board game elements

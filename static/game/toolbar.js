@@ -447,8 +447,7 @@ class GameToolbar extends HTMLElement {
       this.show_views = false;
 
       // Create and attach the new view
-      let newView = info.viewInit ? info.viewInit() : null;
-      this.parent.game.setView(newView);
+      this.parent.setView(key);
 
       // Update the menu to show new selected item
       current = key;

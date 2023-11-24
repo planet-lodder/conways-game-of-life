@@ -170,16 +170,6 @@ class GameEngineCore extends GameTickEngineCore {
     this.dataLoaded(buffer);
   }
 
-  setView(view) {
-    let oldView = this.view;
-    let newView = view;
-    if (newView && oldView) {
-      oldView.parentElement.replaceChild(newView, oldView);
-      this.view = newView;
-      this.dataLoaded(this.data);
-    }
-  }
-
   reset() {
     this.clear();
     this.init(this.config);

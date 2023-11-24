@@ -10,7 +10,7 @@ class GameOfLife extends HTMLElement {
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "open" });    
+    //this.shadow = this.attachShadow({ mode: "open" });
   }
 
   connectedCallback() {
@@ -120,7 +120,20 @@ class GameOfLife extends HTMLElement {
         `Game view type '${name}' not found. Available: ${viewKeys}`
       );
     }
-    return viewType.viewInit();
+    let view = viewType.viewInit();
+    view.classList.add("h-full");
+    return view;
+  }
+
+  setView(viewType) {
+    let oldView = this.game.view;
+    let newView = this.getView(viewType);
+    console.log(newView, oldView);
+    if (newView && oldView) {
+      oldView.parentElement.replaceChild(newView, oldView);
+      this.game.view = newView;
+      this.game.dataLoaded(this.game.data);
+    }
   }
 }
 customElements.define("game-of-life", GameOfLife);
