@@ -35,8 +35,6 @@ class HtmlDivRenderer extends GameRendererCore {
   }
 
   render(target) {
-    let toolbar = target.querySelector(".game-toolbar");
-
     // Create the board game contents
     target.innerHTML = `
     <link href="/game/css/board.css" rel="stylesheet" />
@@ -44,13 +42,10 @@ class HtmlDivRenderer extends GameRendererCore {
       <div class="game-board"></div>
     </div>
 `;
-
-    // Add back the original toolbar (if found)
-    if (toolbar) target.insertBefore(toolbar, target.firstChild);
-
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
     this.container = target.querySelector(".game-container");
+    this.updateTheme();
   }
 
   setLoading(active) {
@@ -77,14 +72,6 @@ class HtmlDivRenderer extends GameRendererCore {
     // Set the board dimentions
     board.style["min-width"] = `${width * scale}px`;
     board.style["min-height"] = `${height * scale}px`;
-
-    let setText = (qry, val) => {
-      let elem = document.querySelector(qry);
-      if (elem) elem.innerHTML = val;
-    };
-
-    setText(".board-width", width);
-    setText(".board-height", height);
 
     // Create the canvas to visualise the data
     this.width = width;
