@@ -237,7 +237,7 @@ class GameToolbar extends HTMLElement {
         item.setAttribute("role", "menuitem");
         item.className = style;
         item.onclick = () => {
-          this.update_query_params({ engine: id });
+          this.updateQueryParams({ engine: id }, true);
           this.gameEnginesMenu.classList.add("hidden");
         };
         item.innerHTML = `
@@ -442,27 +442,50 @@ class GameToolbar extends HTMLElement {
         }
       });
 
-    // Attach the menu items for all the registered view types
-    Object.keys(views).forEach((key) => {
+    let menuItemClick = (key, info) => {
+      this.updateQueryParams({ view: key }, false);
+      this.show_views = false;
+
+      // Create and attach the new view
+      let newView = info.viewInit ? info.viewInit() : null;
+      this.parent.game.setView(newView);
+
+      // Update the menu to show new selected item
+      current = key;
+      menuItemsRecreate();
+
+      // Update the menu to show newly seleted menu its
+      if (viewMenuWindow) viewMenuWindow.classList.add("hidden");
+    };
+
+    let menuItemCreate = (key) => {
       let info = views[key];
       let css = current == key ? styles + styleSelected : styles;
       let target = key == "benchmark" ? viewMenuBottom : viewMenuContent;
       let item = document.createElement("A");
+
       item.setAttribute("role", "menuitem");
       item.className = css;
-      item.addEventListener("click", () => {
-        this.updateQueryParams({ view: key });
-        this.show_views = false;
-      });
+      item.addEventListener("click", () => menuItemClick(key, info));
       item.innerHTML = `
-      <img class="include w-6 h-6" src="${info.icon}" />
-      <span class="py-0.5">${info.label}</span>
-      `;
+        <img class="include w-6 h-6" src="${info.icon}" />
+        <span class="py-0.5">${info.label}</span>
+        `;
+
       target.appendChild(item);
-    });
+    };
+
+    // Attach the menu items for all the registered view types
+    let menuItemsRecreate = () => {
+      viewMenuContent.innerHTML = "";
+      viewMenuBottom.innerHTML = "";
+      Object.keys(views).forEach(menuItemCreate);
+      this.inlineIncludeImages(container);
+    };
+    menuItemsRecreate();
 
     // Inline SVG images
-    this.inlineIncludeImages(container);
+    //this.inlineIncludeImages(container);
   }
 
   inlineIncludeImages(target) {
@@ -487,11 +510,11 @@ class GameToolbar extends HTMLElement {
     }
   }
 
-  updateQueryParams(changes) {
+  updateQueryParams(changes, reload = false) {
     if (!changes) return;
     let params = new URLSearchParams(window.location.search);
     Object.keys(changes).forEach((key) => params.set(key, changes[key]));
     history.pushState(null, null, "?" + params.toString());
-    window.location.reload();
+    if (reload) window.location.reload();
   }
 }

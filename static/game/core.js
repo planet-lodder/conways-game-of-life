@@ -88,7 +88,7 @@ class GameEngineCore extends GameTickEngineCore {
     }
   }
 
-  dataLoaded(data) {
+  dataLoaded(data) {    
     console.log(
       "Creating game board...",
       [this.config.width, this.config.height],
@@ -168,6 +168,16 @@ class GameEngineCore extends GameTickEngineCore {
     config.width = width;
     config.height = height;
     this.dataLoaded(buffer);
+  }
+
+  setView(view) {
+    let oldView = this.view;
+    let newView = view;
+    if (newView && oldView) {
+      oldView.parentElement.replaceChild(newView, oldView);
+      this.view = newView;
+      this.dataLoaded(this.data);
+    }
   }
 
   reset() {
