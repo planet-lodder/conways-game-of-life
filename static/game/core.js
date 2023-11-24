@@ -223,8 +223,6 @@ class GameRendererCore extends HTMLElement {
     );
   }
 
-  updateFPS(fps) {}
-
   loadImage(src, callback) {
     let onLoad = (evt, target) => {
       const img = target;

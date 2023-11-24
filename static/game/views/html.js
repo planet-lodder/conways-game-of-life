@@ -12,8 +12,12 @@ class HtmlDivRenderer extends GameRendererCore {
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "open" });
-    //this.root = this.shadow;
+    this.shadow = this.attachShadow({ mode: "closed" });
+    this.root = this.shadow;
+
+    this.addEventListener("game:fps", (e) => {
+      this.updateTheme();
+    });
   }
 
   render(target) {
@@ -22,7 +26,7 @@ class HtmlDivRenderer extends GameRendererCore {
     // Create the board game contents
     target.innerHTML = `
     <link href="/game/css/board.css" rel="stylesheet" />
-    <div class="flex flex-col flex-1 justify-center">
+    <div class="game-container flex flex-col flex-1 justify-center">
       <div class="game-board"></div>
     </div>
 `;
@@ -32,6 +36,7 @@ class HtmlDivRenderer extends GameRendererCore {
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
+    this.container = target.querySelector(".game-container");
   }
 
   setLoading(active) {
@@ -94,6 +99,7 @@ class HtmlDivRenderer extends GameRendererCore {
         this.canvas[x + y * width] = cellElem;
       }
     }
+    this.updateTheme();
   }
 
   updateView(game, data) {
@@ -104,6 +110,15 @@ class HtmlDivRenderer extends GameRendererCore {
       if (elem) {
         elem.setAttribute("value", data[i] || 0);
       }
+    }
+  }
+
+  updateTheme() {
+    if (!this.container) return;
+    if (document.body.classList.contains("dark")) {
+      this.container.classList.add("dark");
+    } else {
+      this.container.classList.remove("dark");
     }
   }
 
