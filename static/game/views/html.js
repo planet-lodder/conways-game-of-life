@@ -68,7 +68,7 @@ class HtmlDivRenderer extends GameRendererCore {
 
     let board = this.board;
     if (!board) return;
-
+    
     // Set the board dimentions
     board.style["min-width"] = `${width * scale}px`;
     board.style["min-height"] = `${height * scale}px`;
