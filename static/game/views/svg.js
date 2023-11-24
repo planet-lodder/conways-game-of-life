@@ -12,8 +12,8 @@ class SvgImageRenderer extends GameRendererCore {
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "closed" });
-    //this.root = this.shadow;
+    this.shadow = this.attachShadow({ mode: "closed" });
+    this.root = this.shadow;
 
     // Track if and when dark mode changes occur
     this.observer = new MutationObserver((mutationsList) => {
@@ -35,11 +35,11 @@ class SvgImageRenderer extends GameRendererCore {
   }
   
   updateTheme() {
-    if (!this.container) return;
+    if (!this.board) return;
     if (document.body.classList.contains("dark")) {
-      this.container.classList.add("dark");
+      this.board.classList.add("dark");
     } else {
-      this.container.classList.remove("dark");
+      this.board.classList.remove("dark");
     }
   }
 
