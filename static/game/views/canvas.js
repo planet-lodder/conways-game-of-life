@@ -12,8 +12,6 @@ class ImageCanvasRenderer extends GameRendererCore {
 
   constructor() {
     super();
-    //this.shadow = this.attachShadow({ mode: "closed" });
-    //this.root = this.shadow;
 
     // Track if and when dark mode changes occur
     this.observer = new MutationObserver((mutationsList) => {
@@ -132,17 +130,6 @@ class ImageCanvasRenderer extends GameRendererCore {
         if (data[x + offset]) {
           context.fillRect(x * scale, y * scale, scale, scale);
         }
-      }
-    }
-    return;
-
-    let config = game.config;
-    let total = config.width * config.height;
-    for (let i = 0; i < total; i++) {
-      let rect = this.canvas[i];
-      let val = data[i];
-      if (rect) {
-        rect.style.display = val ? "" : "none";
       }
     }
   }
