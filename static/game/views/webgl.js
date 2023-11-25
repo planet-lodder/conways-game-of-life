@@ -50,29 +50,11 @@ class WebGLRenderer extends GameRendererCore {
     // Create the board game contents
     target.innerHTML = `
 <style>
-  .game-board {}  
-  .game-cells {
-    fill: #000;
-  }
-  .dark .game-cells {
-    fill: #FFF;
+  .game-board {
+    width: 100%;
+    height: 100%;
   }
 </style>
-<script id="shaderVs" type="x-shader/x-vertex">
-    attribute vec4 a_Position;
-    attribute vec4 a_Color;
-    varying highp vec4 v_Color;
-    void main() {
-        gl_Position = a_Position;
-        v_Color = a_Color;
-    }
-</script>
-<script id="shaderFs" type="x-shader/x-fragment">
-    varying highp vec4 v_Color;
-    void main() {
-        gl_FragColor = v_Color;
-    }
-</script>
 <div class="flex flex-col justify-start">
     <div class="flex flex-col flex-1 justify-center relative">                
         <svg class="game-board" width="100%" height="100%" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
@@ -170,8 +152,19 @@ class WebGLRenderer extends GameRendererCore {
     }
 
     // Init shaders
-    var vs = this.root.querySelector("#shaderVs").innerHTML;
-    var fs = this.root.querySelector("#shaderFs").innerHTML;
+    let vs = `
+    attribute vec4 a_Position;
+    attribute vec4 a_Color;
+    varying highp vec4 v_Color;
+    void main() {
+        gl_Position = a_Position;
+        v_Color = a_Color;
+    }`;
+    let fs = `
+    varying highp vec4 v_Color;
+    void main() {
+      gl_FragColor = v_Color;
+    }`;
     if (!this.initShaders(gl, vs, fs)) {
       console.log("Failed to intialize shaders.");
       return null;
@@ -180,12 +173,12 @@ class WebGLRenderer extends GameRendererCore {
   }
 
   initShaders(gl, vs_source, fs_source) {
+    // Create program
+    var glProgram = gl.createProgram();
+
     // Compile shaders
     var vertexShader = this.makeShader(gl, vs_source, gl.VERTEX_SHADER);
     var fragmentShader = this.makeShader(gl, fs_source, gl.FRAGMENT_SHADER);
-
-    // Create program
-    var glProgram = gl.createProgram();
 
     // Attach and link shaders to the program
     gl.attachShader(glProgram, vertexShader);
@@ -241,21 +234,12 @@ class WebGLRenderer extends GameRendererCore {
       }
     }
 
-    // Create and attack all vertices to the scene
-    let vertices = new Float32Array(points);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-    let vertexPosAttr = gl.getAttribLocation(gl.program, "a_Position");
-    gl.enableVertexAttribArray(vertexPosAttr);
-    gl.vertexAttribPointer(vertexPosAttr, dim, gl.FLOAT, false, 0, 0);
+    // Create and attach all point vertices for the scene
+    this.applyBuffer(gl, "a_Position", points);
 
     // Define all the colors for each point
-    let colors = new Float32Array(Array(width * height * 3).fill(this.color));
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
-    let vertexColorAttr = gl.getAttribLocation(gl.program, "a_Color");
-    gl.enableVertexAttribArray(vertexColorAttr);
-    gl.vertexAttribPointer(vertexColorAttr, dim, gl.FLOAT, false, 0, 0);
+    // TODO: Use static - vec4(1.0, 1.0, 1.0, 1.0);
+    this.applyBuffer(gl, "a_Color", Array(width * height * 3).fill(this.color));
 
     // Set Indices to draw the triangles over selected cells
     let indexBuffer = new Uint16Array(indices);
@@ -264,10 +248,30 @@ class WebGLRenderer extends GameRendererCore {
     this.n = indexBuffer.length;
   }
 
+  applyBuffer(gl, attribName, values) {
+    // Create a buffer for the square's positions.
+    let dim = 3;
+    let buffer = gl.createBuffer();
+    let vertexAttr = gl.getAttribLocation(gl.program, attribName);
+
+    // Select the positionBuffer as the one to apply buffer
+    // operations to from here out.
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    // Now pass the list of positions into WebGL to build the
+    // shape. We do this by creating a Float32Array from the
+    // JavaScript array, then use it to fill the current buffer.
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(values), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(vertexAttr);
+    gl.vertexAttribPointer(vertexAttr, dim, gl.FLOAT, false, 0, 0);
+
+    return buffer;
+  }
+
   drawScene(gl) {
     let n = this.n;
     let type = gl.UNSIGNED_SHORT;
-    //const ext = gl.getExtension("OES_element_index_uint");    
+    //const ext = gl.getExtension("OES_element_index_uint");
     //if (ext) type = gl.UNSIGNED_INT;
     gl.drawElements(gl.TRIANGLES, n, type, 0);
   }
