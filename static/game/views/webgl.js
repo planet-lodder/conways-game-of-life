@@ -122,10 +122,7 @@ class WebGLRenderer extends GameRendererCore {
     }
 
     // Clear the canvas and recreate scene
-    this.clearCanvas(this.gl);
     this.createScene(this.gl, width, height, data);
-
-    // Draw the scene once
     this.drawScene(this.gl);
   }
 
@@ -135,10 +132,7 @@ class WebGLRenderer extends GameRendererCore {
     let height = game.config.height;
 
     // Clear the canvas and recreate scene
-    this.clearCanvas(this.gl);
     this.createScene(this.gl, width, height, data);
-
-    // Draw the scene once
     this.drawScene(this.gl);
   }
 
@@ -207,11 +201,6 @@ class WebGLRenderer extends GameRendererCore {
     return shader;
   }
 
-  clearCanvas(gl) {
-    gl.clearColor(0.0, 0.0, 0.0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-  }
-
   createScene(gl, width, height, data) {
     let dim = 3;
     let points = [];
@@ -235,35 +224,40 @@ class WebGLRenderer extends GameRendererCore {
     }
 
     // Create and attach all point vertices for the scene
-    this.applyBuffer(gl, "a_Position", points);
+    this.applyBuffer(gl, points, "a_Position");
 
     // Define all the colors for each point
     // TODO: Use static - vec4(1.0, 1.0, 1.0, 1.0);
-    this.applyBuffer(gl, "a_Color", Array(width * height * 3).fill(this.color));
+    let colors = Array(width * height * 3).fill(this.color);
+    this.applyBuffer(gl, colors, "a_Color");
 
     // Set Indices to draw the triangles over selected cells
     let indexBuffer = new Uint16Array(indices);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBuffer, gl.STATIC_DRAW);
+    this.applyBuffer(gl, indices);
     this.n = indexBuffer.length;
   }
 
-  applyBuffer(gl, attribName, values) {
+  applyBuffer(gl, values, bindAttr, callback) {
     // Create a buffer for the square's positions.
     let dim = 3;
     let buffer = gl.createBuffer();
-    let vertexAttr = gl.getAttribLocation(gl.program, attribName);
 
     // Select the positionBuffer as the one to apply buffer
     // operations to from here out.
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-
-    // Now pass the list of positions into WebGL to build the
-    // shape. We do this by creating a Float32Array from the
-    // JavaScript array, then use it to fill the current buffer.
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(values), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(vertexAttr);
-    gl.vertexAttribPointer(vertexAttr, dim, gl.FLOAT, false, 0, 0);
+
+    if (bindAttr) {
+      let vertexAttr = gl.getAttribLocation(gl.program, bindAttr);
+      gl.enableVertexAttribArray(vertexAttr);
+      gl.vertexAttribPointer(vertexAttr, dim, gl.FLOAT, false, 0, 0);
+    }
+
+    if (callback) {
+      callback(buffer);
+    }
 
     return buffer;
   }
@@ -273,6 +267,17 @@ class WebGLRenderer extends GameRendererCore {
     let type = gl.UNSIGNED_SHORT;
     //const ext = gl.getExtension("OES_element_index_uint");
     //if (ext) type = gl.UNSIGNED_INT;
+
+    // Enablke 3D depth tests
+    //gl.enable(gl.DEPTH_TEST); // Enable depth testing
+    //gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+
+    // Clear canvas before drawing
+    gl.clearColor(0.0, 0.0, 0.0, 0);
+    gl.clearDepth(1.0); // Clear everything
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // Draw the elements to the screen
     gl.drawElements(gl.TRIANGLES, n, type, 0);
   }
 }
