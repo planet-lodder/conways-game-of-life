@@ -35,11 +35,14 @@ class WebGLRenderer extends GameRendererCore {
   updateTheme() {
     if (!this.board) return;
     if (document.body.classList.contains("dark")) {
-      this.fill = "#FFF";
+      this.color = 1.0;
       this.board.classList.add("dark");
     } else {
-      this.fill = "#000";
+      this.color = 0.0;
       this.board.classList.remove("dark");
+    }
+    if (this.game && this.data) {
+      this.createView(this.game, this.data);
     }
   }
 
@@ -64,7 +67,6 @@ class WebGLRenderer extends GameRendererCore {
         v_Color = a_Color;
     }
 </script>
-
 <script id="shaderFs" type="x-shader/x-fragment">
     varying highp vec4 v_Color;
     void main() {
@@ -84,9 +86,12 @@ class WebGLRenderer extends GameRendererCore {
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />          
-        </svg>        
+        </svg>
         <div class="absolute left-0 top-0 right-0 bottom-0">
           <canvas class="game-canvas" style="width:100%; height:100%" width="460" height="314"></canvas>
+          <div class="not-supported hidden flex flex-1 h-full text-center text-3xl items-center justify-center">
+            WebGL not supported by your browser.
+          <div>
         </div>
     </div> 
 </div>
@@ -95,6 +100,7 @@ class WebGLRenderer extends GameRendererCore {
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
     this.canvas = target.querySelector(".game-canvas");
+    this.unsupported = target.querySelector(".not-supported");
     this.updateTheme();
   }
 
@@ -105,9 +111,14 @@ class WebGLRenderer extends GameRendererCore {
     let width = config.width;
     let height = config.height;
     let scale = config.scale || 1;
-
     let board = this.board;
     if (!board) return;
+
+    // Remember game settings
+    this.game = game;
+    this.data = data;
+    this.width = width;
+    this.height = height;
 
     // Set the board dimentions
     board.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -121,133 +132,143 @@ class WebGLRenderer extends GameRendererCore {
 
     // Initialize the GL context
     // Only continue if WebGL is available and working
-    let gl = this.canvas.getContext("webgl");
-    if (gl === null) {
-      alert("Unable to initialize WebGL. Your browser may not support it.");
+    this.gl = this.initWebGL(this.canvas);
+    if (this.gl === null) {
+      if (this.canvas) this.canvas.classList.add("hidden");
+      if (this.unsupported) this.unsupported.classList.remove("hidden");
       return;
     }
 
-    // Clear the color buffer with specified clear color
-    gl.clearColor(0.0, 0.0, 0.0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    for (let y = 0; y < height; y++) {
-      let offset = y * width;
-      for (let x = 0; x < width; x++) {
-        if (data[x + offset]) {          
-          //context.fillRect(x * scale, y * scale, scale, scale);
-        }
-      }
-    }
+    // Clear the canvas and recreate scene
+    this.clearCanvas(this.gl);
+    this.createScene(this.gl, width, height, data);
 
-    // Init shaders
-    var vs = this.root.querySelector('#shaderVs').innerHTML;
-    var fs = this.root.querySelector('#shaderFs').innerHTML;
-    if (!initShaders(gl, vs, fs)) {
-        console.log('Failed to intialize shaders.');
-        return;
-    }
-
-    function initBuffers(gl) {
-      // Vertices
-      var dim = 3;
-      var vertices = new Float32Array([
-          -0.6, -0.6, 0.0, // 0
-          -0.6, 0.6, 0.0, // 1
-          0.6, 0.6, 0.0, // 2
-          0.6, -0.6, 0.0, // 3
-      ]);
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-      var vertexPositionAttribute = gl.getAttribLocation(gl.program, "a_Position");
-      gl.enableVertexAttribArray(vertexPositionAttribute);
-      gl.vertexAttribPointer(vertexPositionAttribute, dim, gl.FLOAT, false, 0, 0);
-
-      // Colors
-      var colors = new Float32Array([
-          1.0, 1.0, 1.0,
-          1.0, 1.0, 1.0,
-          1.0, 1.0, 1.0,
-          1.0, 1.0, 1.0,
-      ]);
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
-      var vertexColorAttribute = gl.getAttribLocation(gl.program, "a_Color");
-      gl.enableVertexAttribArray(vertexColorAttribute);
-      gl.vertexAttribPointer(vertexColorAttribute, dim, gl.FLOAT, false, 0, 0);
-
-      // Indices
-      var indices = new Uint16Array([
-          0, 1, 2,
-          0, 2, 3,
-      ]);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-
-      // Return number of vertices
-      return indices.length;
-    }
-
-    function initShaders(gl, vs_source, fs_source) {
-      // Compile shaders
-      var vertexShader = makeShader(gl, vs_source, gl.VERTEX_SHADER);
-      var fragmentShader = makeShader(gl, fs_source, gl.FRAGMENT_SHADER);
-
-      // Create program
-      var glProgram = gl.createProgram();
-
-      // Attach and link shaders to the program
-      gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader);
-      gl.linkProgram(glProgram);
-      if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
-          alert("Unable to initialize the shader program");
-          return false;
-      }
-
-      // Use program
-      gl.useProgram(glProgram);
-      gl.program = glProgram;
-
-      return true;
-  }
-
-  function makeShader(gl, src, type) {
-      var shader = gl.createShader(type);
-      gl.shaderSource(shader, src);
-      gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          alert("Error compiling shader: " + gl.getShaderInfoLog(shader));
-          return;
-      }
-      return shader;
-  }
-
-    // Init buffers
-    var n = initBuffers(gl);
-    if (n < 0) {
-        console.log('Failed to init buffers');
-        return;
-    }
-
-    // Draw
-    gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_SHORT, 0);
+    // Draw the scene once
+    this.drawScene(this.gl);
   }
 
   updateView(game, data) {
     if (!this.canvas) return;
     let width = game.config.width;
     let height = game.config.height;
-    let scale = game.config.scale || 1;
-    //let context = this.canvas.getContext("2d");
-    //context.fillStyle = this.fill;
-    //context.clearRect(0, 0, width * scale, height * scale);
-    //for (let y = 0; y < height; y++) {
-    //  let offset = y * width;
-    //  for (let x = 0; x < width; x++) {
-    //    if (data[x + offset]) {
-    //      context.fillRect(x * scale, y * scale, scale, scale);
-    //    }
-    //  }
-    //}
+
+    // Clear the canvas and recreate scene
+    this.clearCanvas(this.gl);
+    this.createScene(this.gl, width, height, data);
+
+    // Draw the scene once
+    this.drawScene(this.gl);
+  }
+
+  initWebGL(canvas) {
+    let gl = canvas.getContext("webgl");
+    if (gl === null) {
+      console.warn(
+        "Unable to initialize WebGL. Your browser may not support it."
+      );
+      return null;
+    }
+
+    // Init shaders
+    var vs = this.root.querySelector("#shaderVs").innerHTML;
+    var fs = this.root.querySelector("#shaderFs").innerHTML;
+    if (!this.initShaders(gl, vs, fs)) {
+      console.log("Failed to intialize shaders.");
+      return null;
+    }
+    return gl;
+  }
+
+  initShaders(gl, vs_source, fs_source) {
+    // Compile shaders
+    var vertexShader = this.makeShader(gl, vs_source, gl.VERTEX_SHADER);
+    var fragmentShader = this.makeShader(gl, fs_source, gl.FRAGMENT_SHADER);
+
+    // Create program
+    var glProgram = gl.createProgram();
+
+    // Attach and link shaders to the program
+    gl.attachShader(glProgram, vertexShader);
+    gl.attachShader(glProgram, fragmentShader);
+    gl.linkProgram(glProgram);
+    if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
+      alert("Unable to initialize the shader program");
+      return false;
+    }
+
+    // Use program
+    gl.useProgram(glProgram);
+    gl.program = glProgram;
+
+    return true;
+  }
+
+  makeShader(gl, src, type) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, src);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      alert("Error compiling shader: " + gl.getShaderInfoLog(shader));
+      return;
+    }
+    return shader;
+  }
+
+  clearCanvas(gl) {
+    gl.clearColor(0.0, 0.0, 0.0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }
+
+  createScene(gl, width, height, data) {
+    let dim = 3;
+    let points = [];
+    let indices = [];
+
+    // Create the buffer of artifacts to render in the scene
+    for (let y = 0; y < height; y++) {
+      let dy = -2 * (y / this.height) + 1;
+      for (let x = 0; x < width; x++) {
+        let dx = 2 * (x / this.width) - 1;
+        // Add point to pint array
+        points.push(dx, dy, 0);
+
+        // Check if the cell is to be drawn
+        if (data[x + y * width]) {
+          let from = x + y * width;
+          let ends = x + 1 + (y + 1) * width;
+          indices.push(from, from + 1, ends, from, ends - 1, ends);
+        }
+      }
+    }
+
+    // Create and attack all vertices to the scene
+    let vertices = new Float32Array(points);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    let vertexPosAttr = gl.getAttribLocation(gl.program, "a_Position");
+    gl.enableVertexAttribArray(vertexPosAttr);
+    gl.vertexAttribPointer(vertexPosAttr, dim, gl.FLOAT, false, 0, 0);
+
+    // Define all the colors for each point
+    let colors = new Float32Array(Array(width * height * 3).fill(this.color));
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
+    let vertexColorAttr = gl.getAttribLocation(gl.program, "a_Color");
+    gl.enableVertexAttribArray(vertexColorAttr);
+    gl.vertexAttribPointer(vertexColorAttr, dim, gl.FLOAT, false, 0, 0);
+
+    // Set Indices to draw the triangles over selected cells
+    let indexBuffer = new Uint16Array(indices);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBuffer, gl.STATIC_DRAW);
+    this.n = indexBuffer.length;
+  }
+
+  drawScene(gl) {
+    let n = this.n;
+    let type = gl.UNSIGNED_SHORT;
+    //const ext = gl.getExtension("OES_element_index_uint");    
+    //if (ext) type = gl.UNSIGNED_INT;
+    gl.drawElements(gl.TRIANGLES, n, type, 0);
   }
 }
