@@ -21,8 +21,8 @@ class BenchmarkRenderer extends GameRendererCore {
     // Create the board game contents
     target.innerHTML = `
 <link href="/game/css/benchmark.css" rel="stylesheet" />
-<div class="flex flex-col flex-1 justify-center">
-  <div class="flex flex-col w-full mx-auto space-y-2 text-center">
+<div class="flex flex-col flex-1 justify-center justify-items-center items-center">
+  <div class="game-board flex flex-col w-full mx-auto space-y-2 text-center justify-center items-center">
     <div class="metric w-full">
       <svg viewBox="0 0 1000 500">
         <path d="M 950 500 A 450 450 0 0 0 50 500"></path>
@@ -48,35 +48,7 @@ class BenchmarkRenderer extends GameRendererCore {
           Press Start
         </text>
       </svg>
-    </div>
-    <!--
-    <div
-      class="benchmark-timeline max-w-96 w-full h-20 space-x-1 flex flex-0 justify-end items-end border border-gray-200 dark:border-gray-700"
-    >
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-16 w-2 bg-blue-500"></div>
-      <div class="h-12 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-24 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-      <div class="h-20 w-2 bg-blue-500"></div>
-    </div>
-    -->
+    </div>    
     <h4 class="benchmark-subtitle text-2xl font-bold dark:text-white"></h4>
   </div>
 </div>
