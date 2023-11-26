@@ -422,7 +422,9 @@ class GameToolbar extends HTMLElement {
     let container = this.querySelector(".game-views");
     if (!container) return;
 
-    let current = new URLSearchParams(window.location.search).get("view");
+    let current =
+      this.parent.viewType ||
+      new URLSearchParams(window.location.search).get("view");
     let styles =
       "flex space-x-2 px-2 py-1 cursor-pointer text-sm bg-white hover:bg-gray-100 dark:bg-gray-700 hover:dark:bg-gray-600";
     let styleSelected = "font-bold text-gray-900 dark:text-white";
