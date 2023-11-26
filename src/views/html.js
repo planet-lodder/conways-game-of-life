@@ -40,7 +40,43 @@ export class HtmlDivRenderer extends GameRendererCore {
   render(target) {
     // Create the board game contents
     target.innerHTML = `
-    <link href="/game/css/board.css" rel="stylesheet" />
+    <style>
+      .game-board {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .game-board .row {
+        display: flex;
+        flex-grow: 1;
+      }
+      .game-board .row [value] {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+        min-width: 1px;
+        min-height: 1px;
+      }
+      .game-board .row [value]:hover {
+        cursor: pointer;
+      }
+      .game-board .row [value="0"]:hover {
+        background-color: #aaaaaa44;
+      }
+      .game-board .row [value="1"] {
+        background-color: #000000;
+      }
+      
+      .dark .game-board .row [value="0"]:hover {
+        background-color: #aaaaaa44;
+      }
+      .dark .game-board .row [value="1"] {
+        background-color: #ffffff;
+      }
+    </style>
     <div class="game-container flex flex-col flex-1 justify-center" style="position: relative; height: 100%">      
       <svg class="game-grid" style="position: absolute; left:0; top:0; right:0 bottom:0;" width="100%" height="100%" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -93,7 +129,7 @@ export class HtmlDivRenderer extends GameRendererCore {
     // Set the board dimentions
     board.style["min-width"] = `${width * scale}px`;
     board.style["min-height"] = `${height * scale}px`;
-    board.style["aspect-ratio"] = `${width} / ${height}`
+    board.style["aspect-ratio"] = `${width} / ${height}`;
 
     // Create the canvas to visualise the data
     this.width = width;

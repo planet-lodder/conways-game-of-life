@@ -8,8 +8,8 @@
   "main": "index.js",
   "module": "index.js",
   "exports": {
-    ".": "./index.js",
-    "./game-of-life.js": "./game-of-life.js"
+    ".": "./src/index.js",
+    "./game-of-life.js": "./src/web-component.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",

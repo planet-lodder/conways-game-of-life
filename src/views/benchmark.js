@@ -23,7 +23,29 @@ export class BenchmarkRenderer extends GameRendererCore {
   render(target) {
     // Create the board game contents
     target.innerHTML = `
-<link href="/game/css/benchmark.css" rel="stylesheet" />
+<style>
+  .metric svg {
+    width: 100%;
+  }
+
+  .metric path {
+    stroke-width: 75;
+    stroke: #ecf0f1;
+    fill: none;
+  }
+
+  .metric text {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .metric path.data-arc {
+    stroke: #3498db;
+  }
+
+  .metric text {
+    fill: #3498db;
+  }
+</style>
 <div class="flex flex-col flex-1 justify-center justify-items-center items-center">
   <div class="game-board flex flex-col w-full mx-auto space-y-2 text-center justify-center items-center">
     <div class="metric w-full">
