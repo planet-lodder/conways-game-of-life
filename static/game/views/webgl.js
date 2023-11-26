@@ -149,15 +149,12 @@ class WebGLRenderer extends GameRendererCore {
     let vs = `
     attribute vec4 a_Position;
     attribute vec4 a_Color;
-    varying highp vec4 v_Color;
     void main() {
         gl_Position = a_Position;
-        v_Color = a_Color;
     }`;
     let fs = `
-    varying highp vec4 v_Color;
     void main() {
-      gl_FragColor = v_Color;
+      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }`;
     if (!this.initShaders(gl, vs, fs)) {
       console.log("Failed to intialize shaders.");
@@ -226,11 +223,6 @@ class WebGLRenderer extends GameRendererCore {
     // Create and attach all point vertices for the scene
     this.applyBuffer(gl, points, "a_Position");
 
-    // Define all the colors for each point
-    // TODO: Use static - vec4(1.0, 1.0, 1.0, 1.0);
-    let colors = Array(width * height * 3).fill(this.color);
-    this.applyBuffer(gl, colors, "a_Color");
-
     // Set Indices to draw the triangles over selected cells
     let indexBuffer = new Uint16Array(indices);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
@@ -265,12 +257,14 @@ class WebGLRenderer extends GameRendererCore {
   drawScene(gl) {
     let n = this.n;
     let type = gl.UNSIGNED_SHORT;
+
+    // TODO: Support larger indexed buffer sizes
     //const ext = gl.getExtension("OES_element_index_uint");
     //if (ext) type = gl.UNSIGNED_INT;
 
-    // Enablke 3D depth tests
-    //gl.enable(gl.DEPTH_TEST); // Enable depth testing
-    //gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+    // Enable 3D depth tests
+    gl.enable(gl.DEPTH_TEST); // Enable depth testing
+    gl.depthFunc(gl.LEQUAL); // Near things obscure far things
 
     // Clear canvas before drawing
     gl.clearColor(0.0, 0.0, 0.0, 0);
@@ -278,6 +272,19 @@ class WebGLRenderer extends GameRendererCore {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Draw the elements to the screen
+    //gl.drawArrays(gl.TRIANGLES, 0, n);
     gl.drawElements(gl.TRIANGLES, n, type, 0);
+  }
+
+  tickAction(game, callback) {
+    // Redraw scene using WebGL
+    this.drawScene(this.gl);
+    if (callback) callback();
+
+    // Trigger the next frame
+    requestAnimationFrame(() => {
+      if (!game.config.started) return;
+      this.tickAction(game, callback);
+    });
   }
 }

@@ -18,8 +18,15 @@ class GameTickEngineCore {
     console.log("Starting the game...");
     this.delay = delay || this.delay || 0;
     this.generation = 0;
-    this.intv = setInterval(() => this.tick(), this.delay);
     this.trackFPS(); // Compute the fps each second
+    if (!this.delay && this.view && this.view.tickAction) {
+      // Delegate frame renders to the view (eg: WebGL)
+      this.intv = -1;
+      this.view.tickAction(this, () => this.tick());
+    } else {
+      // Render frames (possilybly rate limited)
+      this.intv = setInterval(() => this.tick(), this.delay);
+    }
   }
 
   stop() {
@@ -38,8 +45,8 @@ class GameTickEngineCore {
         return;
       }
       let newCount = this.generation;
-      let diffFPS = newCount - oldCount;
-      this.updateFPS(diffFPS);
+      let fps = newCount - oldCount;
+      this.updateFPS(fps);
       oldCount = newCount;
     }, 1000);
   }
@@ -88,7 +95,7 @@ class GameEngineCore extends GameTickEngineCore {
     }
   }
 
-  dataLoaded(data) {    
+  dataLoaded(data) {
     console.log(
       "Creating game board...",
       [this.config.width, this.config.height],
@@ -188,7 +195,7 @@ class GameRendererCore extends HTMLElement {
       throw new Error("Class is of abstract type and can't be instantiated");
     }
     //this.shadow = this.attachShadow({ mode: "open" });
-    this.root = this
+    this.root = this;
   }
 
   connectedCallback() {
