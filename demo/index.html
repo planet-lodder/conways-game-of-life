@@ -23,13 +23,11 @@
     <script>
       htmx.config.useTemplateFragments = true;
     </script>
-    <script type="module">
-      import '../src/web-component.js';      
-    </script>
   </head>
   <body>
     <!-- Load script to toggle dark mode before loading content (avoids flashing of dark mode) -->
     <script src="/static/js/dark-mode.js"></script>
+    <script src="/static/game/js/game-of-life.js"></script>
 
     <!-- Main template -->
     <div

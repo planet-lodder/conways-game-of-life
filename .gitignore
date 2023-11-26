@@ -24,3 +24,5 @@ __pycache__
 
 storybook-static
 custom-elements.json
+
+static/**/js/*.map
