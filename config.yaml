@@ -1,0 +1,32 @@
+title: Conway's Game of Life
+baseURL: ""
+theme: github.com/CaiJimmy/hugo-theme-stack
+  #- github.com/adityatelange/hugo-PaperMod
+  #- github.com/Club404/theme
+  #- github.com/theNewDynamic/gohugo-theme-ananke
+  #- github.com/panr/hugo-theme-terminal
+  #- github.com/adityatelange/hugo-PaperMod
+  #- github.com/CaiJimmy/hugo-theme-stack
+
+menu:
+  main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 10
+    - identifier: game
+      name: Game
+      url: /game-of-life/
+      weight: 20
+
+params:
+  # Define the default author
+  author: Johnathan Lodder
+  authorimage: https://avatars.githubusercontent.com/u/141126234?s=200&v=4
+
+  # Params required by terminal
+  fullWidthTheme: false
+  centerTheme: true
+  styles:
+    build: true
+  scripts: {}

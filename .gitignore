@@ -25,4 +25,9 @@ __pycache__
 storybook-static
 custom-elements.json
 
+.hugo_build.lock
+public/
+resources/_gen
 static/**/js/*.map
+.task/checksum
+.task/temp
