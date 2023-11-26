@@ -1,10 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   entry: {
+    core: "./src/core.js",
     index: "./src/index.js",
     "game-of-life": "./src/web-component.js",
   },
