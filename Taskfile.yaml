@@ -40,6 +40,8 @@ tasks:
         read tag
         git tag $tag 
         git push origin --tags
+      - npm login
+      - npm publish --access=public
 
   # Clean out all and any untracked data (incl. git changed files)
   clean: git clean -fdX
