@@ -1,0 +1,45 @@
+# ------------------------------------------------------------
+# This project is powered by: https://taskfile.dev
+# ------------------------------------------------------------
+version: 3
+env: # <-- Project Configuration (required ENV vars)
+  PUBLISH_REPO: git@github.com:planet-lodder/planet-lodder.github.io.git
+  PUBLISH_TEMP: ./temp/web
+tasks:
+  init:
+    desc: Install and required dependencies
+    sources:
+      - config.yaml
+      - go.mod
+      - go.sum
+    generates:
+      - resources/
+    cmds:
+      - "[ -f go.mod ] || go mod init main"
+      - hugo mod get -u
+
+  build:
+    desc: Build the website and save the output in `public/`
+    deps: [init]
+    cmds:
+      - yarn build
+      - hugo --minify
+
+  start:
+    desc: Run the server locally
+    deps: [init]
+    cmds:
+      - hugo server -s .
+
+  publish: 
+    desc: Publish the latest website from `public/`
+    deps: [build]
+    cmds:
+      - |-
+        printf "Release (%s): " $(git tag | tail -n 1)
+        read tag
+        git tag $tag 
+        git push origin --tags
+
+  # Clean out all and any untracked data (incl. git changed files)
+  clean: git clean -fdX

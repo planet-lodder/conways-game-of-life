@@ -1,1 +1,33 @@
 __pycache__
+
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/node_modules/
+/npm-debug.log
+
+## testing
+/coverage/
+
+## temp folders
+/.tmp/
+
+# build
+/_site/
+/dist/
+/out-tsc/
+
+storybook-static
+custom-elements.json
+
+.hugo_build.lock
+public/
+resources/_gen
+static/**/js/*.map
+.task/checksum
+.task/temp

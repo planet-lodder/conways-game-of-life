@@ -5,6 +5,7 @@
 {% set engines = engines if engines else [] %}
 {% if preset %}
 -->
+<!--
 <script src="/game/core.js"></script>
 <script src="/game/toolbar.js"></script>
 <script src="/game/game.js"></script>
@@ -14,6 +15,8 @@
 <script src="/game/views/webgl.js"></script>
 <script src="/game/views/benchmark.js"></script>
 <script src="/game/engines/{{engine}}.js"></script>
+-->
+<script src="/game/js/game-of-life.js"></script>
 <game-of-life
   class="flex flex-col flex-1 justify-start"
   view="{{view}}"

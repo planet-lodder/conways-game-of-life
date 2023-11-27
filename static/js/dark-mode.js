@@ -3,7 +3,6 @@ let stored = (k) => localStorage.getItem(k);
 let stores = (k, v) => localStorage.setItem(k, v);
 
 // Set tailwid darkmode to be driven off a classname
-if (tailwind) tailwind.config = { darkMode: "class" };
 if (isDarkMode()) document.body.classList.add("dark");
 
 function isDarkMode() {
@@ -40,7 +39,7 @@ function bindDarkModeButton() {
   let themeToggleBtn = get("theme-toggle");
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", toggleDarkMode);
-  }
+  }  
 }
 
 function toggleDarkMode() {
@@ -64,7 +63,7 @@ function toggleDarkMode() {
 }
 
 // Bind dark mode as soon as possible
-addEventListener("DOMContentLoaded", (event) => initDarkMode());
+addEventListener("DOMContentLoaded", () => initDarkMode());
 
 // Set dark mode toggle only when page has loaded
-addEventListener("load", (event) => bindDarkModeButton());
+addEventListener("load", () => bindDarkModeButton());

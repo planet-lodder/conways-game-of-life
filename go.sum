@@ -1,0 +1,10 @@
+github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible h1:HOf88geWucQwmTmNCFgHNidVTXjv9jLz3UA72gyFQTE=
+github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible/go.mod h1:Tacngkxf7u2kfufDzxoX7yqktykqc/Vi1LwJOHGE6Nw=
+github.com/Club404/theme v0.0.0-20230820111906-5dcc5a07f653 h1:A85vzbqg/GvwtS4Xxl0OrYDPlMY1PkzdTEpu7kxlTqs=
+github.com/Club404/theme v0.0.0-20230820111906-5dcc5a07f653/go.mod h1:cvo626EvjwdoqvwwlQoqIke56hnI1E6px4YncE72lgw=
+github.com/adityatelange/hugo-PaperMod v0.0.0-20231125123631-b288ede80cbd h1:p8a6Mp9l7T3Ak+ai1TRTysTxoKGwBbvVIlo6it0oGNo=
+github.com/adityatelange/hugo-PaperMod v0.0.0-20231125123631-b288ede80cbd/go.mod h1:HCHxNMKYdGafUYjVV3ICiAqznZK2yH0iI53jqcDFDdQ=
+github.com/panr/hugo-theme-terminal v2.1.0+incompatible h1:oSqo5Q4lWiIcBDFaASgrCEdXaEtH43foBd/ti21MEGE=
+github.com/panr/hugo-theme-terminal v2.1.0+incompatible/go.mod h1:kiO0NHUXPNrG6BFRlat5jc078p3e1f2sLlpt0a23MEY=
+github.com/theNewDynamic/gohugo-theme-ananke v0.0.0-20231122160523-91df000ca827 h1:70DjvollwE7ZTbgF0E9hsR/cBYrNLwv59UaOb16Tm5c=
+github.com/theNewDynamic/gohugo-theme-ananke v0.0.0-20231122160523-91df000ca827/go.mod h1:yY14BLqqh5G61rO81YcJKMHY1rClY5iIiUK+K2JKSUM=
