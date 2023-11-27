@@ -4,10 +4,11 @@
   "license": "MIT",
   "author": "game-of-life",
   "version": "0.0.0",
+  "private": true,
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/planet-lodder/conways-game-of-life"
+    "url": "git+https://github.com/planet-lodder/conways-game-of-life.git"
   },
   "exports": {
     ".": "./src/index.js",
