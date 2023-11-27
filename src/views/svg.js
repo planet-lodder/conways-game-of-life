@@ -1,5 +1,6 @@
 import { GameRendererCore } from "../core.js";
 import { GameOfLife } from "../game.js";
+import ViewIcon from '../../static/icons/svg.svg'
 
 export class SvgImageRenderer extends GameRendererCore {
   static {
@@ -8,7 +9,7 @@ export class SvgImageRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "svg",
       "SVG Image",
-      "/icons/svg.svg",
+      () => ViewIcon,
       () => new SvgImageRenderer()
     );
   }

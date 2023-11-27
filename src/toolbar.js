@@ -1,5 +1,12 @@
 import { GameOfLife } from "./game.js";
 
+import IconCPU from "../static/icons/cpu.svg";
+import IconRevert from "../static/icons/revert.svg";
+import IconConfig from "../static/icons/gears.svg";
+import IconStop from "../static/icons/stop.svg";
+import IconStart from "../static/icons/play.svg";
+import IconEllipse from "../static/icons/ellipsis-vertical.svg";
+
 export class GameToolbar extends HTMLElement {
   static {
     // Register custom HTML element
@@ -39,7 +46,7 @@ export class GameToolbar extends HTMLElement {
         text-decoration: none;
         box-shadow: none;
       }
-    </style>    
+    </style>
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
 
@@ -71,7 +78,7 @@ export class GameToolbar extends HTMLElement {
             title="Reset Game"
             class="game-reset flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500 hidden"
           >
-            <img class="include w-6 h-6" src="/icons/revert.svg" />
+            ${IconRevert}
           </button>
           <!-- Game Config -->
           <button
@@ -79,7 +86,7 @@ export class GameToolbar extends HTMLElement {
             title="Game Settings"
             class="game-config flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500"            
           >
-            <img class="include w-6 h-6" src="/icons/gears.svg" />
+            ${IconConfig}
           </button>
         </div>
     
@@ -90,7 +97,7 @@ export class GameToolbar extends HTMLElement {
             title="Stop Game"
             class="game-stop flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 hidden"
           >
-            <img class="include w-6 h-6" src="/icons/stop.svg" />
+            ${IconStop}
             <span>Stop</span>
           </button>
 
@@ -100,7 +107,7 @@ export class GameToolbar extends HTMLElement {
             title="Start Game"
             class="game-start flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"            
           >
-            <img class="include w-6 h-6" src="/icons/play.svg" />
+            ${IconStart}
             <span>Start</span>
           </button>
         </div>
@@ -196,7 +203,7 @@ export class GameToolbar extends HTMLElement {
         type="button"
         class="game-engines-btn p-2 -m-2 cursor-default"
     >
-        <img class="include w-6 h-6" src="/icons/cpu.svg" />
+        ${IconCPU}
     </button>
     <div class="game-engines-menu hidden absolute origin-top-left left-0 z-30 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700">
         <div
@@ -251,7 +258,7 @@ export class GameToolbar extends HTMLElement {
           this.gameEnginesMenu.classList.add("hidden");
         };
         item.innerHTML = `
-            <img class="include w-6 h-6" src="/icons/cpu.svg" />
+            ${IconCPU}
             <span class="py-0.5">${id}</span>
         `;
 
@@ -401,7 +408,7 @@ export class GameToolbar extends HTMLElement {
             title="View Options"
             class="game-views-btn px-2 -mx-2"
           >
-            <img class="include w-6 h-6" src="/icons/ellipsis-vertical.svg" />
+            ${IconEllipse}
           </button>
           <div
             id="dropdown-menu"
@@ -454,7 +461,7 @@ export class GameToolbar extends HTMLElement {
         }
       });
 
-    let menuItemClick = (key, info) => {
+    let menuItemClick = (key) => {
       this.updateQueryParams({ view: key }, false);
       this.show_views = false;
 
@@ -474,12 +481,16 @@ export class GameToolbar extends HTMLElement {
       let css = current == key ? styles + styleSelected : styles;
       let target = key == "benchmark" ? viewMenuBottom : viewMenuContent;
       let item = document.createElement("A");
+      let icon =
+        typeof info.icon === "function"
+          ? info.icon()
+          : `<img class="include w-6 h-6" src="${info.icon}" />`;
 
       item.setAttribute("role", "menuitem");
       item.className = css;
-      item.addEventListener("click", () => menuItemClick(key, info));
+      item.addEventListener("click", () => menuItemClick(key));
       item.innerHTML = `
-        <img class="include w-6 h-6" src="${info.icon}" />
+        ${icon}
         <span class="py-0.5">${info.label}</span>
         `;
 
@@ -494,9 +505,6 @@ export class GameToolbar extends HTMLElement {
       this.inlineIncludeImages(container);
     };
     menuItemsRecreate();
-
-    // Inline SVG images
-    //this.inlineIncludeImages(container);
   }
 
   inlineIncludeImages(target) {

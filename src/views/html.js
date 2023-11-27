@@ -1,5 +1,6 @@
 import { GameRendererCore } from "../core.js";
 import { GameOfLife } from "../game.js";
+import ViewIcon from '../../static/icons/html.svg'
 
 export class HtmlDivRenderer extends GameRendererCore {
   static {
@@ -8,7 +9,7 @@ export class HtmlDivRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "html",
       "HTML Divs",
-      "/icons/html.svg",
+      () => ViewIcon,
       () => new HtmlDivRenderer()
     );
   }

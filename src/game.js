@@ -25,7 +25,7 @@ export class GameOfLife extends HTMLElement {
     ];
   }
 
-  constructor() {
+  constructor() {    
     super();
   }
 

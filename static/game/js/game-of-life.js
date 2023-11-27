@@ -1,6 +1,115 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./static/icons/benchmark.svg":
+/*!************************************!*\
+  !*** ./static/icons/benchmark.svg ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/canvas.svg":
+/*!*********************************!*\
+  !*** ./static/icons/canvas.svg ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/cpu.svg":
+/*!******************************!*\
+  !*** ./static/icons/cpu.svg ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/ellipsis-vertical.svg":
+/*!********************************************!*\
+  !*** ./static/icons/ellipsis-vertical.svg ***!
+  \********************************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/gears.svg":
+/*!********************************!*\
+  !*** ./static/icons/gears.svg ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z\"></path><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/gpu.svg":
+/*!******************************!*\
+  !*** ./static/icons/gpu.svg ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/html.svg":
+/*!*******************************!*\
+  !*** ./static/icons/html.svg ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/play.svg":
+/*!*******************************!*\
+  !*** ./static/icons/play.svg ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = "<svg class=\"w-6 h-6\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z\" clip-rule=\"evenodd\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/revert.svg":
+/*!*********************************!*\
+  !*** ./static/icons/revert.svg ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/stop.svg":
+/*!*******************************!*\
+  !*** ./static/icons/stop.svg ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\" class=\"w-6 h-6\"><path fill-rule=\"evenodd\" d=\"M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z\" clip-rule=\"evenodd\"></path></svg>"
+
+/***/ }),
+
+/***/ "./static/icons/svg.svg":
+/*!******************************!*\
+  !*** ./static/icons/svg.svg ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z\"></path></svg>"
+
+/***/ }),
 
 /***/ "./src/core.js":
 /*!*********************!*\
@@ -8,6 +117,7 @@
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameEngineCore: () => (/* binding */ GameEngineCore),
@@ -274,6 +384,7 @@ class GameRendererCore extends HTMLElement {
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameEngine: () => (/* binding */ GameEngine)
@@ -372,6 +483,7 @@ class GameEngine extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameEngineCore {
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameOfLife: () => (/* binding */ GameOfLife)
@@ -405,7 +517,7 @@ class GameOfLife extends HTMLElement {
     ];
   }
 
-  constructor() {
+  constructor() {    
     super();
   }
 
@@ -624,6 +736,7 @@ class GameOfLife extends HTMLElement {
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BenchmarkRenderer: () => (/* reexport safe */ _views_benchmark_js__WEBPACK_IMPORTED_MODULE_4__.BenchmarkRenderer),
@@ -667,11 +780,31 @@ __webpack_require__.r(__webpack_exports__);
   \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GameToolbar: () => (/* binding */ GameToolbar)
 /* harmony export */ });
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_cpu_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../static/icons/cpu.svg */ "./static/icons/cpu.svg");
+/* harmony import */ var _static_icons_cpu_svg__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_static_icons_cpu_svg__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _static_icons_revert_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../static/icons/revert.svg */ "./static/icons/revert.svg");
+/* harmony import */ var _static_icons_revert_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_revert_svg__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _static_icons_gears_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../static/icons/gears.svg */ "./static/icons/gears.svg");
+/* harmony import */ var _static_icons_gears_svg__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_static_icons_gears_svg__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _static_icons_stop_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../static/icons/stop.svg */ "./static/icons/stop.svg");
+/* harmony import */ var _static_icons_stop_svg__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_static_icons_stop_svg__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _static_icons_play_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../static/icons/play.svg */ "./static/icons/play.svg");
+/* harmony import */ var _static_icons_play_svg__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_static_icons_play_svg__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _static_icons_ellipsis_vertical_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../static/icons/ellipsis-vertical.svg */ "./static/icons/ellipsis-vertical.svg");
+/* harmony import */ var _static_icons_ellipsis_vertical_svg__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_static_icons_ellipsis_vertical_svg__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
 
 
 class GameToolbar extends HTMLElement {
@@ -713,7 +846,7 @@ class GameToolbar extends HTMLElement {
         text-decoration: none;
         box-shadow: none;
       }
-    </style>    
+    </style>
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
 
@@ -745,7 +878,7 @@ class GameToolbar extends HTMLElement {
             title="Reset Game"
             class="game-reset flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500 hidden"
           >
-            <img class="include w-6 h-6" src="/icons/revert.svg" />
+            ${(_static_icons_revert_svg__WEBPACK_IMPORTED_MODULE_2___default())}
           </button>
           <!-- Game Config -->
           <button
@@ -753,7 +886,7 @@ class GameToolbar extends HTMLElement {
             title="Game Settings"
             class="game-config flex flex-1 space-x-2 items-center justify-center text-gray-400 dark:text-gray-500"            
           >
-            <img class="include w-6 h-6" src="/icons/gears.svg" />
+            ${(_static_icons_gears_svg__WEBPACK_IMPORTED_MODULE_3___default())}
           </button>
         </div>
     
@@ -764,7 +897,7 @@ class GameToolbar extends HTMLElement {
             title="Stop Game"
             class="game-stop flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 hidden"
           >
-            <img class="include w-6 h-6" src="/icons/stop.svg" />
+            ${(_static_icons_stop_svg__WEBPACK_IMPORTED_MODULE_4___default())}
             <span>Stop</span>
           </button>
 
@@ -774,7 +907,7 @@ class GameToolbar extends HTMLElement {
             title="Start Game"
             class="game-start flex flex-1 space-x-2 items-center justify-center text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"            
           >
-            <img class="include w-6 h-6" src="/icons/play.svg" />
+            ${(_static_icons_play_svg__WEBPACK_IMPORTED_MODULE_5___default())}
             <span>Start</span>
           </button>
         </div>
@@ -870,7 +1003,7 @@ class GameToolbar extends HTMLElement {
         type="button"
         class="game-engines-btn p-2 -m-2 cursor-default"
     >
-        <img class="include w-6 h-6" src="/icons/cpu.svg" />
+        ${(_static_icons_cpu_svg__WEBPACK_IMPORTED_MODULE_1___default())}
     </button>
     <div class="game-engines-menu hidden absolute origin-top-left left-0 z-30 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700">
         <div
@@ -925,7 +1058,7 @@ class GameToolbar extends HTMLElement {
           this.gameEnginesMenu.classList.add("hidden");
         };
         item.innerHTML = `
-            <img class="include w-6 h-6" src="/icons/cpu.svg" />
+            ${(_static_icons_cpu_svg__WEBPACK_IMPORTED_MODULE_1___default())}
             <span class="py-0.5">${id}</span>
         `;
 
@@ -1075,7 +1208,7 @@ class GameToolbar extends HTMLElement {
             title="View Options"
             class="game-views-btn px-2 -mx-2"
           >
-            <img class="include w-6 h-6" src="/icons/ellipsis-vertical.svg" />
+            ${(_static_icons_ellipsis_vertical_svg__WEBPACK_IMPORTED_MODULE_6___default())}
           </button>
           <div
             id="dropdown-menu"
@@ -1128,7 +1261,7 @@ class GameToolbar extends HTMLElement {
         }
       });
 
-    let menuItemClick = (key, info) => {
+    let menuItemClick = (key) => {
       this.updateQueryParams({ view: key }, false);
       this.show_views = false;
 
@@ -1148,12 +1281,16 @@ class GameToolbar extends HTMLElement {
       let css = current == key ? styles + styleSelected : styles;
       let target = key == "benchmark" ? viewMenuBottom : viewMenuContent;
       let item = document.createElement("A");
+      let icon =
+        typeof info.icon === "function"
+          ? info.icon()
+          : `<img class="include w-6 h-6" src="${info.icon}" />`;
 
       item.setAttribute("role", "menuitem");
       item.className = css;
-      item.addEventListener("click", () => menuItemClick(key, info));
+      item.addEventListener("click", () => menuItemClick(key));
       item.innerHTML = `
-        <img class="include w-6 h-6" src="${info.icon}" />
+        ${icon}
         <span class="py-0.5">${info.label}</span>
         `;
 
@@ -1168,9 +1305,6 @@ class GameToolbar extends HTMLElement {
       this.inlineIncludeImages(container);
     };
     menuItemsRecreate();
-
-    // Inline SVG images
-    //this.inlineIncludeImages(container);
   }
 
   inlineIncludeImages(target) {
@@ -1213,12 +1347,16 @@ class GameToolbar extends HTMLElement {
   \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BenchmarkRenderer: () => (/* binding */ BenchmarkRenderer)
 /* harmony export */ });
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/core.js");
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_benchmark_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../static/icons/benchmark.svg */ "./static/icons/benchmark.svg");
+/* harmony import */ var _static_icons_benchmark_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_benchmark_svg__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -1229,7 +1367,7 @@ class BenchmarkRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRender
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "benchmark",
       "Run Benchmark",
-      "/icons/benchmark.svg",
+      () => (_static_icons_benchmark_svg__WEBPACK_IMPORTED_MODULE_2___default()),
       () => new BenchmarkRenderer()
     );
   }
@@ -1425,12 +1563,16 @@ class BenchmarkRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRender
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ImageCanvasRenderer: () => (/* binding */ ImageCanvasRenderer)
 /* harmony export */ });
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/core.js");
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_canvas_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../static/icons/canvas.svg */ "./static/icons/canvas.svg");
+/* harmony import */ var _static_icons_canvas_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_canvas_svg__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -1441,7 +1583,7 @@ class ImageCanvasRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRend
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "canvas",
       "Image Canvas",
-      "/icons/canvas.svg",
+      () => (_static_icons_canvas_svg__WEBPACK_IMPORTED_MODULE_2___default()),
       () => new ImageCanvasRenderer()
     );
   }
@@ -1580,12 +1722,16 @@ class ImageCanvasRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRend
   \***************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HtmlDivRenderer: () => (/* binding */ HtmlDivRenderer)
 /* harmony export */ });
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/core.js");
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_html_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../static/icons/html.svg */ "./static/icons/html.svg");
+/* harmony import */ var _static_icons_html_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_html_svg__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -1596,7 +1742,7 @@ class HtmlDivRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRenderer
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "html",
       "HTML Divs",
-      "/icons/html.svg",
+      () => (_static_icons_html_svg__WEBPACK_IMPORTED_MODULE_2___default()),
       () => new HtmlDivRenderer()
     );
   }
@@ -1801,12 +1947,16 @@ class HtmlDivRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRenderer
   \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   SvgImageRenderer: () => (/* binding */ SvgImageRenderer)
 /* harmony export */ });
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/core.js");
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_svg_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../static/icons/svg.svg */ "./static/icons/svg.svg");
+/* harmony import */ var _static_icons_svg_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_svg_svg__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -1817,7 +1967,7 @@ class SvgImageRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendere
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "svg",
       "SVG Image",
-      "/icons/svg.svg",
+      () => (_static_icons_svg_svg__WEBPACK_IMPORTED_MODULE_2___default()),
       () => new SvgImageRenderer()
     );
   }
@@ -1958,12 +2108,16 @@ class SvgImageRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendere
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   WebGLRenderer: () => (/* binding */ WebGLRenderer)
 /* harmony export */ });
 /* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core.js */ "./src/core.js");
 /* harmony import */ var _game_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game.js */ "./src/game.js");
+/* harmony import */ var _static_icons_gpu_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../static/icons/gpu.svg */ "./static/icons/gpu.svg");
+/* harmony import */ var _static_icons_gpu_svg__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_icons_gpu_svg__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -1974,7 +2128,7 @@ class WebGLRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendererCo
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "webgl",
       "WebGL (GPU)",
-      "/icons/gpu.svg",
+      () => (_static_icons_gpu_svg__WEBPACK_IMPORTED_MODULE_2___default()),
       () => new WebGLRenderer()
     );
   }
@@ -2288,6 +2442,18 @@ class WebGLRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendererCo
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -2318,8 +2484,9 @@ class WebGLRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendererCo
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
 /*!******************************!*\
   !*** ./src/web-component.js ***!
   \******************************/

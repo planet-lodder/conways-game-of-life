@@ -1,5 +1,6 @@
 import { GameRendererCore } from "../core.js";
 import { GameOfLife } from "../game.js";
+import ViewIcon from '../../static/icons/benchmark.svg'
 
 export class BenchmarkRenderer extends GameRendererCore {
   static {
@@ -8,7 +9,7 @@ export class BenchmarkRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "benchmark",
       "Run Benchmark",
-      "/icons/benchmark.svg",
+      () => ViewIcon,
       () => new BenchmarkRenderer()
     );
   }
