@@ -8,7 +8,7 @@ module.exports = {
   entry: {
     core: "./src/core.js",
     index: "./src/index.js",
-    "game-of-life": "./src/web-component.js",
+    "web-component": "./src/web-component.js",
   },
   devtool: "source-map",
   output: {

@@ -39,8 +39,10 @@ tasks:
         printf "Release (%s): " $(git tag | tail -n 1)
         read tag
         git tag $tag 
-        git push origin --tags
-      - npm login
+        git push origin --tags        
+        jq '.version="'$tag'"' package.json > package.json.tmp
+        mv package.json.tmp package.json
+      #- npm login
       - npm publish --access=public
 
   # Clean out all and any untracked data (incl. git changed files)
