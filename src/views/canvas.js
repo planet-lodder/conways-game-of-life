@@ -8,7 +8,7 @@ export class ImageCanvasRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "canvas",
       "Image Canvas",
-      "icons/canvas.svg",
+      "/icons/canvas.svg",
       () => new ImageCanvasRenderer()
     );
   }

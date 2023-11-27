@@ -709,7 +709,11 @@ class GameToolbar extends HTMLElement {
       img.include {
         opacity: 10%;    
       }
-    </style>
+      .game-views-menu a {
+        text-decoration: none;
+        box-shadow: none;
+      }
+    </style>    
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
 
@@ -717,10 +721,10 @@ class GameToolbar extends HTMLElement {
         <div class="game-engine flex flex-0 pl-1 relative"></div>
     
         <!-- Game Title -->
-        <p
+        <div
           class="game-title flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold"
           style="overflow: hidden; white-space: nowrap"
-        ></p>
+        ></div>
     
         <!-- Dimentions -->
         <label class="game-dimentions flex flex-0 py-2 text-xs font-thin">
@@ -1075,10 +1079,10 @@ class GameToolbar extends HTMLElement {
           </button>
           <div
             id="dropdown-menu"
-            class="game-views-menu hidden origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
+            class="game-views-menu hidden absolute -right-2 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
           >
             <div
-              class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
+              class="text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-500"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="dropdown-button"
@@ -1087,7 +1091,7 @@ class GameToolbar extends HTMLElement {
                 Select View Type
               </div>
               <div class="game-views-menu-body"></div>
-              <hr class="border border-gray-200 dark:border-gray-500" />
+              <div class="border border-0 border-t border-gray-200 dark:border-gray-500"></div>
               <div class="game-views-menu-bottom"></div>
             </div>
           </div>
@@ -1225,7 +1229,7 @@ class BenchmarkRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRender
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "benchmark",
       "Run Benchmark",
-      "icons/benchmark.svg",
+      "/icons/benchmark.svg",
       () => new BenchmarkRenderer()
     );
   }
@@ -1291,7 +1295,7 @@ class BenchmarkRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRender
         </text>
       </svg>
     </div>    
-    <h4 class="benchmark-subtitle text-2xl font-bold dark:text-white"></h4>
+    <div class="benchmark-subtitle text-2xl font-bold dark:text-white"></div>
   </div>
 </div>
 `;
@@ -1437,7 +1441,7 @@ class ImageCanvasRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRend
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "canvas",
       "Image Canvas",
-      "icons/canvas.svg",
+      "/icons/canvas.svg",
       () => new ImageCanvasRenderer()
     );
   }
@@ -1592,7 +1596,7 @@ class HtmlDivRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRenderer
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "html",
       "HTML Divs",
-      "icons/html.svg",
+      "/icons/html.svg",
       () => new HtmlDivRenderer()
     );
   }
@@ -1813,7 +1817,7 @@ class SvgImageRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendere
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "svg",
       "SVG Image",
-      "icons/svg.svg",
+      "/icons/svg.svg",
       () => new SvgImageRenderer()
     );
   }
@@ -1970,7 +1974,7 @@ class WebGLRenderer extends _core_js__WEBPACK_IMPORTED_MODULE_0__.GameRendererCo
     _game_js__WEBPACK_IMPORTED_MODULE_1__.GameOfLife.addViewType(
       "webgl",
       "WebGL (GPU)",
-      "icons/gpu.svg",
+      "/icons/gpu.svg",
       () => new WebGLRenderer()
     );
   }

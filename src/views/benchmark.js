@@ -8,7 +8,7 @@ export class BenchmarkRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "benchmark",
       "Run Benchmark",
-      "icons/benchmark.svg",
+      "/icons/benchmark.svg",
       () => new BenchmarkRenderer()
     );
   }
@@ -74,7 +74,7 @@ export class BenchmarkRenderer extends GameRendererCore {
         </text>
       </svg>
     </div>    
-    <h4 class="benchmark-subtitle text-2xl font-bold dark:text-white"></h4>
+    <div class="benchmark-subtitle text-2xl font-bold dark:text-white"></div>
   </div>
 </div>
 `;

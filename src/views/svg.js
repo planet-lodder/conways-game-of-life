@@ -8,7 +8,7 @@ export class SvgImageRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "svg",
       "SVG Image",
-      "icons/svg.svg",
+      "/icons/svg.svg",
       () => new SvgImageRenderer()
     );
   }

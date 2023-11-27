@@ -8,7 +8,7 @@ export class WebGLRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "webgl",
       "WebGL (GPU)",
-      "icons/gpu.svg",
+      "/icons/gpu.svg",
       () => new WebGLRenderer()
     );
   }

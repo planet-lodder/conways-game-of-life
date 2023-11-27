@@ -35,7 +35,11 @@ export class GameToolbar extends HTMLElement {
       img.include {
         opacity: 10%;    
       }
-    </style>
+      .game-views-menu a {
+        text-decoration: none;
+        box-shadow: none;
+      }
+    </style>    
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
 
@@ -43,10 +47,10 @@ export class GameToolbar extends HTMLElement {
         <div class="game-engine flex flex-0 pl-1 relative"></div>
     
         <!-- Game Title -->
-        <p
+        <div
           class="game-title flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold"
           style="overflow: hidden; white-space: nowrap"
-        ></p>
+        ></div>
     
         <!-- Dimentions -->
         <label class="game-dimentions flex flex-0 py-2 text-xs font-thin">
@@ -401,10 +405,10 @@ export class GameToolbar extends HTMLElement {
           </button>
           <div
             id="dropdown-menu"
-            class="game-views-menu hidden origin-top-right absolute right-0 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
+            class="game-views-menu hidden absolute -right-2 mt-8 w-40 shadow-lg bg-white dark:bg-gray-700 ring-1 ring-gray-500 ring-opacity-5"
           >
             <div
-              class="text-gray-500 dark:text-gray-400 outline outline-gray-300 dark:outline-gray-500"
+              class="text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-500"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="dropdown-button"
@@ -413,7 +417,7 @@ export class GameToolbar extends HTMLElement {
                 Select View Type
               </div>
               <div class="game-views-menu-body"></div>
-              <hr class="border border-gray-200 dark:border-gray-500" />
+              <div class="border border-0 border-t border-gray-200 dark:border-gray-500"></div>
               <div class="game-views-menu-bottom"></div>
             </div>
           </div>

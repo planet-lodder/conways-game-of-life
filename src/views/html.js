@@ -8,7 +8,7 @@ export class HtmlDivRenderer extends GameRendererCore {
     GameOfLife.addViewType(
       "html",
       "HTML Divs",
-      "icons/html.svg",
+      "/icons/html.svg",
       () => new HtmlDivRenderer()
     );
   }
