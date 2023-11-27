@@ -11,12 +11,12 @@
     "url": "git+https://github.com/planet-lodder/conways-game-of-life.git"
   },
   "files": [
-    "./static/game/js"
+    "./static/js"
   ],
   "exports": {
-    ".": "./static/game/js/index.js",
-    "./core": "./static/game/js/core.js",
-    "./web-component": "./static/game/js/web-component.js"
+    ".": "./static/js/index.js",
+    "./core": "./static/js/core.js",
+    "./web-component": "./static/js/web-component.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",

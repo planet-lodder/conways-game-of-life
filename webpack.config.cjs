@@ -12,7 +12,7 @@ module.exports = {
   },
   devtool: "source-map",
   output: {
-    path: path.join(__dirname, "static/game/js"),
+    path: path.join(__dirname, "static/js"),
     filename: "[name].js",
   },
   plugins: [

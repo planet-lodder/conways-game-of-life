@@ -17,7 +17,7 @@ Here is a simple example:
   tailwind.config = { darkMode: "class" };
   document.body.classList.add('dark')
 </script>
-<script src="/game/js/web-component.js"></script>
+<script src="/js/web-component.js"></script>
 <div class="flex" style="width: 640px; height: 480px; outline: gray solid 1px">
   <game-of-life
     class="flex flex-col flex-1 justify-start w-full h-full"

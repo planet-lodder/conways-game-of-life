@@ -50,7 +50,7 @@ into your project or website, using `web-component.js`.
 Include the required javascript, then you can declare the board game like so:
 
 ```html
-<script src="/game/js/web-component.js"></script>
+<script src="/js/web-component.js"></script>
 
 <game-of-life
   title="Demo of Life"

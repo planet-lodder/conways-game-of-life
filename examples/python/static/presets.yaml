@@ -1,0 +1,19 @@
+# ---------------------------------------------------------------
+# Basic examples
+# ---------------------------------------------------------------
+/presets/101.gif:
+  title: Stable Oscillator
+  group: basic
+  image: /presets/101.gif
+  scale: 16
+  delay: 100
+
+# ---------------------------------------------------------------
+# Simple examples
+# --------------------------------------------------------------
+/presets/traffic-circle.gif:
+  title: Traffic Circle
+  group: simple
+  image: /presets/traffic-circle.gif
+  scale: 10
+  delay: 0
