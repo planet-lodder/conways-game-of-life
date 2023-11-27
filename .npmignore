@@ -1,0 +1,6 @@
+*
+
+!README.md
+!package.json
+!yarn.lock
+!static/game/js/**
