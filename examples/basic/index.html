@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>Conway's Game of Life</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>    
+  </head>
+  <body>
+    <!-- Load script to toggle dark mode before loading content (avoids flashing of dark mode) -->
+    <script src="/js/web-component.js"></script>
+
+    <!-- Main template -->
+    <game-of-life
+      title="Demo of Life"
+      image="/presets/traffic-circle.gif"
+      scale="3"
+      delay="0"
+      view="svg"
+    ></game-board>
+  </body>
+</html>
