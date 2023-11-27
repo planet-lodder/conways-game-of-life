@@ -32,14 +32,14 @@ and compare their performance, given small and very large workloads.
 You can install the `npm` package into your local project using:
 
 ```bash
-npm i game-of-life
+npm i @planet-lodder/game-of-life
 ```
 
 Then import the game code and all its dependencies:
 
 ```javascript
 // Import the custom web component and register in DOM
-import "game-of-life/web-component";
+import "@planet-lodder/game-of-life/web-component";
 ```
 
 Alternatively, you can just embed the minimized `javascript` file directly
@@ -66,7 +66,7 @@ Include the required javascript, then you can declare the board game like so:
 If you want to customize or extend the game logic, you can also use module imports:
 
 ```javascript
-import { GameEngineCore, BenchmarkRenderer } from "game-of-life"
+import { GameEngineCore, BenchmarkRenderer } from "@planet-lodder/game-of-life"
 
 export class GameEngine extends GameEngineCore {
 

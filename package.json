@@ -1,9 +1,9 @@
 {
-  "name": "game-of-life",
+  "name": "@planet-lodder/game-of-life",
   "description": "Game-of-life implemented as a HTML web component.",
   "author": "game-of-life",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "main": "index.js",
   "repository": {
