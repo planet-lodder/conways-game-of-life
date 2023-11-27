@@ -11,16 +11,5 @@ module.exports = merge(common, {
       chunkFilename: '[id].[hash].css'
     })
   ],
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
-      },
-    ]
-  }
+  
 });

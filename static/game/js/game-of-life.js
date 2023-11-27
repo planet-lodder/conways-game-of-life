@@ -849,7 +849,6 @@ class GameToolbar extends HTMLElement {
     </style>
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
-
         <!-- Game Engine Icon -->
         <div class="game-engine flex flex-0 pl-1 relative"></div>
     
