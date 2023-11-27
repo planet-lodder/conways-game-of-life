@@ -4,19 +4,19 @@
 stable:
   title: Stable Shapes
   group: basic
-  image: /game/presets/basic/stable.gif
+  image: /presets/basic/stable.gif
   scale: 32
   delay: 100
 repeater:
   title: Repeating Patterns
   group: basic
-  image: /game/presets/basic/repeaters.gif
+  image: /presets/basic/repeaters.gif
   scale: 32
   delay: 200
 oscillator:
   title: Stable Oscillator
   group: basic
-  image: /game/presets/basic/101.gif
+  image: /presets/basic/101.gif
   scale: 16
   delay: 100
 
@@ -26,68 +26,68 @@ oscillator:
 signal_relay:
   title: Signal Relay
   group: simple
-  image: /game/presets/simple/signal_relay.gif
+  image: /presets/simple/signal_relay.gif
   scale: 20
   delay: 15
 tndrbird:
   title: Tndrbird
-  image: /game/presets/simple/tndrbird.gif
+  image: /presets/simple/tndrbird.gif
   group: simple
   scale: 16
   delay: 15
 spark2pi:
   title: Spark2pi
   group: simple
-  image: /game/presets/simple/spark2pi.gif
+  image: /presets/simple/spark2pi.gif
   scale: 4
   delay: 5
 glider_gun:
   title: Gospers glider gun
-  image: /game/presets/simple/glider_gun.png
+  image: /presets/simple/glider_gun.png
   group: simple
   scale: 16
   delay: 25
 roundabout:
   title: Roundabout
-  image: /game/presets/simple/round.gif
+  image: /presets/simple/round.gif
   group: simple
   scale: 8
   delay: 0
 pinball:
   title: Pinball
   group: simple
-  image: /game/presets/simple/pinball.gif
+  image: /presets/simple/pinball.gif
   scale: 10
   delay: 5
   wrapped: true
 zip:
   title: Zip
   group: simple
-  image: /game/presets/simple/zip.gif
+  image: /presets/simple/zip.gif
   scale: 16
   delay: 50
 lightspeed-wire:
   title: Lightspeed Wire
   group: simple
-  image: /game/presets/simple/lightspeed-wire.gif
+  image: /presets/simple/lightspeed-wire.gif
   scale: 10
   delay: 50
 traffic-circle:
   title: Traffic Circle
   group: simple
-  image: /game/presets/simple/traffic-circle.gif
+  image: /presets/simple/traffic-circle.gif
   scale: 10
   delay: 0
 oscillators_1:
   title: Oscillerators
-  image: /game/presets/simple/oscillators_1.gif
+  image: /presets/simple/oscillators_1.gif
   group: simple
   scale: 6
   delay: 0
   wrapped: true
 oscillators_2:
   title: More Oscillators
-  image: /game/presets/simple/oscillators_2.gif
+  image: /presets/simple/oscillators_2.gif
   group: simple
   scale: 5
   delay: 0
@@ -100,13 +100,13 @@ oscillators_2:
 rake:
   title: Rake
   group: ships
-  image: /game/presets/ships/rake3.gif
+  image: /presets/ships/rake3.gif
   scale: 8
   delay: 0
   wrapped: true
 pstrain:
   title: PS Train
-  image: /game/presets/ships/psrtrain.gif
+  image: /presets/ships/psrtrain.gif
   group: ships
   scale: 8
   delay: 5
@@ -114,28 +114,28 @@ pstrain:
 bship:
   title: BShip
   group: ships
-  image: /game/presets/ships/bship.gif
+  image: /presets/ships/bship.gif
   scale: 8
   delay: 0
   wrapped: true
 wing:
   title: Ship Wing
   group: ships
-  image: /game/presets/ships/wing.gif
+  image: /presets/ships/wing.gif
   scale: 6
   delay: 5
   wrapped: true
 slopuf:
   title: Slopuf
   group: ships
-  image: /game/presets/ships/slopuf.gif
+  image: /presets/ships/slopuf.gif
   scale: 8
   delay: 0
   wrapped: true
 barge:
   title: Barge
   group: ships
-  image: /game/presets/ships/barge.gif
+  image: /presets/ships/barge.gif
   scale: 7
   delay: 0
   wrapped: true
@@ -148,25 +148,25 @@ randgun:
   group: signals
   scale: 6
   delay: 0
-  image: /game/presets/signals/randgun.gif
+  image: /presets/signals/randgun.gif
 thick:
   title: Thick Signals
   group: signals
   scale: 8
   delay: 5
-  image: /game/presets/signals/thick.gif
+  image: /presets/signals/thick.gif
 memory:
   title: Signal Memory
   group: signals
   scale: 4
   delay: 0
-  image: /game/presets/signals/memory.gif
+  image: /presets/signals/memory.gif
 breeder:
   title: Multiple Signals
   group: signals
   scale: 4
   delay: 0
-  image: /game/presets/signals/breeder.png
+  image: /presets/signals/breeder.png
 
 # ---------------------------------------------------------------
 # Complex examples
@@ -176,16 +176,16 @@ lonedots:
   group: complex
   scale: 5
   delay: 0
-  image: /game/presets/complex/lonedots.gif
+  image: /presets/complex/lonedots.gif
 primes:
   title: Primes
   group: complex
   scale: 1
   delay: 0
-  image: /game/presets/complex/primes.gif
+  image: /presets/complex/primes.gif
 hotel:
   title: Hotel
   group: complex
   scale: 1
   delay: 0
-  image: /game/presets/complex/hotel.gif
+  image: /presets/complex/hotel.gif

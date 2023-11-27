@@ -1,22 +1,9 @@
 <!--
 {% set preset = presets[preset] if preset in presets else None %}
 {% set view = req.query.get('view', 'html') if req else 'html' %}
-{% set engine = req.query.get('engine', 'latest') if req else 'latest' %}
-{% set engines = engines if engines else [] %}
 {% if preset %}
 -->
-<!--
-<script src="/game/core.js"></script>
-<script src="/game/toolbar.js"></script>
-<script src="/game/game.js"></script>
-<script src="/game/views/html.js"></script>
-<script src="/game/views/svg.js"></script>
-<script src="/game/views/canvas.js"></script>
-<script src="/game/views/webgl.js"></script>
-<script src="/game/views/benchmark.js"></script>
-<script src="/game/engines/{{engine}}.js"></script>
--->
-<script src="/game/js/game-of-life.js"></script>
+<script src="/js/web-component.js"></script>
 <game-of-life
   class="flex flex-col flex-1 justify-start"
   view="{{view}}"
@@ -27,6 +14,5 @@
   scale="{{preset.scale}}"
   delay="{{preset.delay}}"
   wrapped="{{preset.wrapped}}"
-  engines='{{engines|tojson|safe}}'
 ></game-board>
 <!-- {% endif %} -->

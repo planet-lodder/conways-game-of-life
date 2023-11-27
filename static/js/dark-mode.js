@@ -67,3 +67,8 @@ addEventListener("DOMContentLoaded", () => initDarkMode());
 
 // Set dark mode toggle only when page has loaded
 addEventListener("load", () => bindDarkModeButton());
+
+// Hook up tailwind dark mode if not already set
+if (window.tailwind && !window.tailwind.config.darkMode) {
+  window.tailwind.config = { darkMode: "class" };
+}

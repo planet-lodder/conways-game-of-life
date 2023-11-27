@@ -16,7 +16,7 @@ import "@planet-lodder/game-of-life/web-component";
 //
 //// Game settings
 //let config = {
-//    image: '/game/presets/basic/101.gif',
+//    image: '/presets/basic/101.gif',
 //    delay: 500,
 //}
 //

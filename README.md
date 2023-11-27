@@ -50,11 +50,11 @@ into your project or website, using `web-component.js`.
 Include the required javascript, then you can declare the board game like so:
 
 ```html
-<script src="/game/js/game-of-life.js"></script>
+<script src="/game/js/web-component.js"></script>
 
 <game-of-life
   title="Demo of Life"
-  image="/game/presets/simple/traffic-circle.gif"
+  image="/presets/simple/traffic-circle.gif"
   width="100"
   height="100"
   scale="10"
@@ -87,7 +87,7 @@ document.body.appendChild(view)
 
 // Attach view to custom game engine and start
 let config = {
-  image: '/game/presets/basic/101.gif'
+  image: '/presets/basic/101.gif'
 }
 let engine = new GameEngine(config, view);
 engine.start()
