@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>Conway's Game of Life</title>
+    <!-- Load HTMX, Alpine and Tailwind from a CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.4/htmx.min.js"
+      integrity="sha512-ZM2vxgVBxhBI5Etj/c/qcJV+upate3VzbVQOQRCx1YGuyEX9dYdMh8pRUot4xIwtAay6QwRQC/FdXRjSWIEHrg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"
+      integrity="sha512-nIwdJlD5/vHj23CbO2iHCXtsqzdTTx3e3uAmpTm4x2Y8xCIFyWu4cSIV8GaGe2UNVq86/1h9EgUZy7tn243qdA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+      htmx.config.useTemplateFragments = true;
+    </script>    
+  </head>
+  <body>
+    <!-- Load script to toggle dark mode before loading content (avoids flashing of dark mode) -->
+    <script src="/js/dark-mode.js"></script>
+    <script type="module">
+      import './index.js'
+    </script>
+
+    <!-- Main template -->
+    <div
+      class="flex flex-col min-h-screen w-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
+    >
+      <!-- App Toolbar -->
+      <header
+        class="flex w-full p-2 items-center justify-between border-b-2 bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+      >
+        <a
+          href="/"
+          class="w-80 text-2xl font-extrabold text-gray-800 dark:text-gray-100"
+        >
+          Conway's Game of Life
+        </a>
+        <div class="flex-grow"></div>
+        <div>
+          <button
+            type="button"
+            id="theme-toggle"
+            class="p-2 text-sm text-gray-500 rounded-lg md: dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 md:ml-2 max-w-5 xs:hidden"
+          >
+            <svg
+              id="theme-toggle-dark-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+            <svg
+              id="theme-toggle-light-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              aria-label="Dark or Light Mode"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="flex flex-grow flex-row">
+        <!-- Main content page -->
+        <main class="flex flex-col flex-1 overflow-y-auto">
+          <div
+            class="relative flex flex-col flex-1 justify-center"
+            x-data="{ fullscreen: false }"
+          >
+            <!-- Overlay to make window fullscreen / detached -->
+            <div
+              class="flex px-4 space-x-2 absolute z-20 top-0 right-1/2 border border-t-0 border-gray-500 rounded-b-2xl bg-gray-300 dark:bg-gray-700 opacity-25 hover:opacity-100"
+            >
+              <a href="#" @click="fullscreen = true">Fullscreen</a>
+              <a>|</a>
+              <a href="#" @click="fullscreen = false">Detach Window</a>
+            </div>
+
+            <!-- Game board view panel -->
+            <div
+              class="flex flex-col mx-auto justify-center border border-gray-500 resize-none hover:resize"
+              :class="{ 
+                'flex-1 w-full h-full': fullscreen,
+                'flex-0 min-w-1/2 min-h-1/2': !fullscreen,
+              }"
+            >
+            <game-of-life
+              class="flex flex-col flex-1 justify-start"
+              view="html"
+              title="Demo of Life"
+              image="/presets/simple/traffic-circle.gif"
+              scale="10"
+              delay="0"
+            ></game-board>
+            </div>
+          </div>
+          <!-- {% endif %} -->
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
