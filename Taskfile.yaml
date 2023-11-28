@@ -26,10 +26,20 @@ tasks:
       - hugo --minify
 
   start:
-    desc: Run the server locally
+    desc: Run the Hugo server locally
     deps: [init]
     cmds:
       - hugo server -s .
+
+  serve:
+    desc: Run the Python server locally
+    deps: [init]
+    cmds:
+      - |-
+        cd examples/python
+        open http://localhost:9999/game-of-life
+        python3 ./main.py --dev
+
 
   publish: 
     desc: Publish the latest website from `public/`
