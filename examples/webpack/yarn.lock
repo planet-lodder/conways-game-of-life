@@ -82,10 +82,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@planet-lodder/game-of-life@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@planet-lodder/game-of-life/-/game-of-life-0.0.6.tgz#58bd8bfc779182aa492aabc58d637b93a5f07289"
-  integrity sha512-4yfP4iJZXoGNUkO8EH+oRtq+fcJB8bfEsjEqRYmt5BlAWmH8wNMNYoP7VcFQsSXzy20bl2RZ9fADiLg9KvppAw==
+"@planet-lodder/game-of-life@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@planet-lodder/game-of-life/-/game-of-life-0.0.7.tgz#466a34de66a78506cb3e1943905c43ae1948d477"
+  integrity sha512-1iWr9lFPqhDbENMvl1PrZvKUWtUyRBjGm7QPlulZCY60ArCZbVBqsC/96zSVp0Cz9yNJ0us6zyf895FCKKFhCA==
 
 "@rollup/plugin-node-resolve@^15.0.1":
   version "15.2.3"

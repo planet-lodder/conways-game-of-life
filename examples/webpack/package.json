@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@planet-lodder/game-of-life": "^0.0.6"
+    "@planet-lodder/game-of-life": "^0.0.7"
   },
   "devDependencies": {
     "@web/dev-server": "^0.4.1",
