@@ -1,11 +1,11 @@
 import { GameOfLife } from "./game.js";
 
-import IconCPU from "../static/icons/cpu.svg";
-import IconRevert from "../static/icons/revert.svg";
-import IconConfig from "../static/icons/gears.svg";
-import IconStop from "../static/icons/stop.svg";
-import IconStart from "../static/icons/play.svg";
-import IconEllipse from "../static/icons/ellipsis-vertical.svg";
+import IconCPU from "./icons/cpu.svg";
+import IconRevert from "./icons/revert.svg";
+import IconConfig from "./icons/gears.svg";
+import IconStop from "./icons/stop.svg";
+import IconStart from "./icons/play.svg";
+import IconEllipse from "./icons/ellipsis-vertical.svg";
 
 export class GameToolbar extends HTMLElement {
   static {

@@ -1,6 +1,6 @@
 import { GameRendererCore } from "../core.js";
 import { GameOfLife } from "../game.js";
-import ViewIcon from '../../static/icons/gpu.svg'
+import ViewIcon from '../icons/gpu.svg'
 
 export class WebGLRenderer extends GameRendererCore {
   static {
