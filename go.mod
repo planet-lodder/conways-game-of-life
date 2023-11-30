@@ -1,4 +1,4 @@
-module main
+module github.com/planet-lodder/conways-game-of-life
 
 go 1.21.3
 
