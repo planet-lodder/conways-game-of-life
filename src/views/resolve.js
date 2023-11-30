@@ -29,7 +29,6 @@ export class ResolveRenderer extends GameRendererCore {
     if (!this.label) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading benchmark into:", this);
       this.label.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents

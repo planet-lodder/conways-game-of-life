@@ -204,7 +204,7 @@ export class GameOfLife extends HTMLElement {
     target.appendChild(this.toolbar);
     target.appendChild(this.view);
     target.classList.add("relative");
-    target.classList.add("overflow-scroll");
+    target.classList.add("overflow-auto");
     this.toolbar.className = "sticky left-0 top-0 right-0 z-10";
 
     // Bind existing game to the latest view (if changed)

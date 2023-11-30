@@ -11,20 +11,33 @@ theme:
 menu:
   main:
     - identifier: about
-      name: About
+      name: About the game
       url: /about/
+      weight: 1
+    - identifier: basic
+      name: Game Basics
+      url: /tags/basic/
       weight: 10
-    - identifier: game-of-life
-      name: Game
-      url: /game-of-life/
-      weight: 20
+    - identifier: simple
+      name: Simple Shapes
+      url: /tags/simple/
+      weight: 11
+    - identifier: complex
+      name: Large & Complex
+      url: /tags/complex/
+      weight: 12
 
 params:
   # Define the default author
   author: Johnathan Lodder
   authorimage: https://avatars.githubusercontent.com/u/141126234?s=200&v=4
 
+  # Params required by terminal
+  fullWidthTheme: false
+  centerTheme: true
+  
 # Add the shortcodes as a hugo module
 module:
   imports:
     - path: github.com/planet-lodder/shortcodes-hugo
+

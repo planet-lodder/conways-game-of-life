@@ -80,8 +80,7 @@ export class SvgImageRenderer extends GameRendererCore {
           </g>
         </svg>
     </div> 
-</div>
-    `;
+</div>`;
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");
