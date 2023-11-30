@@ -12,21 +12,16 @@ tags:
 
 Here is a simple example:
 
-<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-<script>
-  tailwind.config = { darkMode: "class" };
-  document.body.classList.add('dark')
-</script>
-<script src="/js/web-component.js"></script>
-<div class="flex" style="width: 640px; height: 480px; outline: gray solid 1px">
-  <game-of-life
-    class="flex flex-col flex-1 justify-start w-full h-full"
-    view="html"
-    title="Demo of Life"
-    image="/presets/simple/traffic-circle.gif"
-    width="100"
-    height="100"
-    scale="10"
-    delay="0"
-  ></game-board>
-</div>
+{{< add-tailwind dark="true" >}}
+{{< game-of-life
+  dark="true"
+  style="width: 640px; height: 480px; outline: gray solid 1px"
+  class="flex flex-col flex-1 justify-start w-full h-full"
+  view="html"
+  title="Demo of Life"
+  image="/presets/simple/traffic-circle.gif"
+  width="100"
+  height="100"
+  scale="10"
+  delay="0"
+/>}}

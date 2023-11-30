@@ -1,0 +1,21 @@
+{{ $plugins := .Get "plugins" | default "typography" }}
+<script>
+  function initTailwind() {
+    // {{ with .Get "dark" }}
+    tailwind.config = { darkMode: "class" };
+    document.body.classList.add("dark");
+    // {{ end }}
+  }
+
+  if (!window.tailwind) {
+    var script = document.createElement("script");
+    //script.async = true;
+    script.src = "https://cdn.tailwindcss.com?plugins={{$plugins}}";
+    script.addEventListener("load", function () {
+      initTailwind();
+    });
+    document.head.appendChild(script);
+  } else {
+    initTailwind();
+  }
+</script>
