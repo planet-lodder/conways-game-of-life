@@ -104,6 +104,8 @@ export class ImageCanvasRenderer extends GameRendererCore {
 
     // Populate the game board cells
     if (!this.canvas) return;
+    this.canvas.style["min-width"] = `${width * scale}px`;
+    this.canvas.style["min-height"] = `${height * scale}px`;
     this.canvas.setAttribute("width", width * scale);
     this.canvas.setAttribute("height", height * scale);
 

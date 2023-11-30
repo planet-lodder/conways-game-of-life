@@ -1,5 +1,6 @@
 import { GameEngine } from "./engine.js";
 import { GameToolbar } from "./toolbar.js";
+import { ResolveRenderer } from "./views/resolve.js";
 
 import "./css/game.css";
 
@@ -194,7 +195,9 @@ export class GameOfLife extends HTMLElement {
   render(target) {
     // Define the game board elements
     this.toolbar = new GameToolbar(this);
-    this.view = this.getView(this.viewType);
+    this.view = this.viewType
+      ? this.getView(this.viewType)
+      : new ResolveRenderer();
     this.game = this.game || new GameEngine(this, this.view);
 
     target.innerHTML = ``;
@@ -217,32 +220,7 @@ export class GameOfLife extends HTMLElement {
       throw new Error("No view types registered. Nothing to display");
     }
 
-    if (!name) {
-      // Try and resolve default view type from URL param
-      name = new URLSearchParams(location.search).get("view");
-      if (!views[name]) name = null; // Invalid view type
-    }
-
-    if (!name && this.width && this.height) {
-      let length = this.width * this.height;
-      if (length > 65536) {
-        // Use an image canvas for very large simulations (eg: 256x256)
-        name = "canvas";
-      } else if (length > 16384) {
-        // Fall back to WebGL for medium sized images (eg: 128x128)
-        name = "webgl";
-      } else if (length > 1024) {
-        // Use SVG for best vector graphics on small images (eg: 32x32)
-        name = "svg";
-      } else {
-        // For very tiny images, use a simple DIV view
-        name = "html";
-      }
-      if (!views[name]) name = null; // Invalid view type
-    }
-    if (!name) name = viewKeys.length ? viewKeys[0] : null
-
-    this.viewType = name
+    if (!views[name]) name = null; // Invalid view type
     let viewType = name ? views[name] : views[viewKeys[0]];
     if (!viewType) {
       let name = this.view || "default";
@@ -251,7 +229,6 @@ export class GameOfLife extends HTMLElement {
       );
     }
     let view = viewType.viewInit();
-    //view.classList.add("h-full");
     return view;
   }
 
