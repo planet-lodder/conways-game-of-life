@@ -6,5 +6,7 @@ github.com/adityatelange/hugo-PaperMod v0.0.0-20231125123631-b288ede80cbd h1:p8a
 github.com/adityatelange/hugo-PaperMod v0.0.0-20231125123631-b288ede80cbd/go.mod h1:HCHxNMKYdGafUYjVV3ICiAqznZK2yH0iI53jqcDFDdQ=
 github.com/panr/hugo-theme-terminal v2.1.0+incompatible h1:oSqo5Q4lWiIcBDFaASgrCEdXaEtH43foBd/ti21MEGE=
 github.com/panr/hugo-theme-terminal v2.1.0+incompatible/go.mod h1:kiO0NHUXPNrG6BFRlat5jc078p3e1f2sLlpt0a23MEY=
+github.com/planet-lodder/shortcodes-hugo v0.0.0-20231130112716-bbf7b01550d2 h1:TLjzj66Vi3607PKosdW4BrizEs5FcmVAx4QBusBeZ90=
+github.com/planet-lodder/shortcodes-hugo v0.0.0-20231130112716-bbf7b01550d2/go.mod h1:6Ki1+tUH/qdLhoM/LBdYZTjrOW2AG9RsLH0R7Bwb+2A=
 github.com/theNewDynamic/gohugo-theme-ananke v0.0.0-20231122160523-91df000ca827 h1:70DjvollwE7ZTbgF0E9hsR/cBYrNLwv59UaOb16Tm5c=
 github.com/theNewDynamic/gohugo-theme-ananke v0.0.0-20231122160523-91df000ca827/go.mod h1:yY14BLqqh5G61rO81YcJKMHY1rClY5iIiUK+K2JKSUM=

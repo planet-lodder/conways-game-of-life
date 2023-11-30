@@ -3,7 +3,6 @@ title: The Basics
 description: An introduction to the basic concepts
 featured_image: /presets/basic/101.gif
 language: en
-layout: game-of-life
 tags:
   - programming
 ---

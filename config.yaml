@@ -19,24 +19,12 @@ menu:
       url: /game-of-life/
       weight: 20
 
-markup:
-  goldmark:
-    renderer:
-      unsafe: true
-
 params:
   # Define the default author
   author: Johnathan Lodder
   authorimage: https://avatars.githubusercontent.com/u/141126234?s=200&v=4
 
-  # Params required by terminal
-  fullWidthTheme: false
-  centerTheme: true
-
-  #styles:
-  #  build: true
-  #  theme: /css/custom.css
-  #  extra: 
-  #    - /css/theme.css # Include original theme
-  #scripts: 
-  #  darkmode: js/darkmode.js
+# Add the shortcodes as a hugo module
+module:
+  imports:
+    - path: github.com/planet-lodder/shortcodes-hugo
