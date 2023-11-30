@@ -1,0 +1,8 @@
+.game-board {
+}
+.game-cells {
+  fill: #000;
+}
+.dark .game-cells {
+  fill: #fff;
+}

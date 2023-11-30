@@ -7,6 +7,8 @@ import IconStop from "./icons/stop.svg";
 import IconStart from "./icons/play.svg";
 import IconEllipse from "./icons/ellipsis-vertical.svg";
 
+import './css/toolbar.css'
+
 export class GameToolbar extends HTMLElement {
   static {
     // Register custom HTML element
@@ -37,16 +39,7 @@ export class GameToolbar extends HTMLElement {
   render(target) {
     let config = this.config;
 
-    target.innerHTML = `
-    <style>
-      img.include {
-        opacity: 10%;    
-      }
-      .game-views-menu a {
-        text-decoration: none;
-        box-shadow: none;
-      }
-    </style>
+    target.innerHTML = `    
     <form class="game-toolbar flex flex-col flex-0" x-data="{ show_menu: '' }">
       <div class="flex flex-0 text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700 border-b border-gray-400 dark:border-gray-500">
         <!-- Game Engine Icon -->
@@ -54,8 +47,8 @@ export class GameToolbar extends HTMLElement {
     
         <!-- Game Title -->
         <div
-          class="game-title flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold"
-          style="overflow: hidden; white-space: nowrap"
+          class="game-title flex flex-0 flex-shrink-1 py-1.5 px-2 text-sm font-bold text-ellipsis"
+          style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
         ></div>
     
         <!-- Dimentions -->

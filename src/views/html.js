@@ -1,6 +1,6 @@
 import { GameRendererCore } from "../core.js";
 import { GameOfLife } from "../game.js";
-import ViewIcon from '../icons/html.svg'
+import ViewIcon from "../icons/html.svg";
 
 export class HtmlDivRenderer extends GameRendererCore {
   static {
@@ -118,19 +118,25 @@ export class HtmlDivRenderer extends GameRendererCore {
     let config = game.config;
     let width = config.width;
     let height = config.height;
-    let scale = config.scale || 1;
-
-    if (this.grid) {
-      this.grid.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    }
+    let scale = config.scale;
 
     let board = this.board;
     if (!board) return;
 
     // Set the board dimentions
-    board.style["min-width"] = `${width * scale}px`;
-    board.style["min-height"] = `${height * scale}px`;
     board.style["aspect-ratio"] = `${width} / ${height}`;
+    if (scale) {
+      board.style["min-width"] = `${width * scale}px`;
+      board.style["min-height"] = `${height * scale}px`;
+    }
+
+    if (this.grid) {
+      this.grid.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      if (scale) {
+        this.grid.style["min-width"] = `${width * scale}px`;
+        this.grid.style["min-height"] = `${height * scale}px`;
+      }
+    }
 
     // Create the canvas to visualise the data
     this.width = width;
