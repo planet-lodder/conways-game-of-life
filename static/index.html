@@ -27,7 +27,9 @@
   <body>
     <!-- Load script to toggle dark mode before loading content (avoids flashing of dark mode) -->
     <script src="/js/dark-mode.js"></script>
-    <script src="/js/web-component.js"></script>
+    <script type="module">
+      import "./web-component.js";
+    </script>
 
     <!-- Main template -->
     <div
@@ -104,7 +106,7 @@
               }"
             >
             <game-of-life
-              class="flex flex-col flex-1 justify-start"
+              class="flex flex-col"
               view="html"
               title="Demo of Life"
               image="/presets/simple/traffic-circle.gif"

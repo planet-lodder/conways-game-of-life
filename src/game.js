@@ -1,6 +1,8 @@
 import { GameEngine } from "./engine.js";
 import { GameToolbar } from "./toolbar.js";
 
+import './css/game.css'
+
 export class GameOfLife extends HTMLElement {
   static views = {};
   static addViewType(name, label, icon, viewInit) {
