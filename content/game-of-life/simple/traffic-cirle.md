@@ -1,12 +1,15 @@
 ---
-title: The Basics
-description: An introduction to the basic concepts
-featured_image: /presets/basic/101.gif
-language: en
-tags: [basic]
+title: Traffic Circles
+tags: [simple]
+params:
+  title: Traffic Circles
+  group: simple
+  image: /presets/basic/stable.gif
+  scale: 32
+  delay: 100
 ---
 
-# The basics of the Game of Life
+# Stable Shapes
 
 Here is a simple example:
 

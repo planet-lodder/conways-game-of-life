@@ -1,9 +1,12 @@
 <script src="/js/web-component.js"></script>
+<div
+  {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
+  {{ with .Get "class" }} class="{{ . }}"{{ end }}
+>
 <game-of-life
   {{ with .Get "view" }} view="{{ . }}"{{ end }}
   {{ with .Get "start" }} start="{{ . }}"{{ end }}
-  {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
-  {{ with .Get "class" }} class="{{ . }}"{{ end }}
+  
   {{ with .Get "title" }} title="{{ . }}"{{ end }}
   {{ with .Get "image" }} image="{{ . }}"{{ end }}
   {{ with .Get "width" }} width="{{ . }}"{{ end }}
@@ -11,4 +14,7 @@
   {{ with .Get "scale" }} scale="{{ . }}"{{ end }}
   {{ with .Get "delay" }} delay="{{ . }}"{{ end }}  
   {{ with .Get "wrapped" }} wrapped="{{ . }}"{{ end }}
->{{ .Inner }}</game-board>
+>
+{{ .Inner }}
+</game-board>
+</div>
