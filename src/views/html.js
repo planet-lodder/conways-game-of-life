@@ -5,7 +5,10 @@ import ViewIcon from "../icons/html.svg";
 export class HtmlDivRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-html-divs", HtmlDivRenderer);
+    let tag = "view-html-divs";
+    let cls = HtmlDivRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
+
     GameOfLife.addViewType(
       "html",
       "HTML Divs",
@@ -106,7 +109,7 @@ export class HtmlDivRenderer extends GameRendererCore {
     if (!this.board) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading board game into:", this);
+      console.debug("Loading board game into:", this);
       this.board.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents

@@ -5,7 +5,10 @@ import ViewIcon from '../icons/canvas.svg'
 export class ImageCanvasRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-image-canvas", ImageCanvasRenderer);
+    let tag = "view-image-canvas";
+    let cls = ImageCanvasRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
+
     GameOfLife.addViewType(
       "canvas",
       "Image Canvas",

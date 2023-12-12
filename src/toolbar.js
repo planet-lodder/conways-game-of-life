@@ -12,7 +12,9 @@ import "./css/toolbar.css";
 export class GameToolbar extends HTMLElement {
   static {
     // Register custom HTML element
-    customElements.define("game-toolbar", GameToolbar);
+    let tag = "game-toolbar";
+    let cls = GameToolbar;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
   }
 
   constructor(game) {

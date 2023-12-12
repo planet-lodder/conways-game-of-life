@@ -15,7 +15,7 @@ export class GameTickEngineCore {
 
   start(delay) {
     // Start running game in ticks
-    console.log("Starting the game...");
+    console.debug("Starting the game...");
     this.delay = delay || this.config.delay || 0;
     this.generation = 0;
     this.trackFPS(); // Compute the fps each second
@@ -31,7 +31,7 @@ export class GameTickEngineCore {
 
   stop() {
     // Check if game timer is active
-    console.log("Stopping the game");
+    console.debug("Stopping the game");
     if (this.intv > 0) clearInterval(this.intv);
     this.intv = null;
   }
@@ -96,8 +96,8 @@ export class GameEngineCore extends GameTickEngineCore {
   }
 
   dataLoaded(data) {
-    console.log(
-      "Creating game board...",
+    console.debug(
+      "Creating game...",
       [this.config.width, this.config.height],
       this.config.image
     );
@@ -141,12 +141,26 @@ export class GameEngineCore extends GameTickEngineCore {
 
   updateFPS(fps) {
     if (this.view) {
-      const event = new CustomEvent("game:fps", {
-        bubbles: true,
-        detail: fps,
-      });
-      this.view.dispatchEvent(event);
+      this.hidden = !this.visible(this.view);
+      this.view.dispatchEvent(
+        new CustomEvent("game:fps", {
+          bubbles: true,
+          detail: fps,
+        })
+      );
     }
+  }
+
+  visible(elm) {
+    let style = window.getComputedStyle(this.view);
+    if (style.display == "none") return false;
+
+    var rect = elm.getBoundingClientRect();
+    var viewHeight = Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight
+    );
+    return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
   }
 
   resize(width, height) {

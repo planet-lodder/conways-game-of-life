@@ -1,3 +1,5 @@
-import { GameOfLife } from './index.js';
+import { GameOfLife } from "./index.js";
 
-window.customElements.define('game-of-life', GameOfLife);
+if (!customElements.get("game-of-life")) {
+  customElements.define("game-of-life", GameOfLife);
+}

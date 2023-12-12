@@ -72,7 +72,6 @@ class GameEngine extends GameEngineCore {
         }
       }
     }
-    console.log(buffer);
     // Trigger a reload of the view
     config.width = width;
     config.height = height;

@@ -3,7 +3,9 @@ import { GameRendererCore } from "../core.js";
 export class ResolveRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-resolver", ResolveRenderer);
+    let tag = "view-resolver";
+    let cls = ResolveRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);    
   }
 
   constructor() {
@@ -37,12 +39,12 @@ export class ResolveRenderer extends GameRendererCore {
   }
 
   createView(game) {
-    let name = game.config.viewType
-    let config = game.config;    
+    let name = game.config.viewType;
+    let config = game.config;
 
     if (!name) {
       // Try and resolve default view type from URL param
-      name = new URLSearchParams(location.search).get("view");      
+      name = new URLSearchParams(location.search).get("view");
     }
 
     if (!name && config.width && config.height) {
@@ -61,13 +63,13 @@ export class ResolveRenderer extends GameRendererCore {
         name = "html";
       }
     }
-    if (!name) name = 'html';
-    
+    if (!name) name = "html";
+
     // Switch to a new view type
-    let parent = this.parentElement
+    let parent = this.parentElement;
     if (name && parent.setView) {
-      game.config.viewType = name
-      parent.setView(name)
+      game.config.viewType = name;
+      parent.setView(name);
     }
   }
 

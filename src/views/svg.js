@@ -5,7 +5,10 @@ import ViewIcon from '../icons/svg.svg'
 export class SvgImageRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-svg-image", SvgImageRenderer);
+    let tag = "view-svg-image";
+    let cls = SvgImageRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
+
     GameOfLife.addViewType(
       "svg",
       "SVG Image",

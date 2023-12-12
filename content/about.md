@@ -93,7 +93,7 @@ Despite its simplicity, the game is [Turing complete](https://en.wikipedia.org/w
   dark="true"
   style="width: 100%; margin: 20px auto; outline: gray solid 1px"
   view="canvas"
-  title="Advanced usage"
+  title="Turing Complete"
   image="/presets/complex/turing_complete.gif"
   delay="0"
 />}}

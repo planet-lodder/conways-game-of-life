@@ -5,7 +5,10 @@ import ViewIcon from '../icons/benchmark.svg'
 export class BenchmarkRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-benchmark", BenchmarkRenderer);
+    let tag = "view-benchmark";
+    let cls = BenchmarkRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
+
     GameOfLife.addViewType(
       "benchmark",
       "Run Benchmark",
@@ -93,7 +96,7 @@ export class BenchmarkRenderer extends GameRendererCore {
     if (!this.subtitleSelector) return;
     if (active) {
       // Set the loading screen feedback
-      console.log("Loading benchmark into:", this);
+      console.debug("Loading benchmark into:", this);
       this.subtitleSelector.innerHTML = "<em>Loading...</em>";
     } else {
       // Crear previous contents

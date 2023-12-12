@@ -4,6 +4,7 @@ export class GameEngine extends GameEngineCore {
   load(data) {
     // Set the updated properties for new data
     this.data = data;
+    this.hidden = false;
 
     // Create the initial display
     if (this.view) {
@@ -13,6 +14,9 @@ export class GameEngine extends GameEngineCore {
 
   tick() {
     let config = this.config;
+    
+    // Skip ticks while out of view
+    if (this.hidden) return;
 
     // Start new generation
     this.generation++;

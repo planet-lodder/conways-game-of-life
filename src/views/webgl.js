@@ -7,7 +7,10 @@ import '../css/webgl.css'
 export class WebGLRenderer extends GameRendererCore {
   static {
     // Register game engine view type
-    customElements.define("view-webgl", WebGLRenderer);
+    let tag = "view-webgl";
+    let cls = WebGLRenderer;
+    if (!customElements.get(tag)) customElements.define(tag, cls);
+
     GameOfLife.addViewType(
       "webgl",
       "WebGL (GPU)",
@@ -165,7 +168,7 @@ export class WebGLRenderer extends GameRendererCore {
       gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }`;
     if (!this.initShaders(gl, vs, fs)) {
-      console.log("Failed to intialize shaders.");
+      console.warn("Failed to intialize shaders.");
       return null;
     }
     return gl;
