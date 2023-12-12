@@ -190,22 +190,40 @@ export class GameOfLife extends HTMLElement {
     this.scale = this.getAttribute("scale");
     this.delay = this.getAttribute("delay");
     this.wrapped = this.getAttribute("wrapped");
+    this.locked = this.getAttribute("locked");
+    this.hideToolbar = this.getAttribute("toolbar") == "false";
+    this.autoplay = this.getAttribute("autoplay");
+
+    if (this.autoplay) {
+      this.start = true;
+    }
   }
 
   render(target) {
     // Define the game board elements
-    this.toolbar = new GameToolbar(this);
     this.view = this.viewType
       ? this.getView(this.viewType)
       : new ResolveRenderer();
     this.game = this.game || new GameEngine(this, this.view);
 
+    // Clear prev. content
     target.innerHTML = ``;
-    target.appendChild(this.toolbar);
+
+    // Add toolbar (if visible)
+    if (!this.hideToolbar) {
+      this.toolbar = new GameToolbar(this);
+      this.toolbar.className = "sticky left-0 top-0 right-0 z-10";
+      target.appendChild(this.toolbar);
+    }
+
+    // Add the view to the game body
     target.appendChild(this.view);
-    target.classList.add("relative");
-    target.classList.add("overflow-auto");
-    this.toolbar.className = "sticky left-0 top-0 right-0 z-10";
+
+    // Add additional layout styline
+    if (!this.locked) {
+      target.classList.add("relative");
+      target.classList.add("overflow-auto");
+    }
 
     // Bind existing game to the latest view (if changed)
     if (this.game.view != this.view) {

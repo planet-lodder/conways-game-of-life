@@ -50,37 +50,40 @@ export class SvgImageRenderer extends GameRendererCore {
   render(target) {
     // Create the board game contents
     target.innerHTML = `
-<style>
-  .game-board {}  
-  .game-cells {
-    fill: #000;
-  }
-  .dark .game-cells {
-    fill: #FFF;
-  }
-</style>
-<div class="flex flex-col justify-start">
-    <div class="flex flex-col flex-1 justify-center">        
-        <svg class="game-board" width="100%" height="100%" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
-              <path d="M 1 0 L 0 0 0 1" fill="none" stroke="#8884" stroke-width="0.125"/>
-            </pattern>
-            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <rect width="10" height="10" fill="url(#smallGrid)"/>
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#8884" stroke-width="0.25"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-          <g class="game-cells" >
-            <rect x="10" y="9" width="1" height="1" />
-            <rect x="10" y="8" width="1" height="1" />
-            <rect x="10" y="7" width="1" height="1" />
-            <rect x="10" y="6" width="1" height="1" />
-          </g>
-        </svg>
-    </div> 
-</div>`;
+    <style>
+    .game-board {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .game-cells {
+      fill: #000;
+    }
+    .dark .game-cells {
+      fill: #FFF;
+    }
+  </style>
+  <div class="game-container flex flex-col flex-1 justify-center" style="position: relative; height: 100%">      
+    <svg class="game-board" width="100%" height="100%" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+          <path d="M 1 0 L 0 0 0 1" fill="none" stroke="#8884" stroke-width="0.125"/>
+        </pattern>
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <rect width="10" height="10" fill="url(#smallGrid)"/>
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#8884" stroke-width="0.25"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+      <g class="game-cells" >
+        <rect x="10" y="9" width="1" height="1" />
+        <rect x="10" y="8" width="1" height="1" />
+        <rect x="10" y="7" width="1" height="1" />
+        <rect x="10" y="6" width="1" height="1" />
+      </g>
+    </svg>    
+  </div>`;
 
     // Get a refference to the board game elements
     this.board = target.querySelector(".game-board");

@@ -14,6 +14,10 @@
   {{ with .Get "scale" }} scale="{{ . }}"{{ end }}
   {{ with .Get "delay" }} delay="{{ . }}"{{ end }}  
   {{ with .Get "wrapped" }} wrapped="{{ . }}"{{ end }}
+
+  {{ with .Get "toolbar" }} toolbar="{{ . }}"{{ end }}
+  {{ with .Get "locked" }} locked="{{ . }}"{{ end }}
+  {{ with .Get "autoplay" }} autoplay="{{ . }}"{{ end }}
 >
 {{ .Inner }}
 </game-board>

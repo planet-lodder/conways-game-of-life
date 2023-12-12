@@ -7,7 +7,7 @@ import IconStop from "./icons/stop.svg";
 import IconStart from "./icons/play.svg";
 import IconEllipse from "./icons/ellipsis-vertical.svg";
 
-import './css/toolbar.css'
+import "./css/toolbar.css";
 
 export class GameToolbar extends HTMLElement {
   static {
@@ -156,8 +156,8 @@ export class GameToolbar extends HTMLElement {
     this.gameDimentions(config);
     this.gameResetBtn(!config.started && config.game && config.game.generation);
     this.gameConfigBtn(!config.started);
-    this.gameStartBtn(!config.started);
-    this.gameStopBtn(config.started);
+    this.gameStartBtn(!config.started && !config.autoplay);
+    this.gameStopBtn(config.started && !config.autoplay);
     this.gameSettings(config);
 
     if (!config.started) {
@@ -275,7 +275,7 @@ export class GameToolbar extends HTMLElement {
       if (elem) elem.innerHTML = val;
     };
 
-    if (config.width && config.height) {
+    if (!config.locked && config.width && config.height) {
       setText(".board-width", config.width);
       setText(".board-height", config.height);
       container.classList.remove("hidden");
@@ -288,7 +288,7 @@ export class GameToolbar extends HTMLElement {
     let container = this.querySelector(".game-fps-container");
     let label = this.querySelector(".game-fps");
     if (!container) return;
-    if (fps) {
+    if (fps && !this.config.locked) {
       label.innerHTML = fps;
       container.classList.remove("hidden");
     } else {
@@ -299,7 +299,7 @@ export class GameToolbar extends HTMLElement {
   gameResetBtn(show) {
     let container = this.querySelector(".game-reset");
     if (!container) return;
-    if (show) {
+    if (show && !this.config.locked) {
       container.classList.remove("hidden");
     } else {
       container.classList.add("hidden");
@@ -309,7 +309,7 @@ export class GameToolbar extends HTMLElement {
   gameConfigBtn(show) {
     let container = this.querySelector(".game-config");
     if (!container) return;
-    if (show) {
+    if (show && !this.config.locked) {
       container.classList.remove("hidden");
     } else {
       container.classList.add("hidden");

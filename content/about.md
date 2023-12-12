@@ -16,8 +16,8 @@ The "game" is played on a two-dimensional grid of cells, each of which can be in
   style="width: 60%; margin: 20px auto; outline: gray solid 1px"
   title="Step by step example"
   image="/presets/basic/shapes.png"
-  scale="10"
-  delay="1000"
+  toolbar="false"
+  locked="true"
 />}}
 
 ---
@@ -33,39 +33,45 @@ At the heart of the Game of Life are four simple rules that dictate the state of
 
 The cells evolve over [discrete time](https://en.wikipedia.org/wiki/Discrete_time_and_continuous_time#:~:text=A%20discrete%20signal%20or%20discrete,from%20a%20continuous%2Dtime%20signal.) steps based on these set of rules.
 
----
-
 {{< game-of-life
   dark="true"
   style="width: 60%; margin: 20px auto; outline: gray solid 1px"
   title="Step by step example"
-  image="/presets/basic/101.gif"
+  image="/presets/diamond.gif"
   scale="10"
-  delay="1000"
+  delay="2000"
+  autoplay="true"
+  locked="true"
 />}}
 
----
+These rules create complex and often unpredictable patterns, making the Game of Life a fascinating example of [emergent behavior](https://en.wikipedia.org/wiki/Emergence).
+
 
 ## Simple shapes and patterns
 
 The initial state of the grid, or "seed," can lead to various outcomes, ranging from stable patterns and oscillators to gliders and spaceships that move across the grid.
 
----
-
 {{< cgol-simple-examples
-  style="width: 80%; margin: 20px auto; outline: gray solid 1px"
+  style="width: 80%; margin: 20px auto"
 />}}
-
----
 
 The interactions between cells give rise to dynamic and evolving patterns that capture the essence of a simple yet highly intricate system.
 
-## Complex patterns and behavour
+## Signal Generators
 
-These rules create complex and often unpredictable patterns, making the Game of Life a fascinating example of [emergent behavior](https://en.wikipedia.org/wiki/Emergence).
+One interesting use case we observe, when combining spaceships and gliders, is that we can create a signal generator.
 
+{{< game-of-life
+  dark="true"
+  style="width: 60%; margin: 20px auto; outline: gray solid 1px"
+  title="Glider Gun"
+  image="/presets/simple/glider_gun.png"
+  delay="50"
+  locked="true"
+  autoplay="true"
+/>}}
 
----
+Signals and relays in Conway's game of life can be used to implement logic gates and other building blocks typically used in boolean algebra and computer science.
 
 {{< game-of-life
   dark="true"
@@ -74,24 +80,24 @@ These rules create complex and often unpredictable patterns, making the Game of 
   title="Signal generators with memory"
   image="/presets/signals/memory.gif"
   delay="10"
+  locked="true"
+  autoplay="true"
 />}}
 
----
+## Complex patterns and behavour
 
-Despite its simplicity, the game is [Turing complete](https://en.wikipedia.org/wiki/Turing_completeness#:~:text=In%20colloquial%20usage%2C%20the%20terms,purpose%20computer%20or%20computer%20language.), meaning it can simulate a universal computer, capable of performing any computation that can be expressed algorithmically.
 
----
+Despite its simplicity, the game is [Turing complete](https://en.wikipedia.org/wiki/Turing_completeness#:~:text=In%20colloquial%20usage%2C%20the%20terms,purpose%20computer%20or%20computer%20language.), meaning it can simulate a universal computer, capable of performing any computation that can be expressed algorithmically. The following example was created by [Paul Rendell](http://rendell-attic.org/gol/tm.htm) and is considered Turin Complete.
 
 {{< game-of-life
   dark="true"
-  style="width: 60%; margin: 20px auto; outline: gray solid 1px"
+  style="width: 100%; margin: 20px auto; outline: gray solid 1px"
   view="canvas"
   title="Advanced usage"
-  image="/presets/complex/primes.gif"
+  image="/presets/complex/turing_complete.gif"
   delay="0"
 />}}
 
----
 
 ## Practical applications
 

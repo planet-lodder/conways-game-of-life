@@ -16,7 +16,7 @@ export class GameTickEngineCore {
   start(delay) {
     // Start running game in ticks
     console.log("Starting the game...");
-    this.delay = delay || this.delay || 0;
+    this.delay = delay || this.config.delay || 0;
     this.generation = 0;
     this.trackFPS(); // Compute the fps each second
     if (!this.delay && this.view && this.view.tickAction) {

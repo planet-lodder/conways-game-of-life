@@ -5,7 +5,7 @@
 <style>
     .cgol-simple-samples {
         width: 100%; 
-        border: 1px;
+        border: 0px !important;
     }
     .cgol-simple-samples tr {
         background: none !important;
@@ -23,27 +23,41 @@
                 style="width: 100%"
                 title="Stable Shapes" 
                 image="/presets/basic/stable.png"
-            ></game-of-life>
-        </td>
-        <td>
-            <game-of-life                 
-                style="width: 100%"
-                title="Repeating Patterns" 
-                image="/presets/basic/repeating.png"
+                locked="true"
+                autoplay="true"
+                delay="250"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
                 title="Oscillators" 
-                image="/presets/basic/101.gif"
+                image="/presets/basic/repeating.png"
+                locked="true"
+                autoplay="true"
+                delay="250"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Ships & Gliders" 
-                image="/presets/basic/stable.gif"
+                title="Glider" 
+                image="/presets/basic/glider.png"
+                wrapped="true"
+                locked="true"
+                autoplay="true"
+                delay="250"
+            ></game-of-life>
+        </td>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Spaceship" 
+                image="/presets/basic/spaceship.png"
+                wrapped="true"
+                locked="true"
+                autoplay="true"
+                delay="150"
             ></game-of-life>
         </td>
     </tr>
