@@ -1,0 +1,52 @@
+<div
+  {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
+  {{ with .Get "class" }} class="{{ . }}"{{ end }}
+>
+<style>
+    .cgol-simple-samples {
+        width: 100%; 
+        border: 1px;
+    }
+    .cgol-simple-samples tr {
+        background: none !important;
+    }
+    .cgol-simple-samples tr td {
+        width: 25%;
+        padding: 0px;
+        background: none;
+    }
+</style>
+<table class="cgol-simple-samples">
+    <tr>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Stable Shapes" 
+                image="/presets/basic/stable.png"
+            ></game-of-life>
+        </td>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Repeating Patterns" 
+                image="/presets/basic/repeating.png"
+            ></game-of-life>
+        </td>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Oscillators" 
+                image="/presets/basic/101.gif"
+            ></game-of-life>
+        </td>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Ships & Gliders" 
+                image="/presets/basic/stable.gif"
+            ></game-of-life>
+        </td>
+    </tr>
+</table>
+{{ .Inner }}
+</div>
