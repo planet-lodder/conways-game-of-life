@@ -63,7 +63,7 @@ export class GameOfLife extends HTMLElement {
         this.delay = delay;
         if (this.game) {
           this.game.delay = delay;
-          if (this.started) {
+          if (this.game.started) {
             this.game.stop();
             this.game.start(delay);
           }
@@ -80,24 +80,16 @@ export class GameOfLife extends HTMLElement {
         }
         gameUpdated();
       },
-      "game:reset": (e) => {
-        if (this.game) {
-          this.game.reset();
-        }
+      "game:reset": () => {
+        if (this.game) this.game.reset();
         gameUpdated();
       },
-      "game:start": (e) => {
-        if (this.game) {
-          this.game.start();
-          this.started = true;
-        }
+      "game:start": () => {
+        if (this.game) this.game.start();
         gameUpdated();
       },
-      "game:stop": (e) => {
-        if (this.game) {
-          this.game.stop();
-          this.started = false;
-        }
+      "game:stop": () => {
+        if (this.game) this.game.stop();
         gameUpdated();
       },
     };
@@ -114,17 +106,17 @@ export class GameOfLife extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
+    let enabled = newValue == "true";
     let pass = ["start"].indexOf(name) >= 0;
     if (!pass && oldValue === "") return; // Skip initial value
     if (!pass && oldValue === null) return; // Skip initial value
     if (oldValue === newValue) return; // Skip initial value
     switch (name) {
       case "start":
-        // Toggle start / stop
-        let start = newValue == "true";
-        if (start && !this.started) {
+        // Toggle start / stop        
+        if (enabled && !this.game.started) {
           this.trigger("game:start");
-        } else if (!start && this.started) {
+        } else if (!enabled && this.game.started) {
           this.trigger("game:stop");
         }
         break;
@@ -193,6 +185,7 @@ export class GameOfLife extends HTMLElement {
     this.locked = this.getAttribute("locked");
     this.hideToolbar = this.getAttribute("toolbar") == "false";
     this.autoplay = this.getAttribute("autoplay");
+    this.explain = this.getAttribute("explain");
 
     if (this.autoplay) {
       this.start = true;

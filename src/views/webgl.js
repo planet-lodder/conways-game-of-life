@@ -294,7 +294,7 @@ export class WebGLRenderer extends GameRendererCore {
 
     // Trigger the next frame
     requestAnimationFrame(() => {
-      if (!game.config.started) return;
+      if (!game.started) return;
       this.tickAction(game, callback);
     });
   }

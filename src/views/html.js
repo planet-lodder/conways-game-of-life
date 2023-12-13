@@ -79,6 +79,24 @@ export class HtmlDivRenderer extends GameRendererCore {
       }
       .dark .game-board .row [value="1"] {
         background-color: #ffffff;
+      }      
+      .game-board .row [count] {
+        position: relative;
+      }        
+      .game-board .row [count]:before {
+        content: attr(count);
+        font-size: 100%;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .game-board .row [count="0"]:before {
+        color: #8884;
       }
     </style>
     <div class="game-container flex flex-col flex-1 justify-center" style="position: relative; height: 100%">      
@@ -166,6 +184,20 @@ export class HtmlDivRenderer extends GameRendererCore {
 
         // Save ref to element
         this.canvas[x + y * width] = cellElem;
+
+        // If explan requested, set the neighbor count for this cell
+        if (config.explain && game.getValue) {
+          let count =
+            game.getValue(x - 1, y - 1) +
+            game.getValue(x, y - 1) +
+            game.getValue(x + 1, y - 1) +
+            game.getValue(x - 1, y) +
+            game.getValue(x + 1, y) +
+            game.getValue(x - 1, y + 1) +
+            game.getValue(x, y + 1) +
+            game.getValue(x + 1, y + 1);
+          cellElem.setAttribute("count", count);
+        }
       }
     }
   }
@@ -175,8 +207,25 @@ export class HtmlDivRenderer extends GameRendererCore {
     let total = config.width * config.height;
     for (let i = 0; i < total; i++) {
       let elem = this.canvas[i];
-      if (elem) {
-        elem.setAttribute("value", data[i] || 0);
+      if (!elem) continue;
+
+      // Set the cell state (alive or dead)
+      elem.setAttribute("value", data[i] || 0);
+
+      // If explan requested, set the neighbor count for this cell
+      if (config.explain && game.getValue) {
+        let x = i % config.width;
+        let y = Math.floor(i / config.width);
+        let count =
+          game.getValue(x - 1, y - 1) +
+          game.getValue(x, y - 1) +
+          game.getValue(x + 1, y - 1) +
+          game.getValue(x - 1, y) +
+          game.getValue(x + 1, y) +
+          game.getValue(x - 1, y + 1) +
+          game.getValue(x, y + 1) +
+          game.getValue(x + 1, y + 1);
+        elem.setAttribute("count", count);
       }
     }
   }

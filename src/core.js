@@ -16,6 +16,7 @@ export class GameTickEngineCore {
   start(delay) {
     // Start running game in ticks
     console.debug("Starting the game...");
+    this.started = true;
     this.delay = delay || this.config.delay || 0;
     this.generation = 0;
     this.trackFPS(); // Compute the fps each second
@@ -34,6 +35,7 @@ export class GameTickEngineCore {
     console.debug("Stopping the game");
     if (this.intv > 0) clearInterval(this.intv);
     this.intv = null;
+    this.started = false;
   }
 
   trackFPS() {
@@ -243,7 +245,6 @@ export class GameRendererCore extends HTMLElement {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      let data = Array(canvas.width * canvas.height);
       let buffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       if (callback) callback(buffer, img.width, img.height);
     };

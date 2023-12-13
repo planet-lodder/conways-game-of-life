@@ -18,7 +18,9 @@
   {{ with .Get "toolbar" }} toolbar="{{ . }}"{{ end }}
   {{ with .Get "locked" }} locked="{{ . }}"{{ end }}
   {{ with .Get "autoplay" }} autoplay="{{ . }}"{{ end }}
->
+  
+  {{ with .Get "explain" }} explain="{{ . }}"{{ end }}
+  >
 {{ .Inner }}
 </game-board>
 </div>

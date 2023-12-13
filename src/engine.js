@@ -12,24 +12,25 @@ export class GameEngine extends GameEngineCore {
     }
   }
 
+  getValue(x, y) {
+    let config = this.config;
+    if (!config.wrapped) {
+      if (x < 0 || x >= config.width) return 0;
+      if (y < 0 || y >= config.height) return 0;
+    }
+    x = (x + config.width) % config.width;
+    y = (y + config.height) % config.height;
+    return this.data[x + y * config.width];
+  }
+
   tick() {
     let config = this.config;
-    
+
     // Skip ticks while out of view
     if (this.hidden) return;
 
     // Start new generation
     this.generation++;
-
-    const getValue = (x, y) => {
-      if (!config.wrapped) {
-        if (x < 0 || x >= config.width) return 0;
-        if (y < 0 || y >= config.height) return 0;
-      }
-      x = (x + config.width) % config.width;
-      y = (y + config.height) % config.height;
-      return this.data[x + y * config.width];
-    };
 
     const newValueIndexed = (i) => {
       let x = i % config.width;
@@ -57,14 +58,14 @@ export class GameEngine extends GameEngineCore {
       } else {
         // Edge case: count cells on the edge
         count =
-          getValue(x - 1, y - 1) +
-          getValue(x, y - 1) +
-          getValue(x + 1, y - 1) +
-          getValue(x - 1, y) +
-          getValue(x + 1, y) +
-          getValue(x - 1, y + 1) +
-          getValue(x, y + 1) +
-          getValue(x + 1, y + 1);
+          this.getValue(x - 1, y - 1) +
+          this.getValue(x, y - 1) +
+          this.getValue(x + 1, y - 1) +
+          this.getValue(x - 1, y) +
+          this.getValue(x + 1, y) +
+          this.getValue(x - 1, y + 1) +
+          this.getValue(x, y + 1) +
+          this.getValue(x + 1, y + 1);
       }
 
       if (count == 3) return 1; // Cell is alive if count exactly 3
@@ -74,6 +75,7 @@ export class GameEngine extends GameEngineCore {
 
     // Calculate for each cell its new value
     let newData = Array(config.width * config.height); // New data frame
+    if (config.explain) this.counts = Array(config.width * config.height);
     for (let i = 0; i < newData.length; i++) {
       newData[i] = newValueIndexed(i);
     }

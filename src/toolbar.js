@@ -154,15 +154,16 @@ export class GameToolbar extends HTMLElement {
   }
 
   update(config) {
+    let started = config.game.started    
     this.gameTitle(config.title);
     this.gameDimentions(config);
-    this.gameResetBtn(!config.started && config.game && config.game.generation);
-    this.gameConfigBtn(!config.started);
-    this.gameStartBtn(!config.started && !config.autoplay);
-    this.gameStopBtn(config.started && !config.autoplay);
+    this.gameResetBtn(!started && config.game && config.game.generation);
+    this.gameConfigBtn(!started);
+    this.gameStartBtn(!started && !config.locked);
+    this.gameStopBtn(started && !config.locked);
     this.gameSettings(config);
 
-    if (!config.started) {
+    if (!started) {
       // Hide the FPS counter
       this.gameFpsCounter(0);
     }
@@ -290,7 +291,7 @@ export class GameToolbar extends HTMLElement {
     let container = this.querySelector(".game-fps-container");
     let label = this.querySelector(".game-fps");
     if (!container) return;
-    if (fps && !this.config.locked) {
+    if (this.config.game.started && !this.config.locked) {
       label.innerHTML = fps;
       container.classList.remove("hidden");
     } else {
@@ -339,7 +340,7 @@ export class GameToolbar extends HTMLElement {
   }
 
   gameSettings(config) {
-    let show = !config.started && this.show_settigs;
+    let show = !config.game.started && this.show_settigs;
     let container = this.querySelector(".game-settings");
     if (!container) return;
     if (show) {
