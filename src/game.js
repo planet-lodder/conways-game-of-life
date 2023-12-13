@@ -222,7 +222,7 @@ export class GameOfLife extends HTMLElement {
     }
 
     // Auto start the game (if requested)
-    console.log("Loaded:", this.title, this);
+    console.log("Loaded:", this.title, this.start);
     if (this.start) {
       this.game.start();
     }
