@@ -36,9 +36,6 @@ export class GameOfLife extends HTMLElement {
     this.config();
     this.render(this);
 
-    // Auto start the game (if requested)
-    if (this.start) setTimeout(() => this.game.start(), 100);
-
     let gameUpdated = () => {
       this.dispatchEvent(new CustomEvent("game:updated", { detail: this }));
     };
