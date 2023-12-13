@@ -9,7 +9,13 @@ export class GameEngine extends GameEngineCore {
     // Create the initial display
     if (this.view) {
       this.view.createView(this, data);
-    }    
+    }
+
+    // Auto start the game (if requested)
+    if (this.config.start) {
+      console.log(this);
+      this.start();
+    }
   }
 
   getValue(x, y) {
