@@ -84,8 +84,9 @@ export class HtmlDivRenderer extends GameRendererCore {
         position: relative;
       }        
       .game-board .row [count]:before {
+        color: #888;
         content: attr(count);
-        font-size: 100%;
+        font-size: small;
         text-align: center;
         position: absolute;
         top: 0;
@@ -94,9 +95,21 @@ export class HtmlDivRenderer extends GameRendererCore {
         bottom: 0;
         padding: 0;
         margin: 0;
-      }
+      }      
       .game-board .row [count="0"]:before {
         color: #8884;
+      }
+      .game-board .row [count][value="1"]:before {
+        color: red;
+        background-color: #F002;
+        font-weight: bold;
+      }
+      .game-board .row [count="3"]:before, 
+      .game-board .row [count="3"][value="1"]:before,
+      .game-board .row [count="2"][value="1"]:before {
+        color: #080;
+        background-color: #0F02;
+        font-weight: bold;
       }
     </style>
     <div class="game-container flex flex-col flex-1 justify-center" style="position: relative; height: 100%">      
@@ -113,7 +126,6 @@ export class HtmlDivRenderer extends GameRendererCore {
         <rect width="100%" height="100%" fill="url(#grid)" />          
       </svg>
       <div class="game-board"></div>
-      
     </div>
 `;
     // Get a refference to the board game elements
@@ -200,6 +212,29 @@ export class HtmlDivRenderer extends GameRendererCore {
         }
       }
     }
+
+    if (config.explain) {
+      this.updateTransitions(config);
+    }
+  }
+
+  updateTransitions(config) {
+    // Add some additional CSS for transitions that are synced the the delay
+    if (!this.custom_css) {
+      this.custom_css = document.createElement("style");
+      this.shadow.appendChild(this.custom_css);
+    }
+    if (config.delay <= 200) {
+      // Do not add css transitions if the framerate is too fast
+      this.custom_css.innerHTML = ``;
+    } else {
+      let time = Math.round(config.delay / 2 / 100) / 10;
+      this.custom_css.innerHTML = `
+      .game-board .row [count]:before { transition: all ease-in ${time}s; }
+      .game-board .row [value] { transition: all ease-out ${time}s; }
+      `;
+    }
+    this.last_delay = config.delay;
   }
 
   updateView(game, data) {
@@ -227,6 +262,11 @@ export class HtmlDivRenderer extends GameRendererCore {
           game.getValue(x + 1, y + 1);
         elem.setAttribute("count", count);
       }
+    }
+
+    // Check if the game speed has changed
+    if (config.explain && config.delay !== this.last_delay) {
+      this.updateTransitions(config);
     }
   }
 

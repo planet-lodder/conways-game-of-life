@@ -42,7 +42,8 @@ These rules create complex and often unpredictable patterns, making the Game of 
   scale="10"
   delay="2000"
   autoplay="true"
-  locked="true"
+  xlocked="true"
+  explain="true"
 />}}
 
 
