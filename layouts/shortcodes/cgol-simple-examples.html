@@ -1,3 +1,4 @@
+<!-- {{ $base := .Site.BaseURL }} -->
 <div
   {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
   {{ with .Get "class" }} class="{{ . }}"{{ end }}
@@ -22,7 +23,7 @@
             <game-of-life                 
                 style="width: 100%"
                 title="Stable Shapes" 
-                image="/presets/basic/stable.png"
+                image="{{ $base }}/presets/basic/stable.png"
                 locked="true"
                 autoplay="true"
                 delay="250"
@@ -32,7 +33,7 @@
             <game-of-life                 
                 style="width: 100%"
                 title="Oscillators" 
-                image="/presets/basic/repeating.png"
+                image="{{ $base }}/presets/basic/repeating.png"
                 locked="true"
                 autoplay="true"
                 delay="250"
@@ -42,7 +43,7 @@
             <game-of-life                 
                 style="width: 100%"
                 title="Glider" 
-                image="/presets/basic/glider.png"
+                image="{{ $base }}/presets/basic/glider.png"
                 wrapped="true"
                 locked="true"
                 autoplay="true"
@@ -53,7 +54,7 @@
             <game-of-life                 
                 style="width: 100%"
                 title="Spaceship" 
-                image="/presets/basic/spaceship.png"
+                image="{{ $base }}/presets/basic/spaceship.png"
                 wrapped="true"
                 locked="true"
                 autoplay="true"
