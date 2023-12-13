@@ -95,7 +95,7 @@ export class GameOfLife extends HTMLElement {
     };
     Object.keys(events).forEach((eventName) => {
       this.addEventListener(eventName, events[eventName]);
-    });    
+    });
   }
 
   trigger(eventName, payload) {
@@ -219,6 +219,12 @@ export class GameOfLife extends HTMLElement {
     // Bind existing game to the latest view (if changed)
     if (this.game.view != this.view) {
       this.game.view = this.view;
+    }
+
+    // Auto start the game (if requested)
+    console.log("Loaded:", this.title, this);
+    if (this.start) {
+      this.game.start();
     }
   }
 
