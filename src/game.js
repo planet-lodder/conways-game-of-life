@@ -113,7 +113,8 @@ export class GameOfLife extends HTMLElement {
     if (oldValue === newValue) return; // Skip initial value
     switch (name) {
       case "start":
-        // Toggle start / stop        
+        // Toggle start / stop
+        if (!this.game) break;
         if (enabled && !this.game.started) {
           this.trigger("game:start");
         } else if (!enabled && this.game.started) {
@@ -155,13 +156,13 @@ export class GameOfLife extends HTMLElement {
       case "delay":
         if (this.delay !== newValue) {
           this.trigger("game:speed", newValue);
-          break;
         }
+        break;
       case "scale":
         if (this.scale !== newValue) {
           this.trigger("game:scale", newValue);
-          break;
         }
+        break;
     }
     //this[name] = newValue;
   }
