@@ -58,7 +58,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/game-of-life/"
+            --baseURL "${{ steps.pages.outputs.base_url }}/conways-game-of-life/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
