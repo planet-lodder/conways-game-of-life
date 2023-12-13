@@ -14,7 +14,7 @@ The "game" is played on a two-dimensional grid of cells, each of which can be in
 {{< game-of-life
   dark="true"
   style="width: 60%; margin: 20px auto; outline: gray solid 1px"
-  title="Step by step example"
+  title="Basic example"
   image="/presets/basic/shapes.png"
   toolbar="false"
   locked="true"

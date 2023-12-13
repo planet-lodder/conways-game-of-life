@@ -222,7 +222,18 @@ export class GameOfLife extends HTMLElement {
     }
 
     // Auto start the game (if requested)
-    console.log("Loaded:", this.title, this.start);
+    console.log(
+      "Loaded:",
+      this.title,
+      this.start,
+      this.getAttribute("autoplay")
+    );
+    setTimeout(() => {
+      console.log("Delayed:", this.title, this.start, [
+        this.getAttribute("autoplay"),
+        this.hasAttribute("autoplay"),
+      ]);
+    }, 1000);
     if (this.start) {
       this.game.start();
     }
