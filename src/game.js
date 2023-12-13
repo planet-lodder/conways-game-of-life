@@ -36,6 +36,9 @@ export class GameOfLife extends HTMLElement {
     this.config();
     this.render(this);
 
+    // Auto start the game (if requested)
+    if (this.start) this.game.start();
+    
     let gameUpdated = () => {
       this.dispatchEvent(new CustomEvent("game:updated", { detail: this }));
     };
@@ -95,10 +98,7 @@ export class GameOfLife extends HTMLElement {
     };
     Object.keys(events).forEach((eventName) => {
       this.addEventListener(eventName, events[eventName]);
-    });
-
-    // Auto start the game (if requested)
-    if (this.start) this.game.start();
+    });    
   }
 
   trigger(eventName, payload) {
@@ -114,7 +114,7 @@ export class GameOfLife extends HTMLElement {
     switch (name) {
       case "start":
         // Toggle start / stop
-        if (!this.game) break;
+        if (!this.game) return;
         if (enabled && !this.game.started) {
           this.trigger("game:start");
         } else if (!enabled && this.game.started) {
