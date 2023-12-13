@@ -116,6 +116,12 @@ export class GameEngineCore extends GameTickEngineCore {
 
     // Load the data for this game
     this.load(data);
+
+    // Auto start the game (if requested)
+    if (this.config.start) {
+      console.log(this)
+      this.start();
+    }
   }
 
   mapData(buffer, width, height) {
