@@ -185,7 +185,8 @@ export class GameOfLife extends HTMLElement {
     this.autoplay = this.getAttribute("autoplay");
     this.explain = this.getAttribute("explain");
 
-    if (this.autoplay) {
+    // Check if we should autostart the game
+    if (this.autoplay == true || this.autoplay === "") {
       this.start = true;
     }
   }
@@ -228,12 +229,6 @@ export class GameOfLife extends HTMLElement {
       this.start,
       this.getAttribute("autoplay")
     );
-    setTimeout(() => {
-      console.log("Delayed:", this.title, this.start, [
-        this.getAttribute("autoplay"),
-        this.hasAttribute("autoplay"),
-      ]);
-    }, 1000);
     if (this.start) {
       this.game.start();
     }
