@@ -1,4 +1,4 @@
-<script src={{ "/js/web-component.js" | relURL }}></script>
+<script src={{ "/js/web-component.js" | absURL }}></script>
 <div
   {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
   {{ with .Get "class" }} class="{{ . }}"{{ end }}
