@@ -1,15 +1,12 @@
 ---
-title: Oscillators
-tags: [basic]
-params:
-  title: Stable Shapes
-  group: basic
-  image: /presets/basic/stable.gif
-  scale: 32
-  delay: 100
+title: Advanced use cases
+description: Explore some more advanced use cases with large data sets
+featured_image: /presets/basic/101.gif
+language: en
+tags: [advanced]
 ---
 
-# Stable Shapes
+# The basics of the Game of Life
 
 Here is a simple example:
 

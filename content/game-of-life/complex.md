@@ -1,15 +1,12 @@
 ---
-title: Repeating Patterns
-tags: [basic]
-params:
-  title: Stable Shapes
-  group: basic
-  image: /presets/basic/stable.gif
-  scale: 32
-  delay: 100
+title: Complex Shapes & Patterns
+description: More complex examples that uses basic shapes as its building blocks
+featured_image: /presets/basic/101.gif
+language: en
+tags: [complex]
 ---
 
-# Stable Shapes
+# The basics of the Game of Life
 
 Here is a simple example:
 

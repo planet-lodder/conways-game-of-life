@@ -1,15 +1,12 @@
 ---
-title: Traffic Circles
+title: Simple Shapes
+description: Simple shapes and patterns
+featured_image: /presets/basic/101.gif
+language: en
 tags: [simple]
-params:
-  title: Traffic Circles
-  group: simple
-  image: /presets/basic/stable.gif
-  scale: 32
-  delay: 100
 ---
 
-# Stable Shapes
+# The basics of the Game of Life
 
 Here is a simple example:
 
