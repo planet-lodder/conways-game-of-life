@@ -16,16 +16,20 @@ menu:
       weight: 1
     - identifier: basic
       name: Game Basics
-      url: /tags/basic/
+      url: /game-of-life/basic/
       weight: 10
     - identifier: simple
       name: Simple Shapes
-      url: /tags/simple/
+      url: /game-of-life/simple/
       weight: 11
     - identifier: complex
-      name: Large & Complex
-      url: /tags/complex/
+      name: Complex Patterns
+      url: /game-of-life/complex/
       weight: 12
+    - identifier: advanced
+      name: Advanced Use Cases
+      url: /game-of-life/advanced/
+      weight: 13
 
 params:
   # Define the default author

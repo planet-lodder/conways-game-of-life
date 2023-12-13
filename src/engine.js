@@ -9,7 +9,7 @@ export class GameEngine extends GameEngineCore {
     // Create the initial display
     if (this.view) {
       this.view.createView(this, data);
-    }    
+    }
   }
 
   getValue(x, y) {
