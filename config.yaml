@@ -14,22 +14,6 @@ menu:
       name: About the game
       url: /about/
       weight: 1
-    - identifier: basic
-      name: Game Basics
-      url: /examples/basic/
-      weight: 10
-    - identifier: simple
-      name: Simple Shapes
-      url: /examples/simple/
-      weight: 11
-    - identifier: complex
-      name: Complex Patterns
-      url: /examples/complex/
-      weight: 12
-    - identifier: advanced
-      name: Advanced Use Cases
-      url: /examples/advanced/
-      weight: 13
 
 params:
   # Define the default author

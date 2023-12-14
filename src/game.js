@@ -186,7 +186,6 @@ export class GameOfLife extends HTMLElement {
     this.explain = this.getAttribute("explain");
 
     // Check if we should autostart the game
-    console.log("this.autoplay", [this.autoplay]);
     if (!!this.autoplay || this.autoplay === "") {
       this.start = true;
     }
