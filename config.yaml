@@ -9,27 +9,27 @@ theme:
 
 
 menu:
-  main:
-    - identifier: about
-      name: About the game
-      url: /about/
-      weight: 1
-    - identifier: rules
-      name: Game Rules
-      url: /rules/
-      weight: 10
-    - identifier: simple-shapes
-      name: Shapes and Patterns
-      url: /simple-shapes/
-      weight: 11
-    - identifier: signal-generators
-      name: Signal Generators
-      url: /signal-generators/
-      weight: 12
-    - identifier: turing-complete
-      name: Advanced Use Cases
-      url: /turing-complete/
-      weight: 13
+  main: []
+#    - identifier: about
+#      name: About the game
+#      url: /about/
+#      weight: 1
+#    - identifier: rules
+#      name: Game Rules
+#      url: /rules/
+#      weight: 10
+#    - identifier: simple-shapes
+#      name: Shapes and Patterns
+#      url: /simple-shapes/
+#      weight: 11
+#    - identifier: signal-generators
+#      name: Signal Generators
+#      url: /signal-generators/
+#      weight: 12
+#    - identifier: turing-complete
+#      name: Advanced Use Cases
+#      url: /turing-complete/
+#      weight: 13
 
 params:
   # Define the default author

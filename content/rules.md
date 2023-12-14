@@ -1,6 +1,5 @@
 ---
 title: Game Rules
-draft: false
 description: With 4 simple rules, interesting patterns emerge
 menus:
   main:

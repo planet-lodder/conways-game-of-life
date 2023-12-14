@@ -31,7 +31,7 @@ Beyond these, more intricate structures emerge. "Guns" are fascinating construct
   dark="true"
   style="width: 60%; margin: 20px auto; outline: gray solid 1px"
   title="Glider Gun"
-  image="/presets/simple/glider_gun.png"
+  image="/presets/signals/glider_gun.png"
   delay="50"
   locked="true"
   autoplay="true"
