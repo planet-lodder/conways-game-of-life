@@ -5,26 +5,26 @@
   {{ with .Get "class" }} class="{{ . }}"{{ end }}
 >
 <style>
-    .cgol-simple-samples {
+    .cgol-simple-oscillators {
         width: 100%; 
         border: 0px !important;
     }
-    .cgol-simple-samples tr {
+    .cgol-simple-oscillators tr {
         background: none !important;
     }
-    .cgol-simple-samples tr td {
-        width: 25%;
+    .cgol-simple-oscillators tr td {
+        width: 33.33%;
         padding: 0px;
         background: none;
     }
 </style>
-<table class="cgol-simple-samples">
+<table class="cgol-simple-oscillators">
     <tr>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Stable Shapes" 
-                image="{{ $base }}presets/basic/stable.png"
+                title="Blinker" 
+                image="{{ $base }}presets/oscillators/blinker.png"
                 locked="true"
                 autoplay="true"
                 delay="250"
@@ -33,8 +33,8 @@
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Oscillators" 
-                image="{{ $base }}presets/basic/repeating.png"
+                title="Toad" 
+                image="{{ $base }}presets/oscillators/toad.png"
                 locked="true"
                 autoplay="true"
                 delay="250"
@@ -43,23 +43,12 @@
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Glider" 
-                image="{{ $base }}presets/basic/glider.png"
+                title="Beacon" 
+                image="{{ $base }}presets/oscillators/beacon.png"
                 wrapped="true"
                 locked="true"
                 autoplay="true"
                 delay="250"
-            ></game-of-life>
-        </td>
-        <td>
-            <game-of-life                 
-                style="width: 100%"
-                title="Spaceship" 
-                image="{{ $base }}presets/basic/spaceship.png"
-                wrapped="true"
-                locked="true"
-                autoplay="true"
-                delay="150"
             ></game-of-life>
         </td>
     </tr>

@@ -1,5 +1,5 @@
 <!-- {{ $base := .Site.BaseURL }} -->
-<script src="{{ .Site.BaseURL }}js/web-component.js"></script>
+<script src="{{ $base }}js/web-component.js"></script>
 <div
   {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
   {{ with .Get "class" }} class="{{ . }}"{{ end }}

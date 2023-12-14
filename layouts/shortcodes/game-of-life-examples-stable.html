@@ -5,61 +5,61 @@
   {{ with .Get "class" }} class="{{ . }}"{{ end }}
 >
 <style>
-    .cgol-simple-samples {
+    .cgol-simple-stable {
         width: 100%; 
         border: 0px !important;
     }
-    .cgol-simple-samples tr {
+    .cgol-simple-stable tr {
         background: none !important;
     }
-    .cgol-simple-samples tr td {
+    .cgol-simple-stable tr td {
         width: 25%;
         padding: 0px;
         background: none;
     }
 </style>
-<table class="cgol-simple-samples">
+<table class="cgol-simple-stable">
     <tr>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Stable Shapes" 
-                image="{{ $base }}presets/basic/stable.png"
+                title="Block" 
+                image="{{ $base }}presets/stable/block.png"
                 locked="true"
                 autoplay="true"
-                delay="250"
+                delay="1000"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Oscillators" 
-                image="{{ $base }}presets/basic/repeating.png"
+                title="Beehive" 
+                image="{{ $base }}presets/stable/beehive.png"
                 locked="true"
                 autoplay="true"
-                delay="250"
+                delay="1000"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Glider" 
-                image="{{ $base }}presets/basic/glider.png"
+                title="Loaf" 
+                image="{{ $base }}presets/stable/loaf.png"
                 wrapped="true"
                 locked="true"
                 autoplay="true"
-                delay="250"
+                delay="1000"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Spaceship" 
-                image="{{ $base }}presets/basic/spaceship.png"
+                title="Boat" 
+                image="{{ $base }}presets/stable/boat.png"
                 wrapped="true"
                 locked="true"
                 autoplay="true"
-                delay="150"
+                delay="1000"
             ></game-of-life>
         </td>
     </tr>

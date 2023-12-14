@@ -5,61 +5,53 @@
   {{ with .Get "class" }} class="{{ . }}"{{ end }}
 >
 <style>
-    .cgol-simple-samples {
+    .cgol-simple-spaceships {
         width: 100%; 
         border: 0px !important;
     }
-    .cgol-simple-samples tr {
+    .cgol-simple-spaceships tr {
         background: none !important;
     }
-    .cgol-simple-samples tr td {
-        width: 25%;
+    .cgol-simple-spaceships tr td {
+        width: 33.33%;
         padding: 0px;
         background: none;
     }
 </style>
-<table class="cgol-simple-samples">
+<table class="cgol-simple-spaceships" >
     <tr>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Stable Shapes" 
-                image="{{ $base }}presets/basic/stable.png"
-                locked="true"
-                autoplay="true"
-                delay="250"
-            ></game-of-life>
-        </td>
-        <td>
-            <game-of-life                 
-                style="width: 100%"
-                title="Oscillators" 
-                image="{{ $base }}presets/basic/repeating.png"
-                locked="true"
-                autoplay="true"
-                delay="250"
-            ></game-of-life>
-        </td>
-        <td>
-            <game-of-life                 
-                style="width: 100%"
                 title="Glider" 
-                image="{{ $base }}presets/basic/glider.png"
-                wrapped="true"
+                image="{{ $base }}presets/ships/glider.png"
                 locked="true"
                 autoplay="true"
                 delay="250"
+                wrapped="true"
             ></game-of-life>
         </td>
         <td>
             <game-of-life                 
                 style="width: 100%"
-                title="Spaceship" 
-                image="{{ $base }}presets/basic/spaceship.png"
-                wrapped="true"
+                title="Lightweight Spaceship" 
+                image="{{ $base }}presets/ships/lwss.png"
                 locked="true"
                 autoplay="true"
                 delay="150"
+                wrapped="true"
+            ></game-of-life>
+        </td>
+        <td>
+            <game-of-life                 
+                style="width: 100%"
+                title="Heavyweight Spaceship" 
+                image="{{ $base }}presets/ships/wing.png"
+                wrapped="true"
+                locked="true"
+                autoplay="true"
+                delay="50"
+                wrapped="true"
             ></game-of-life>
         </td>
     </tr>
