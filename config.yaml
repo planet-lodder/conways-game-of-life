@@ -12,19 +12,19 @@ menu:
   main:
     - identifier: rules
       name: Game Rules
-      url: /about/rules/
+      url: /rules/
       weight: 10
     - identifier: simple-shapes
       name: Shapes and Patterns
-      url: /about/simple-shapes/
+      url: /simple-shapes/
       weight: 11
     - identifier: signal-generators
       name: Signal Generators
-      url: /about/signal-generators/
+      url: /signal-generators/
       weight: 12
     - identifier: turing-complete
       name: Advanced Use Cases
-      url: /about/turing-complete/
+      url: /turing-complete/
       weight: 13
 
 params:
