@@ -1,9 +1,6 @@
 ---
 title: Game Rules
 description: With 4 simple rules, interesting patterns emerge
-menus:
-  main:
-    weight: 10
 ---
 
 {{< add-tailwind dark="true" >}}

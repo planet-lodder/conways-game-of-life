@@ -1,9 +1,6 @@
 ---
 title: Signal Generators
 description: Using ships and gliders, we can generate singnals
-menus:
-  main:
-    weight: 12
 ---
 
 {{< add-tailwind dark="true" >}}

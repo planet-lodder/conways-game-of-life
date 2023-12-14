@@ -1,9 +1,6 @@
 ---
 title: Advanced use cases
 description: As an example, we can create a turing comlete state machine
-menus:
-  main:
-    weight: 15
 ---
 
 {{< add-tailwind dark="true" >}}

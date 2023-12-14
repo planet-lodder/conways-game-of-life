@@ -1,9 +1,6 @@
 ---
 title: Shapes and patterns
 description: The basics structures that power of the Game of Life
-menus:
-  main:
-    weight: 11
 ---
 
 {{< add-tailwind dark="true" >}}
