@@ -16,19 +16,19 @@ menu:
       weight: 1
     - identifier: basic
       name: Game Basics
-      url: /game-of-life/basic/
+      url: /examples/basic/
       weight: 10
     - identifier: simple
       name: Simple Shapes
-      url: /game-of-life/simple/
+      url: /examples/simple/
       weight: 11
     - identifier: complex
       name: Complex Patterns
-      url: /game-of-life/complex/
+      url: /examples/complex/
       weight: 12
     - identifier: advanced
       name: Advanced Use Cases
-      url: /game-of-life/advanced/
+      url: /examples/advanced/
       weight: 13
 
 params:

@@ -1,0 +1,11 @@
+<!-- 
+{{ $base := .Site.BaseURL }} 
+-->
+<script src="{{ $base }}js/web-component.js"></script>
+<div
+  {{ with .Get "style" }} style="{{ . | safeCSS }}"{{ end }}
+  {{ with .Get "class" }} class="{{ . }}"{{ end }}
+>
+  XXXXX
+</div>
+{{ .Inner }}
