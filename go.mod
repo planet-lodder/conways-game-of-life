@@ -1,8 +1,6 @@
 module github.com/planet-lodder/conways-game-of-life
 
-go 1.21.3
-
-toolchain go1.21.5
+go 1.21
 
 require (
 	github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible // indirect
