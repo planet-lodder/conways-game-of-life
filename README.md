@@ -2,6 +2,9 @@
 
 A JavaScript implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
+The demo site can be found at: [https://planet-lodder.github.io/conways-game-of-life](https://planet-lodder.github.io/conways-game-of-life)
+
+
 ## Features
 
 The main features included in this package:
