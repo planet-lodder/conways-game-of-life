@@ -1,6 +1,7 @@
 ---
 title: Game Rules
 description: With 4 simple rules, interesting patterns emerge
+draft: false
 ---
 
 {{< add-tailwind dark="true" >}}

@@ -7,7 +7,6 @@ theme:
   #github.com/theNewDynamic/gohugo-theme-ananke
   #github.com/panr/hugo-theme-terminal
 
-
 menu:
   main:
     - identifier: rules
