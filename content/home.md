@@ -1,8 +1,7 @@
 ---
-url: /
+url: ./
 title: Conway's Game of Life
 draft: false
-headless: false
 ---
 
 {{< add-tailwind dark="true" >}}
