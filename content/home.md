@@ -1,5 +1,4 @@
 ---
-url: ./
 title: Conway's Game of Life
 draft: false
 ---
